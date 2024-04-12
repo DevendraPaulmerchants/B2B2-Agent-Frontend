@@ -1,0 +1,36 @@
+.aboutus {
+    padding: 2rem 4rem;
+}
+.aboutus h2 {
+    color: #212529;
+    margin-bottom: 1rem;
+}
+.aboutus p {
+    color: #212529;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+}
+.paragraph-image {
+    display: flex;
+    justify-content: space-between;
+}
+.paragraph {
+    padding-right: 4rem;
+}
+.image {
+    width: 130%;
+    height: 130%;
+    
+}
+.image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+/* ------------------------------ Policy page */
+.policy {
+    padding: 2rem 4rem;
+}
+.policy p {
+    margin-bottom: 2rem;
+}

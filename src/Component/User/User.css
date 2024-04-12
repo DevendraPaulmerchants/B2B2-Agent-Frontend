@@ -1,0 +1,57 @@
+.agent-booking-container {
+    padding: 2rem;
+}
+.agent-booking-container table {
+    width: 100%;
+    margin: 2rem auto;
+    text-align: center;
+    border-spacing: 0px;
+}
+.agent-booking-container thead {
+    background: #8dc4e9;
+    margin-bottom: 10px;
+}
+.agent-booking-container tbody tr td {
+    padding: 10px;
+    border-bottom: 1px solid rgb(166, 169, 177, 0.5);
+}
+.agent-view-booking button {
+    border: none;
+    outline: none;
+    background: none;
+}
+/* ---------------------------------------CSS for Booking Details-------- */
+.booking-main-container {
+    padding: 1rem 2rem;
+    /* text-align: center; */
+}
+.booking-main-container h2 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #0c456b;
+}
+.agent-booking-passenger-details {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    /* padding: 10px 4rem; */
+}
+.agent-booking-passenger-details h4 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2e6991;
+    margin-bottom: 0;
+}
+.agent-booking-passenger-details p {
+    font-size: 12px;
+    font-weight: 500;
+    color: #3d5361;
+}
+.agent-booking-reason {
+    padding: 1rem 2rem;
+}
+.agent-booking-reason h4 {
+    font-size: 20px;
+    font-weight: 500;
+    color: #0c456b;
+}

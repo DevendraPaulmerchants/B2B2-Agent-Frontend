@@ -1,0 +1,110 @@
+.transferdescription{
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 8, 29, 0.6);
+}
+.transfer-description-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: fit-content;
+    width: fit-content;
+    background: #fff;
+    margin: auto;
+    border-radius: 10px;
+}
+.transfer-description-container hr{
+    margin:0;
+    color: silver;
+    border: 0;
+    border-top: var(--bs-border-width) solid;
+    opacity: 1;
+}
+.transfer-description-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 2rem;
+    background: #EBF2FD;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+.transfer-description-top h2 {
+    margin-top: 8px;
+}
+.onclose-function {
+    font-size: 2rem;
+    color: #00081d;
+    cursor: pointer;
+    font-weight: 700;
+}
+.transfer-description-standard {
+    padding:0.5rem 2rem;
+}
+.transfer-description-standard h3 {
+    color: #fff;
+    background: #3c3d3f;
+    width: fit-content;
+    padding:2px 8px;
+    font-size: 1rem;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+}
+.transfer-description-services {
+    padding:0 2rem;
+}
+.transfer-description-services h2 {
+    font-size: 24px;
+    margin: 0;
+}
+.transfer-time-minpass-maxpass-allow {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.general-information {
+    padding:2rem 2rem 0 2rem;
+    margin-bottom: 1rem;
+}
+.general-information p {
+    color: #00081d;
+    font-weight: 500;
+    padding: 0 1.5rem;
+}
+.generale-information-icon {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    padding: 1rem;
+}
+.generale-information-icon h4,h3,h2,h5,p {
+    margin: 0;
+}
+.transfer-description-btn {
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+}
+.transfer-description-btn #cancel {
+    color: #0da8f0;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    outline: none;
+    background: none;
+    margin-right: 2rem;
+}
+.transfer-description-btn #select {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    outline: none;
+    background: #05307a;
+    padding: 5px 15px;
+    border-radius: 20px;
+}

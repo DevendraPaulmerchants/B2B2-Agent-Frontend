@@ -1,0 +1,171 @@
+.cart-container-main {
+    padding: 2rem 4rem;
+    margin-bottom: 2rem;
+    font-family: "Montserrat";
+    display: flex;
+    gap: 2rem;
+}
+
+.cart-container {
+    width: 70%;
+    box-shadow: 0 0 10px #dedede;
+    border-radius: 10px;
+}
+
+.cart-logo {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    background: rgba(243, 248, 255, 1);
+}
+
+.cart-logo h4 {
+    font-weight: 700;
+    color: #297CBB;
+    font-size: 20px;
+    margin: 0;
+}
+
+.cart1-item-container {
+    padding: 1rem 2rem;
+}
+
+.card1-item-container-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card1-itemid h4 {
+    color: rgba(13, 138, 205, 1);
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.cart-edit-delete-button {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.cart-edit-delete-button button {
+    border: none;
+    outline: none;
+    background: none;
+    color: rgba(13, 138, 205, 1);
+    font-size: 16px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.card1-item-title-price {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 0;
+}
+
+.card1-item-title-price h2 {
+    color: rgba(9, 36, 75, 1);
+    font-size: 18px;
+}
+
+.card1-item-title {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+.card1-item-passenger-details {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 4rem;
+    padding-left: 43px;
+}
+
+.card1-item-passenger-name h4 {
+    color: rgba(163, 168, 184, 1);
+    font-size: 16px;
+    min-width: 180px;
+}
+
+.card1-item-passenger-name h2 {
+    color: rgba(9, 36, 75, 1);
+    font-size: 16px;
+}
+.cart2-item-container {
+    padding: 1rem 2rem;
+}
+.cart-item-arrival {
+    display: flex;
+    gap: 1rem;
+}
+.cart-item-arrival h4 {
+    min-width: 40px;
+    /* max-width: 40px; */
+}
+.cart-item-arrival h2 {
+    font-size: 14px;
+}
+.cart-price-container-main {
+    width: 30%;
+}
+.cart-price-container {
+    box-shadow: 0 0 10px #dedede;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.cart-price-container h2 {
+    color: rgba(41, 124, 187, 1);
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(243, 248, 255, 1);
+    padding: 10px 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.cart-price-type {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px 0;
+}
+.cart-price-type h4 {
+    font-size: 14px;
+}
+.cart-price-type h3 {
+    color: rgb(45 67 141);
+    font-size: 16px;
+    font-weight: 600;
+}
+.cart-price-button button {
+    background: none;
+    outline: none;
+    border: none;
+    font-weight: 600;
+    padding: 6px 0;
+}
+.cart-price-button {
+    text-align: center;
+    margin-top: 2rem;
+    background: rgba(82, 204, 252, 1);
+    border-radius: 20px;
+}
+.cart-delete-button button {
+    background: none;
+    outline: none;
+    border: none;
+    font-weight: 600;
+    padding: 4px 0;
+    color: red;
+}
+.cart-delete-button {
+    text-align: center;
+    margin-top: 2rem;
+    border: 2px solid red;
+    /* background: rgba(82, 204, 252, 1); */
+    border-radius: 20px;
+}

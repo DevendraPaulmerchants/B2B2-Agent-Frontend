@@ -1,0 +1,119 @@
+.registration-page-container {
+    background: url('../../../public/regBanner.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.registration-page {
+    width: 60%;
+    border-radius: 15px;
+    margin: auto;
+    padding: 2rem 4rem;
+    background-color: rgba(225, 225, 225, 0.75);
+    font-family: "Montserrat";
+}
+.registration-page h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 24px;
+    font-weight: 700;
+    color: #297CBB;
+}
+
+.registration-agent-vat-tax {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+.registration-agent {
+    height: 43px;
+    width: 100%;
+    border-radius: 20px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border: 1px solid #DAE1E7;
+}
+.registration-agent input {
+    border: none;
+    outline: none;
+    color: #555555;
+    padding-left: 1rem;
+    width: 100%;
+    border-radius: 20px;
+}
+.registration-agent .react-tel-input .form-control,.form-control:hover {
+    width: 100%;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+}
+.react-tel-input .selected-flag {
+    border-radius: 20px;
+}
+.registration-agent .form-control:focus {
+    box-shadow: none;
+}
+.react-tel-input .flag-dropdown.open .selected-flag {
+    background: #fff;
+    border-radius: 20px;
+}
+.registration-agent .react-tel-input .flag-dropdown{
+    background: none;
+    border: none;
+    border-top-left-radius:20px;
+    border-bottom-left-radius:20px;
+}
+.react-tel-input .selected-flag:hover, .react-tel-input .selected-flag:focus{
+    border-top-left-radius:20px;
+    border-bottom-left-radius:20px;
+}
+
+.remenderme-forget-password-reg {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+}
+.remenderme-forget-password-reg p {
+    color: #000;
+    font-size: 16px;
+    font-weight: 500;
+}
+.remenderme-forget-password-reg p a {
+    text-decoration: none;
+    color: #000;
+}
+.registration-btn {
+  margin-top: 1rem;
+  text-align: center;
+}
+.registration-btn button {
+    width: 40%;
+    background-color: #52CCFC;
+    border: none;
+    outline: none;
+    text-align: center;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media screen and (min-width:300px) and (max-width:767px){
+    .registration-page-container {
+        padding: 1rem;
+    }
+    .registration-page {
+        padding: 1rem;
+    }
+    .registration-agent-vat-tax {
+        flex-wrap: wrap;
+    }
+    .registration-agent {
+        width: 100%;
+    }
+}

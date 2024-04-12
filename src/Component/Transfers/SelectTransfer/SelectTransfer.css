@@ -1,0 +1,75 @@
+.transfer-description-container1 {
+    height: fit-content;
+    width: 60%;
+    background: #fff;
+    margin: auto;
+    border-radius: 10px;
+}
+@media screen and (min-width:768px) and (max-width:1024px) {
+    .transfer-description-container1 {
+        width: fit-content;
+    }
+}
+.transfer-details-scrollable {
+    height: 300px;
+    overflow: auto;
+}
+.transfer-description-pick-up-details {
+    padding: 1rem 2rem;
+}
+.select-transfer-input {
+    padding: 0 2rem;
+}
+.select-transfer-from-to {
+    margin-bottom: 1rem;
+}
+.flight-code-time {
+    display: flex;
+    gap: 2rem;
+}
+.flight-code p{
+ margin-bottom: 5px;
+}
+.flight-code input {
+    border: 1px solid silver;
+    outline: none;
+    padding: 5px;
+    border-radius: 10px;
+    color: #52CCFC;
+}
+.flight-code input:focus{
+  outline: 2px solid skyblue;
+  border: none;
+}
+.flight-time p {
+    margin-bottom: 5px;
+}
+.flight-time input {
+    border: 1px solid silver;
+    outline: none;
+    padding: 5px;
+    border-radius: 10px;
+}
+.flight-time input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(62%) sepia(91%) saturate(3852%) hue-rotate(179deg) brightness(99%) contrast(93%);
+}
+.flight-time input:focus{
+  outline: 2px solid skyblue;
+  border: none;
+}
+.transfer-price-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2.5rem;
+}
+.transfer-price-container p {
+    color: #272e3f;
+    font-weight: 600;
+}
+.transfer-price-container strong {
+    color: #2f93f1;
+    font-size: 1.2rem;
+}
+#transfer-description-btn {
+    padding: 1rem 2rem;
+}

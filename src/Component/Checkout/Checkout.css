@@ -1,0 +1,59 @@
+.checkout-popup {
+    position: fixed;
+    top: 0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    padding: 6rem;
+    background: rgba(0, 8, 29, 0.6);
+}
+.checkout-container {
+    height: fit-content;
+    width: fit-content;
+    background: #fff;
+    margin: auto;
+    border-radius: 10px;
+    padding: 4rem;
+}
+.checkout-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #41495c;
+    font-size: 24px;
+}
+.checkout-input {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    margin-top: 1rem;
+}
+.checkout-input-name label {
+  margin-bottom: 5px;
+  color: #00081d;
+  font-size: 16px;
+  font-weight: 500;
+}
+.checkout-input-name input {
+    border: 1.5px solid skyblue;
+    padding: 10px;
+    outline: none;
+    color: #00081d;
+    border-radius: 10px;
+}
+.checkout-proceed-to-pay-btn {
+    margin-top: 2rem;
+    text-align: center;
+}
+.checkout-proceed-to-pay-btn button {
+    outline: none;
+    border: none;
+    background-color: #52CCFC;
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-left: 2rem;
+}
+/* ------------------PhoneInput COntainer */
+.checkout-input-name .react-tel-input .form-control {
+    height: 45px;
+    width: fit-content;
+}

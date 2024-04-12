@@ -1,0 +1,104 @@
+.login-page-container {
+    /* background: url('../public/riverbanksky.jpg'); */
+    /* background: url('../../../public/loginBanner.jpg'); */
+    background: url('../../../public/banner.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.Login-page {
+    border-radius: 15px;
+    background-color: rgba(225, 225, 225, 0.75);
+    margin: auto;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-family: "Montserrat";
+    padding: 2rem 4rem;
+    width: fit-content;
+}
+.Login-page h2 {
+    color: #297CBB;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 37.4px;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.email-logo-input {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #fff;
+    color: #DAE1E7;
+    height: 43px;
+    border-radius: 20px;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+.email-logo-input input {
+    border: none;
+    outline: none;
+    padding: 0 1rem;
+    color: #555555;
+    font-size: 14px;
+    width: 100%;
+}
+.email-logo-input span {
+    cursor: pointer;
+}
+.remenderme-forget-password {
+    display: flex;
+    justify-content: space-between;
+    color: #000000;
+    margin-bottom: 1rem;
+    gap: 2rem;
+}
+.remenderme-forget-password p {
+    font-size: 14px;
+    font-weight: 500;
+    /* line-height: 24px; */
+}
+.remenderme-forget-password input {
+    width: 16px;
+    height: 16px;
+}
+.remenderme-forget-password p a {
+    text-decoration: none;
+    color: #297CBB;
+}
+.login-page-login-btn {
+    width: 100%;
+    background-color: #52CCFC;
+    /* height: 43px; */
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 21px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+.login-not-have-account {
+    text-align: center;
+    margin-top: 2rem;
+}
+.login-not-have-account p {
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+}
+.login-not-have-account p a {
+    text-decoration: none;
+    color: #14abe7;
+}
+@media screen and (max-width:767px){
+    .Login-page {
+        padding: 1rem;
+        border-top-left-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+    }
+}

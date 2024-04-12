@@ -1,0 +1,322 @@
+.transfers-container {
+    overflow: auto;
+}
+.terminal-accommodation {
+    background: url('../../../public/banner.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* padding: 4rem 10rem; */
+}
+/* ------------------------form class------------ */
+.terminal-acco-details {
+    /* padding:0 2rem 2rem 0; */
+    margin: 0;
+    /* background-color: rgba(225, 225, 225, 0.75); */
+    border-radius: 10px;
+}
+.terminal-acco-details form p {
+    margin-bottom: 2px;
+    font-weight: 500;
+    color: #0ea0e4;
+    font-size: 12px;
+}
+.transfers-trip {
+     display: flex;
+     padding:0 1rem 1rem 0;
+}
+.transfers-trip input {
+    display: none;
+}
+.transfers-trip label {
+    display: inline;
+    color: #00081d;
+    cursor: pointer;
+}
+.transfers-round-trip {
+    padding: 0.5rem;
+    border-top-left-radius: 10px;
+}
+.transfers-round-trip label {
+    font-size: 16px;
+    line-height: 14px;
+    font-weight: 500;
+}
+.transfers-one-way {
+    background-color: #52CCFC;
+    color: #3E7EEC;
+    padding: 0.5rem;
+    border-top-left-radius: 10px;
+}
+.transfers-one-way1 {
+    background-color: #52CCFC;
+    color: #3E7EEC;
+    padding: 0.5rem;
+}
+.transfers-one-way label {
+    font-size: 16px;
+    line-height: 14px;
+    font-weight: 500;
+}
+.fromToParent {
+    width: 100%;
+    border-radius: 10px;
+    padding: 1rem 2rem 0 2rem;
+}
+.country {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+.country input {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+}
+.country input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(62%) sepia(91%) saturate(3852%) hue-rotate(179deg) brightness(99%) contrast(93%);
+    cursor: pointer;
+}
+.country input:focus{
+  outline: 2px solid skyblue;
+}
+.country span {
+    display: none;
+}
+.date-passenger-transfertype-container {
+    display:flex;
+    gap:4rem;
+}
+.date-container {
+    display:flex;
+    gap:2rem;
+    width:100%;
+}
+#opacity {
+    opacity: 0.4;
+}
+.passenger-transfertype-container {
+    display:flex;
+    /* gap:2rem; */
+    width:100%;
+}
+.Adults-passengers {
+    margin-bottom: 1rem;
+    width: 60%;
+} 
+
+.Adults-passengers span {
+    display: none;
+}
+.transfers-find-btn {
+    text-align: center;
+    padding-top: 1.5rem;
+}
+.transfers-find-btn button {
+    background-color: #52CCFC;
+    border: none;
+    outline: none;
+    border-radius: 24px;
+    padding: 8px 2rem;
+    width: fit-content;
+    font-weight: 600;
+}
+/* ------------------------------transfers-Card------------------------------------------- */
+.transfers-card-container {
+    padding: 2rem 4rem;
+}
+.data-not-found {
+    text-align: center;
+}
+.data-not-found h2 {
+    color: #062633;
+}
+.transfer-card-details {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 0 15px #dedede;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+}
+.transfer-card-image {
+   width: 25%;
+   height: 150px;
+   padding: 1rem;
+}
+.transfer-card-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    transform: rotateY(180deg);
+}
+.transfer-card-image img:hover {
+    transform: rotateY(0deg);
+    scale: 1.2;
+}
+.transfer-card-type {
+   width: 45%;
+}
+#transfer-card-type {
+    display: flex;
+    gap: 1rem;
+}
+#transfer-type {
+    text-transform: uppercase;
+    color: #3a4563;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.min-max-pass-bag-allowed {
+    margin-top: 1rem;
+}
+.min-max-pass {
+    margin-bottom: 10px;
+}
+#description {
+    color: #3E7EEC;
+    font-weight: 600;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+.transfer-card-price {
+   width: 30%;
+   padding: 0 1rem;
+   border-left: 1px solid silver;
+}
+.transfer-card-price .price h4 {
+    color: #05307a;
+}
+.price .travler-price {
+    float:right;
+    color:#3d3e4a;
+    font-size:12px;
+    min-height: 5.5rem;
+    max-height: 5.5rem;
+}
+.transfer-card-price .price h4 b {
+    color: #3870fc;
+}
+.transfer-card-price .select-transfer-btn {
+  background-color: #05307a;
+  /* margin-top: 3rem; */
+  border-radius: 20px;
+  width: fit-content;
+  float: right;
+}
+.transfer-card-price .select-transfer-btn button {
+    border: none;
+    outline: none;
+    background: none;
+    color: #fff;
+    padding: 5px 15px;
+    font-weight: 500;
+    
+}
+/* ---------------------------Date Input Calander CSS---------- -----------------------------*/
+/* .css-b62m3t-container .css-13cymwt-control {
+    border-radius: 20px;
+}
+.css-b62m3t-container:focus {
+    border-radius: 20px;
+}
+.css-13cymwt-control {
+    background: #fff;
+}
+.css-13cymwt-control:focus,.css-13cymwt-control:hover,.css-13cymwt-control:visited{
+    border-radius: 20px;
+}
+.css-t3ipsp-control:hover{
+    border-radius: 20px;
+} */
+.numberOfPassenger {
+    background: #fff;
+    border-radius: 20px;
+    padding: 0px 5px;
+    width: fit-content;
+}
+.numberOfPassenger button {
+    background: none;
+    border: none;
+    outline: none;
+    padding:0px 10px;
+    width: 30%;
+}
+.numberOfPassenge .numberOfAdults {
+    cursor: none;
+    font-size: 16px;
+}
+.inc-dec-btn {
+    color: #0D8ACD;
+    font-weight: 600;
+    font-size: 24px;
+}
+
+@media screen and (min-width:768px) and (max-width:1024px) {
+    .terminal-accommodation {
+        padding: 1rem;
+    }
+    .terminal-acco-details{
+        padding: 0rem;
+    }
+    .fromToParent {
+        padding: 1rem;
+    }
+    .passenger-transfertype-container {
+        gap: 10px;
+    }
+    .date-passenger-transfertype-container {
+        gap: 1rem;
+    }
+    .numberOfPassenger {
+        display: flex;
+    }
+    .transfers-find-btn {
+        padding: 1.5rem 0;
+    }
+    .numberOfPassenger button {
+        display: block;
+    }
+
+}
+
+/* -----------------------------------Loader--------------- */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px; 
+  }
+  
+  .loader1{
+    max-width: 100%;
+    max-height: 30px;
+    min-height: 30px; 
+    text-align: center;
+    animation:move 1s linear infinite;
+  }
+  @keyframes move {
+    0% { transform: translateX(-200px); }
+    100% { transform: translateX(200px); }
+  }
+  .loader1 img {
+    height: 50px;
+  }
+
+.search-container-shrink-height {
+    display: flex;
+    gap: 10px;
+    background-color: rgba(225, 225, 225, 0.75);
+    padding: 1rem 2rem;
+    align-items: center;
+}  
+.hidden {
+    display: none;
+}
+.search-container-full-height {
+    background-color: rgba(225, 225, 225, 0.75);
+    padding-bottom: 1.5rem;
+    margin: 0 10rem;
+    border-radius: 10px;
+}

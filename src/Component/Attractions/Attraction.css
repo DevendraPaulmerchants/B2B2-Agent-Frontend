@@ -1,0 +1,36 @@
+.attraction-container {
+    border: 1px solid red;
+}
+.attraction-card-details h2 {
+    font-size: 18px;
+    padding: 1rem 1rem 0 1rem;
+    color: #00081d;
+    height: 3rem;
+    overflow: hidden;
+}
+.view-details-rating {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 1rem;
+}
+.view-details p {
+    color: #00081d;
+    border: 1px solid rgba(64, 182, 236, 0.533);
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+.attraction-rating {
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.attraction-cancellation {
+  display: flex;
+  gap: 10px;
+}
+.attraction-cancellation .red {
+    color: red;
+}
+.attraction-cancellation .green {
+    color: green;
+}

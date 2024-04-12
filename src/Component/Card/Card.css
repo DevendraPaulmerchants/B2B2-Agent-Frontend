@@ -1,0 +1,128 @@
+.card-container {
+  /* padding: 1rem; */
+  margin: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  width: fit-content;
+  border: 2px solid silver;
+}
+
+.card-container-header {
+  background:#EBF2FD ;
+  padding: 1rem;
+  border-bottom: 2px solid silver;
+}
+.card-container-header h2 {
+  color: #1D3071;
+  font-size: 24px;
+}
+.payment-method-and-card-details {
+  display: flex;
+}
+.payment-method {
+  background: #EBF2FD;
+  width: fit-content;
+}
+.card-details {
+  width: fit-content;
+  padding: 2rem;
+  margin: auto;
+}
+.payment-method1 {
+  display: flex;
+  align-items:center;
+  gap: 1.5rem;
+  padding: 1rem;
+}
+.payment-logo img {
+  height: 15px;
+}
+.method-name h3 {
+  color: #1D3071;
+  font-size: 20px;
+  font-weight: 600;
+}
+.method-name p {
+  color: #1D3071;
+  font-size: 14px;
+
+}
+.card-number {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+.card-number label {
+  display: block;
+  font-weight: 500;
+  color: #343434;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.card-number input {
+  outline: none;
+  border: 1.5px solid silver;
+  border-radius: 10px;
+  padding: 5px 10px;
+  width: 100%;
+}
+.exp-month-year-cvv {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+  /* width: 100%; */
+}
+.card-exp-month-year {
+  width: 100%;
+}
+.exp-month-year-cvv label {
+  display: block;
+  font-weight: 500;
+  color: #343434;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+.exp-month-year-cvv select {
+  outline: none;
+  border: 1.5px solid silver;
+  padding: 5px 10px;
+  /* width: 20%; */
+}
+#month {
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+#year {
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.card-cvv input {
+  outline: none;
+  border: 1.5px solid silver;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+.price-and-pay-now-btn {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: space-between;
+}
+.price-and-pay-now-btn button {
+  background-color: #52CCFC;
+  border: none;
+  outline: none;
+  padding:8px 16px;
+  border-radius: 20px;
+}
+.accepted-card {
+  display: flex;
+  gap: 2rem;
+}
+.accepted-card img {
+  width: 40px;
+  margin-left: 10px;
+}
+/* ----------------------- */
+#card-element {
+  border: 1.5px solid silver;
+  padding: 10px ;
+}
