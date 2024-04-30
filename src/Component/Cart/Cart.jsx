@@ -9,8 +9,6 @@ import Footer from "../Footer/Footer";
 const Cart = () => {
   const navigate = useNavigate();
   const { token, cartItem, setCartItem, cartLength, setCartLength } = useCart();
-  const pkgId = "PKG123";
-  const transferId = "TRF1234"
 
   document.body.style.overflow = 'auto';
   useEffect(() => {
@@ -34,9 +32,6 @@ const Cart = () => {
       mode: "cors",
     }).then((res) => res.json())
       .then((data) => {
-        // console.log(data.data[0].packages);
-        // console.log(data.data[0]?.transfers);
-        // console.log(customer)
         setPackages(data.data[0]?.packages);
         setAttractions(data.data[0]?.attractions);
         setLandcombos(data.data[0]?.landCombos);
@@ -79,7 +74,7 @@ const Cart = () => {
   })
   let vat = parseInt((packageprice + attractionprice + landcombosprice + transferprice) * 5 / 100);
 
-  let totalCost = packageprice + attractionprice + landcombosprice + transferprice;
+  let totalCost = packageprice + attractionprice + landcombosprice + transferprice + vat;
 
   return <>
     <div className="cart-container-main">
@@ -92,38 +87,38 @@ const Cart = () => {
             <h4>MY CART</h4>
           </div>
         </div>
-        { packages?.length > 0 && (
-              <>
-              <div className="cart1-item-container">
+        {packages?.length > 0 && (
+          <>
+            <div className="cart1-item-container">
               <div className="card-item-container">
-           { packages?.map((val, id) => {
-              return <>
-                  <div className="card1-item-container-header">
-                    <div className="card1-itemid">
-                      <h4>#{val.packageId.slice(-4)}</h4>
+                {packages?.map((val, id) => {
+                  return <>
+                    <div className="card1-item-container-header">
+                      <div className="card1-itemid">
+                        <h4>#{val.packageId.slice(-4)}</h4>
+                      </div>
+                      <div className="cart-edit-delete-button">
+                        <button>
+                          <img src="/editicon.svg" />&nbsp;
+                          Edit
+                        </button>
+                        <button>
+                          <img src="/deleteicon.svg" />&nbsp;
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                    <div className="cart-edit-delete-button">
-                      <button>
-                        <img src="/editicon.svg" />&nbsp;
-                        Edit
-                      </button>
-                      <button>
-                        <img src="/deleteicon.svg" />&nbsp;
-                        Delete
-                      </button>
+                    <div className="card1-item-title-price">
+                      <div className="card1-item-title">
+                        <img src="packageicon.svg" />
+                        <h2>{val?.title ? val?.title : "Package Title"}</h2>
+                      </div>
+                      <div className="card1-item-price">
+                        <h2>AED {val.totalCost}</h2>
+                      </div>
                     </div>
-                  </div>
-                  <div className="card1-item-title-price">
-                    <div className="card1-item-title">
-                      <img src="packageicon.svg" />
-                      <h2>{val?.packageTitle ? val?.packageTitle : "Package Title"}</h2>
-                    </div>
-                    <div className="card1-item-price">
-                      <h2>AED {val.totalCost}</h2>
-                    </div>
-                  </div>
-                </>
-            })}
+                  </>
+                })}
                 <div className="card1-item-passenger-details">
                   <div className="card1-item-passenger-name">
                     <h4>Lead passenger name</h4>
@@ -148,218 +143,220 @@ const Cart = () => {
                     <h2>{packages?.[0].numberOfChildrens}</h2>
                   </div>
                 </div>
-                </div>
-                </div>
-              </>
-            )}
-        <hr />
-        { attractions?.length > 0 && (
-              <>
-              <div className="cart1-item-container">
-              <div className="card-item-container">
-           { attractions?.map((val, id) => {
-              return <>
-                  <div className="card1-item-container-header">
-                    <div className="card1-itemid">
-                      <h4>#{val.attractionId.slice(-4)}</h4>
-                    </div>
-                    <div className="cart-edit-delete-button">
-                      <button>
-                        <img src="/editicon.svg" />&nbsp;
-                        Edit
-                      </button>
-                      <button>
-                        <img src="/deleteicon.svg" />&nbsp;
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                  <div className="card1-item-title-price">
-                    <div className="card1-item-title">
-                      <img src="packageicon.svg" />
-                      <h2>{val?.packageTitle ? val?.attractionTitel : "Attraction Title"}</h2>
-                    </div>
-                    <div className="card1-item-price">
-                      <h2>AED {val.totalCost}</h2>
-                    </div>
-                  </div>
-                </>
-            })}
-                <div className="card1-item-passenger-details">
-                  <div className="card1-item-passenger-name">
-                    <h4>Lead passenger name</h4>
-                    <h2>{customer?.name}</h2>
-                  </div>
-                  <div className="card1-item-passenger-name">
-                    <h4>Phone Number</h4>
-                    <h2>{customer?.phone}</h2>
-                  </div>
-                  <div className="card1-item-passenger-name">
-                    <h4>Email</h4>
-                    <h2>{customer?.email}</h2>
-                  </div>
-                </div>
-                <div className="card1-item-passenger-details">
-                  <div className="card1-item-passenger-name">
-                    <h4>No. of Adults</h4>
-                    <h2>{attractions?.[0].numberOfAdults}</h2>
-                  </div>
-                  <div className="card1-item-passenger-name">
-                    <h4>No. of children</h4>
-                    <h2>{attractions?.[0].numberOfChildrens}</h2>
-                  </div>
-                </div>
-                </div>
-                </div>
-              </>
-            )}
-        <hr />
-        { landcombos?.length > 0 && (
-              <>
-              <div className="cart1-item-container">
-              <div className="card-item-container">
-           { landcombos?.map((val, id) => {
-              return <>
-                  <div className="card1-item-container-header">
-                    <div className="card1-itemid">
-                      <h4>#{val.landComboId.slice(-4)}</h4>
-                    </div>
-                    <div className="cart-edit-delete-button">
-                      <button>
-                        <img src="/editicon.svg" />&nbsp;
-                        Edit
-                      </button>
-                      <button>
-                        <img src="/deleteicon.svg" />&nbsp;
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                  <div className="card1-item-title-price">
-                    <div className="card1-item-title">
-                      <img src="packageicon.svg" />
-                      <h2>{val?.LandComboTitle ? val?.LandComboTitle : "LandCombo Title"}</h2>
-                    </div>
-                    <div className="card1-item-price">
-                      <h2>AED {val.totalCost}</h2>
-                    </div>
-                  </div>
-                </>
-            })}
-                <div className="card1-item-passenger-details">
-                  <div className="card1-item-passenger-name">
-                    <h4>Lead passenger name</h4>
-                    <h2>{customer?.name}</h2>
-                  </div>
-                  <div className="card1-item-passenger-name">
-                    <h4>Phone Number</h4>
-                    <h2>{customer?.phone}</h2>
-                  </div>
-                  <div className="card1-item-passenger-name">
-                    <h4>Email</h4>
-                    <h2>{customer?.email}</h2>
-                  </div>
-                </div>
-                <div className="card1-item-passenger-details">
-                  <div className="card1-item-passenger-name">
-                    <h4>No. of Adults</h4>
-                    <h2>{attractions?.[0].numberOfAdults}</h2>
-                  </div>
-                  <div className="card1-item-passenger-name">
-                    <h4>No. of children</h4>
-                    <h2>{attractions?.[0].numberOfChildrens}</h2>
-                  </div>
-                </div>
-                </div>
-                </div>
-              </>
-            )}
-        <hr/>
-        {transfers?.length >0 && (
+              </div>
+            </div>
+            <hr />
+          </>
+
+        )}
+        {attractions?.length > 0 && (
           <>
-        <div className="cart2-item-container">
-          {transfers?.map((val, id) => {
-            return <>
-              <div className="card1-item-container-header">
-                <div className="card1-itemid">
-                  <h4>#{val.transferId.slice(-4)}</h4>
+            <div className="cart1-item-container">
+              <div className="card-item-container">
+                {attractions?.map((val, id) => {
+                  return <>
+                    <div className="card1-item-container-header">
+                      <div className="card1-itemid">
+                        <h4>#{val.attractionId.slice(-4)}</h4>
+                      </div>
+                      <div className="cart-edit-delete-button">
+                        <button>
+                          <img src="/editicon.svg" />&nbsp;
+                          Edit
+                        </button>
+                        <button>
+                          <img src="/deleteicon.svg" />&nbsp;
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    <div className="card1-item-title-price">
+                      <div className="card1-item-title">
+                        <img src="packageicon.svg" />
+                        <h2>{val?.title ? val?.title : "Attraction Title"}</h2>
+                      </div>
+                      <div className="card1-item-price">
+                        <h2>AED {val.totalCost}</h2>
+                      </div>
+                    </div>
+                  </>
+                })}
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>Lead passenger name</h4>
+                    <h2>{customer?.name}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Phone Number</h4>
+                    <h2>{customer?.phone}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Email</h4>
+                    <h2>{customer?.email}</h2>
+                  </div>
                 </div>
-                <div className="cart-edit-delete-button">
-                  <button>
-                    <img src="/editicon.svg" />&nbsp;
-                    Edit
-                  </button>
-                  <button>
-                    <img src="/deleteicon.svg" />&nbsp;
-                    Delete
-                  </button>
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of Adults</h4>
+                    <h2>{attractions?.[0].numberOfAdults}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of children</h4>
+                    <h2>{attractions?.[0].numberOfChildrens}</h2>
+                  </div>
                 </div>
               </div>
-              <div className="card1-item-title-price">
-                <div className="card1-item-title">
-                  <img src="transfericon.svg" />
-                  <h2>{val._id.slice(-8)}</h2>
-                  <p>{val.selectedTripType}</p>
-                  <p>Tata Sumo</p>
+            </div>
+            <hr />
+          </>
+        )}
+        {landcombos?.length > 0 && (
+          <>
+            <div className="cart1-item-container">
+              <div className="card-item-container">
+                {landcombos?.map((val, id) => {
+                  return <>
+                    <div className="card1-item-container-header">
+                      <div className="card1-itemid">
+                        <h4>#{val.landComboId.slice(-4)}</h4>
+                      </div>
+                      <div className="cart-edit-delete-button">
+                        <button>
+                          <img src="/editicon.svg" />&nbsp;
+                          Edit
+                        </button>
+                        <button>
+                          <img src="/deleteicon.svg" />&nbsp;
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                    <div className="card1-item-title-price">
+                      <div className="card1-item-title">
+                        <img src="packageicon.svg" />
+                        <h2>{val?.LandComboTitle ? val?.LandComboTitle : "LandCombo Title"}</h2>
+                      </div>
+                      <div className="card1-item-price">
+                        <h2>AED {val.totalCost}</h2>
+                      </div>
+                    </div>
+                  </>
+                })}
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>Lead passenger name</h4>
+                    <h2>{customer?.name}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Phone Number</h4>
+                    <h2>{customer?.phone}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Email</h4>
+                    <h2>{customer?.email}</h2>
+                  </div>
                 </div>
-                <div className="card1-item-price">
-                  <h2>AED 220</h2>
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of Adults</h4>
+                    <h2>{attractions?.[0].numberOfAdults}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of children</h4>
+                    <h2>{attractions?.[0].numberOfChildrens}</h2>
+                  </div>
                 </div>
               </div>
+            </div>
+            <hr />
+          </>
+        )}
+        {transfers?.length > 0 && (
+          <>
+            <div className="cart2-item-container">
+              {transfers?.map((val, id) => {
+                return <>
+                  <div className="card1-item-container-header">
+                    <div className="card1-itemid">
+                      <h4>#{val.transferId.slice(-4)}</h4>
+                    </div>
+                    <div className="cart-edit-delete-button">
+                      <button>
+                        <img src="/editicon.svg" />&nbsp;
+                        Edit
+                      </button>
+                      <button>
+                        <img src="/deleteicon.svg" />&nbsp;
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <div className="card1-item-title-price">
+                    <div className="card1-item-title">
+                      <img src="transfericon.svg" />
+                      <h2>{val._id.slice(-8)}</h2>
+                      <p>{val.selectedTripType}</p>
+                      <p>Tata Sumo</p>
+                    </div>
+                    <div className="card1-item-price">
+                      <h2>AED 220</h2>
+                    </div>
+                  </div>
+                  <div className="card1-item-passenger-details">
+                    <div className="card1-item-passenger-name" style={{ marginBottom: "1rem" }}>
+                      <h4>Pick Up</h4>
+                      <h2>Dubai International Airport</h2>
+                    </div>
+                    <div className="card1-item-passenger-name" style={{ maxWidth: "140px" }}>
+                      <h4>Drop off</h4>
+                      <h2>Taj Dubai</h2>
+                    </div>
+                    <div className="card1-item-passenger-name">
+                      <h4>Pick up dates & time</h4>
+                      <div className="cart-item-arrival">
+                        <h4>Arrival</h4>
+                        <h2>{val.pickupTimeForArrival} ({val.arrivalPickupTime})</h2>
+                      </div>
+                      {val.selectedTripType !== "ONE_WAY" && (
+                        <div className="cart-item-arrival">
+                          <h4>Departure</h4>
+                          <h2>{val.pickupTimeForDeparture} ({val.departurePickupTime})</h2>
+                        </div>
+                      )}
+
+                    </div>
+                  </div>
+                </>
+              })}
               <div className="card1-item-passenger-details">
-                <div className="card1-item-passenger-name" style={{ marginBottom: "1rem" }}>
-                  <h4>Pick Up</h4>
-                  <h2>Dubai International Airport</h2>
-                </div>
-                <div className="card1-item-passenger-name" style={{ maxWidth: "140px" }}>
-                  <h4>Drop off</h4>
-                  <h2>Taj Dubai</h2>
+                <div className="card1-item-passenger-name">
+                  <h4>Lead passenger name</h4>
+                  <h2>{customer?.name}</h2>
                 </div>
                 <div className="card1-item-passenger-name">
-                  <h4>Pick up dates & time</h4>
-                  <div className="cart-item-arrival">
-                    <h4>Arrival</h4>
-                    <h2>{val.pickupTimeForArrival} ({val.arrivalPickupTime})</h2>
-                  </div>
-                  {val.selectedTripType !== "ONE_WAY" && (
-                    <div className="cart-item-arrival">
-                      <h4>Departure</h4>
-                      <h2>{val.pickupTimeForDeparture} ({val.departurePickupTime})</h2>
-                    </div>
-                  )}
+                  <h4>Phone Number</h4>
+                  <h2>{customer?.phone}</h2>
+                </div>
+                <div className="card1-item-passenger-name">
+                  <h4>Email</h4>
+                  <h2>{customer?.email}</h2>
+                </div>
 
+              </div>
+              <div className="card1-item-passenger-details" style={{ paddingBottom: "2rem" }}>
+                <div className="card1-item-passenger-name">
+                  <h4>No. of Adults</h4>
+                  <h2>{transfers?.[0].numberOfAdults}</h2>
+                </div>
+                <div className="card1-item-passenger-name">
+                  <h4>No. of children</h4>
+                  <h2>{transfers?.[0].numberOfChildrens}</h2>
                 </div>
               </div>
-            </>
-          })}
-          <div className="card1-item-passenger-details">
-            <div className="card1-item-passenger-name">
-              <h4>Lead passenger name</h4>
-              <h2>{customer?.name}</h2>
             </div>
-            <div className="card1-item-passenger-name">
-              <h4>Phone Number</h4>
-              <h2>{customer?.phone}</h2>
-            </div>
-            <div className="card1-item-passenger-name">
-              <h4>Email</h4>
-              <h2>{customer?.email}</h2>
-            </div>
-
-          </div>
-          <div className="card1-item-passenger-details" style={{ paddingBottom: "2rem" }}>
-            <div className="card1-item-passenger-name">
-              <h4>No. of Adults</h4>
-              <h2>{transfers?.[0].numberOfAdults}</h2>
-            </div>
-            <div className="card1-item-passenger-name">
-              <h4>No. of children</h4>
-              <h2>{transfers?.[0].numberOfChildrens}</h2>
-            </div>
-          </div>
-        </div>
+            <hr />
           </>
-        )}    
+        )}
       </div>
       <div className="cart-price-container-main">
         <div className="cart-price-container">

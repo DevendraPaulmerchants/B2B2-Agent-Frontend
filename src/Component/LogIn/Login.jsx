@@ -90,6 +90,7 @@ const Login = ({ setLoggedIn }) => {
                           <MdRemoveRedEye style={{color: "#297CBB" }} /> }
               </span>
             </div>
+            {/* <p>forgot password</p> */}
             <div className="remenderme-forget-password">
               <p><input type="checkbox" /> Remember me</p>
               <p><Link onClick={()=>{setForgot(true)}}
