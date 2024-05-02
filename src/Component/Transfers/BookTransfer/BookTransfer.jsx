@@ -207,7 +207,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                         {/* -------------------------------Passenger Deatils------------------------- */}
                         <div className="lead-passenger-parent-container">
                             <div className="lead-passenger-name">
-                                <label htmlFor="Lead-Passenger-Name">Lead Passenge Name</label>
+                                <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
                                 <input type="text" placeholder="Enter Name.. " required
                                     minLength={3} maxLength={35}
                                     value={name}

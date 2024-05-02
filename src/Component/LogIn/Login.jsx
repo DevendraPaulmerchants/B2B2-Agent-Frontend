@@ -75,7 +75,7 @@ const Login = ({ setLoggedIn }) => {
                 required
               />
             </div>
-            <div className="email-logo-input">
+            <div className="email-logo-input" style={{marginBottom:"5px"}} >
               <MdOutlineKey 
                style={{color: "#297CBB" }} 
               />
@@ -90,11 +90,16 @@ const Login = ({ setLoggedIn }) => {
                           <MdRemoveRedEye style={{color: "#297CBB" }} /> }
               </span>
             </div>
-            {/* <p>forgot password</p> */}
+            <p 
+            style={{display:"flex",justifyContent:"flex-end",
+            color:"rgba(41, 124, 187, 1)",fontWeight:"500",
+            paddingLeft:"11rem",
+          }}><Link style={{textDecoration:"none"}} onClick={()=>{setForgot(true)}}
+              >Forgot Password?</Link></p>
             <div className="remenderme-forget-password">
               <p><input type="checkbox" /> Remember me</p>
-              <p><Link onClick={()=>{setForgot(true)}}
-              >Forgot Password?</Link></p>
+              {/* <p><Link onClick={()=>{setForgot(true)}}
+              >Forgot Password?</Link></p> */}
             </div>
             <div >
               <button type="submit" className="login-page-login-btn">LOGIN</button>

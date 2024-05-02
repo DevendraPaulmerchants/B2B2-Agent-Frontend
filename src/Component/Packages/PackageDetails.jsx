@@ -9,7 +9,6 @@ import { Navigate, useNavigate } from "react-router-dom";
 import html2pdf from 'html2pdf.js';
 import BookPackage from "./BookPackage";
 import './Packages.css';
-import PackageDetailsPdf from "./PackageDetailsPdf";
 
 const PacKageDetails = () => {
     // document.body.style.overflow = 'auto';

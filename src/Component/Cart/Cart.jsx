@@ -81,7 +81,7 @@ const Cart = () => {
       <div className="cart-container">
         <div className="cart-logo">
           <div>
-            <img src='/mycart.svg' alt="cart logo" />
+            <img src='/shoppingcart.svg' alt="cart logo" />
           </div>
           <div>
             <h4>MY CART</h4>
@@ -95,7 +95,7 @@ const Cart = () => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#{val.packageId.slice(-4)}</h4>
+                        <h4>#Id_{val.packageId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
                         <button>
@@ -126,7 +126,7 @@ const Cart = () => {
                   </div>
                   <div className="card1-item-passenger-name">
                     <h4>Phone Number</h4>
-                    <h2>{customer?.phone}</h2>
+                    <h2>+{customer?.phone}</h2>
                   </div>
                   <div className="card1-item-passenger-name">
                     <h4>Email</h4>
@@ -157,7 +157,7 @@ const Cart = () => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#{val.attractionId.slice(-4)}</h4>
+                        <h4>#Id_{val.attractionId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
                         <button>
@@ -188,7 +188,7 @@ const Cart = () => {
                   </div>
                   <div className="card1-item-passenger-name">
                     <h4>Phone Number</h4>
-                    <h2>{customer?.phone}</h2>
+                    <h2>+{customer?.phone}</h2>
                   </div>
                   <div className="card1-item-passenger-name">
                     <h4>Email</h4>
@@ -218,7 +218,7 @@ const Cart = () => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#{val.landComboId.slice(-4)}</h4>
+                        <h4>#Id_{val.landComboId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
                         <button>
@@ -249,7 +249,7 @@ const Cart = () => {
                   </div>
                   <div className="card1-item-passenger-name">
                     <h4>Phone Number</h4>
-                    <h2>{customer?.phone}</h2>
+                    <h2>+{customer?.phone}</h2>
                   </div>
                   <div className="card1-item-passenger-name">
                     <h4>Email</h4>
@@ -278,7 +278,7 @@ const Cart = () => {
                 return <>
                   <div className="card1-item-container-header">
                     <div className="card1-itemid">
-                      <h4>#{val.transferId.slice(-4)}</h4>
+                      <h4>#Id_{val.transferId.slice(-4)}</h4>
                     </div>
                     <div className="cart-edit-delete-button">
                       <button>
@@ -299,7 +299,7 @@ const Cart = () => {
                       <p>Tata Sumo</p>
                     </div>
                     <div className="card1-item-price">
-                      <h2>AED 220</h2>
+                      <h2>AED {val.totalCost}</h2>
                     </div>
                   </div>
                   <div className="card1-item-passenger-details">
@@ -335,7 +335,7 @@ const Cart = () => {
                 </div>
                 <div className="card1-item-passenger-name">
                   <h4>Phone Number</h4>
-                  <h2>{customer?.phone}</h2>
+                  <h2>+{customer?.phone}</h2>
                 </div>
                 <div className="card1-item-passenger-name">
                   <h4>Email</h4>
@@ -399,6 +399,7 @@ const Cart = () => {
           <button>Book Now</button>
         </div>
         <div className="cart-delete-button">
+          <img src="/deleteicon1.svg"/>
           <button>Delete All</button>
         </div>
       </div>

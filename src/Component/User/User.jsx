@@ -92,7 +92,16 @@ const User = () => {
                                                 {/* <td>{val.createdAt.split("T")[0]}</td> */}
                                                 <td>{val.totalCost}</td>
                                                 <td>{val.createdAt.split("T")[0]}</td>
-                                                <td>{val.bookingStatus}</td>
+                                                {/* <td>{val.bookingStatus}</td> */}
+                                                <td>
+                                                <p id={(val.bookingStatus === "Pending" && "pending") ||
+                                                    (val.bookingStatus === "On Hold" && "on-hold") ||
+                                                    (val.bookingStatus === "Awaiting Payment" && "Awaiting_Payment") ||
+                                                    (val.bookingStatus === "Confirmed" && "confirm") ||
+                                                    (val.bookingStatus === "Rejected" && "rejected")
+
+                                                    }>{val.bookingStatus}</p> 
+                                                </td>
                                                 <td className="agent-view-booking">
                                                    <button onClick={()=>{
                                                     seeDetails(val._id)

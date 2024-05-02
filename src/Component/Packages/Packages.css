@@ -208,6 +208,7 @@ hr {
 }
 .package-overview-details ol li {
     font-weight: 500;
+    margin-bottom: 8px;
 }
 .package-overview-details ol li::marker {
     font-weight: 600;
@@ -217,7 +218,8 @@ hr {
     font-size: 16px;
     font-weight: 400;
     color:#00081D;
-    width: 65%;
+    width: 80%;
+    margin-bottom: 10px;
     word-wrap: break-word;
     word-break: break-word;
 }
@@ -229,16 +231,16 @@ hr {
     margin-bottom: 1rem;
 }
 .inclusion {
-    background:rgba(222,255,195,0.5)url('https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png') bottom center repeat-x;
     padding: 1rem;
+    background: #deffc3 url(https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png) 100% 100% no-repeat;
 }
 .exclusion {
-    background:rgba(255,232,232,0.3)url('https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png') bottom center repeat-x;
     padding: 1rem;
+    background: #ffe8e8 url(https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png) 100% 100% no-repeat;;
 }
 .note {
-    background:rgba(255,232,232,0.2)url('https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png') bottom center repeat-x;
-    padding: 1rem;
+   padding: 1rem;
+   background:#ffe8e8 url(https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png) 100% 100% no-repeat;
 }
 .inclusion h4 {
     color: rgba(0, 8, 29,1);
@@ -301,7 +303,7 @@ hr {
     justify-content: space-between;
     align-items: center;
     /* background: #001036; */
-    background:RGB(0,16,54,0.8) url('https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png') bottom center repeat-x;
+    background:RGB(0,16,54,1) url('https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png') bottom center repeat-x;
 }
 .footer-none {
     display: none;

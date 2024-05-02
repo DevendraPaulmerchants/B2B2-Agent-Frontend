@@ -19,7 +19,7 @@
     margin-bottom: 10px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    padding: 10px;
+    padding: 10px 0 10px 26px;
     background: rgba(243, 248, 255, 1);
 }
 
@@ -160,12 +160,15 @@
     border: none;
     font-weight: 600;
     padding: 4px 0;
-    color: red;
+    font-size: 14px;
+    color: rgba(29, 48, 113, 1);
 }
 .cart-delete-button {
-    text-align: center;
+    gap: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 2rem;
-    border: 2px solid red;
-    /* background: rgba(82, 204, 252, 1); */
+    border: 2px solid rgba(29, 48, 113, 1);
     border-radius: 20px;
 }

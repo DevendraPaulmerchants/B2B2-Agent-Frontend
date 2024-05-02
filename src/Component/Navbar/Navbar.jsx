@@ -83,14 +83,14 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
           <ul className="navbar-nav" id='navbarNav-mobile-tab'>
             {isLoggedIn ? (
               <>
-                <li className="nav-item children">
+                {/* <li className="nav-item children">
                   <NavLink className="nav-link" to="/wallet">
-                    <IoIosWallet style={{ fontSize: '2rem', color: '#52ccfc' }} />
+                    <img src='wallet.svg'/>
                   </NavLink>
-                </li>
+                </li> */}
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/cart">
-                    <FaShoppingCart style={{ fontSize: '2rem', color: '#52ccfc' }} />
+                    <img src='shoppingcart.svg' />
                     <sub style={{
                       background: "#595959", borderRadius: "50%", padding: "2px 6px 3px 6px", color: "#fff",
                       top: "-0.8rem", left: "-0.5rem"
@@ -102,7 +102,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
 
                 <li className="nav-item">
                   <NavLink className="nav-link user-login">
-                    <FaCircleUser style={{ fontSize: '2rem', color: '#52ccfc' }}
+                    <img src='user1.svg' style={{ fontSize: '2rem', color: '#52ccfc' }}
                       onClick={() => {
                         setUserClick(!userClick)
                       }}

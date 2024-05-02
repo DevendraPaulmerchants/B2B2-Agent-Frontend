@@ -197,7 +197,7 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
                 }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
-                            <label htmlFor="Lead-Passenger-Name">Lead Passenge Name</label>
+                            <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
                             <input type="text" placeholder="Enter Name.. " required
                                 minLength={3} maxLength={30}
                                 value={name}
@@ -227,7 +227,7 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
 
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
-                                <p>Adults &gt; 12 years</p>
+                                <p><span style={{fontSize:"14px"}}>Adults</span> (&gt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -247,7 +247,7 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p>Children &lt; 12 years</p>
+                                <p><span style={{fontSize:"14px"}}>Children</span> (&lt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {

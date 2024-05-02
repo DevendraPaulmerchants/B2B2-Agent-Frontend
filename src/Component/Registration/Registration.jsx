@@ -47,7 +47,7 @@ const Registration = () => {
     const navigate = useNavigate();
     const handleRegistration = (e) => {
         e.preventDefault();
-        if(directorPhoneNumber.toString().length >=5 && directorPhoneNumber.toString().length <= 15){
+        if(!(directorPhoneNumber.toString().length >=5 && directorPhoneNumber.toString().length <= 15)){
             alert("Please check mobile number")
             return;
         }
