@@ -15,13 +15,14 @@ const Cart = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  // const [cartItem, setCartItem] = useState(null);
+  const [cartId, setCartId] = useState('');
   const [customer, setCustomer] = useState(null);
   const [packages, setPackages] = useState(null);
   const [attractions, setAttractions] = useState(null);
   const [landcombos, setLandcombos] = useState(null);
   const [transfers, setTransfer] = useState(null);
-
+  const [type,setType]=useState();
+  const [pkgId,setPkgId]=useState('')
   useEffect(() => {
     fetch(`${APIPath}/api/v1/agent/new-cart`, {
       headers: {
@@ -32,19 +33,19 @@ const Cart = () => {
       mode: "cors",
     }).then((res) => res.json())
       .then((data) => {
+        setCartId(data.data[0]._id)
         setPackages(data.data[0]?.packages);
         setAttractions(data.data[0]?.attractions);
         setLandcombos(data.data[0]?.landCombos);
         setTransfer(data.data[0]?.transfers)
         setCustomer(data.data[0]?.customerDetails)
-        setCartItem(data.data)
-        console.log(cartItem)
         setCartLength(data.data.length)
       })
       .catch((err) => {
         alert(err)
       })
   }, [])
+
 
   let packageprice = 0;
   packages?.forEach((val, id) => {
@@ -76,6 +77,32 @@ const Cart = () => {
 
   let totalCost = packageprice + attractionprice + landcombosprice + transferprice + vat;
 
+  const BookNow=()=>{
+    fetch(`${APIPath}/api/v1/agent/booking/custom-booking`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      mode: "cors",
+      body:JSON.stringify({"cartID":cartId})
+    }).then((res) => res.json())
+      .then((data) => {
+        alert(data.message)
+      })
+      .catch((err) => {
+        alert(err)
+      })
+  }
+  
+  const DeleteAll=()=>{
+    console.log("Delete all Cart Item");
+  }
+
+  const DeleteOneItem =()=>{
+    
+  }
+
   return <>
     <div className="cart-container-main">
       <div className="cart-container">
@@ -102,7 +129,10 @@ const Cart = () => {
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
-                        <button>
+                        <button onClick={()=>{
+                          setType(1);
+                          setPkgId(val._id)
+                        }}>
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
@@ -164,7 +194,10 @@ const Cart = () => {
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
-                        <button>
+                        <button onClick={()=>{
+                          setType(2);
+                          setPkgId(val._id)
+                        }}>
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
@@ -225,7 +258,10 @@ const Cart = () => {
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
-                        <button>
+                        <button onClick={()=>{
+                          setType(3);
+                          setPkgId(val._id)
+                        }}>
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
@@ -285,7 +321,10 @@ const Cart = () => {
                         <img src="/editicon.svg" />&nbsp;
                         Edit
                       </button>
-                      <button>
+                      <button onClick={()=>{
+                          setType(4);
+                          setPkgId(val._id)
+                        }}>
                         <img src="/deleteicon.svg" />&nbsp;
                         Delete
                       </button>
@@ -396,11 +435,11 @@ const Cart = () => {
           </div>
         </div>
         <div className="cart-price-button">
-          <button>Book Now</button>
+          <button onClick={BookNow} >Book Now</button>
         </div>
         <div className="cart-delete-button">
           <img src="/deleteicon1.svg"/>
-          <button>Delete All</button>
+          <button onClick={DeleteAll}>Delete All</button>
         </div>
       </div>
     </div>

@@ -102,7 +102,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
 
                 <li className="nav-item">
                   <NavLink className="nav-link user-login">
-                    <img src='user1.svg' style={{ fontSize: '2rem', color: '#52ccfc' }}
+                    <img src='user1.svg' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
                       onClick={() => {
                         setUserClick(!userClick)
                       }}
