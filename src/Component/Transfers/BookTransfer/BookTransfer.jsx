@@ -162,10 +162,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             alert("please Add at least 1 Adult")
             return
         }
-        // if (fromDate.length < 2 && toDate.length < 2) {
-        //     alert("please select from date and to date: ")
-        //     return;
-        // }
         else {
             console.log("add to cart:",bookingTransferDetails )
             fetch(`${APIPath}/api/v1/agent/new-cart`, {
@@ -180,7 +176,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 .then((data) => {
                     console.log(data);
                     alert(data.message)
-                    navigate('/')
+                    navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)

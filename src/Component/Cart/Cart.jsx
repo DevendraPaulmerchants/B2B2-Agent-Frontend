@@ -21,10 +21,10 @@ const Cart = () => {
   const [attractions, setAttractions] = useState(null);
   const [landcombos, setLandcombos] = useState(null);
   const [transfers, setTransfer] = useState(null);
-  const [type,setType]=useState();
-  const [pkgId,setPkgId]=useState('')
-  
-  const LoadCartItem=()=>{
+  const [type, setType] = useState();
+  const [pkgId, setPkgId] = useState('')
+
+  const LoadCartItem = () => {
     fetch(`${APIPath}/api/v1/agent/new-cart`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -40,8 +40,6 @@ const Cart = () => {
         setLandcombos(data.data[0]?.landCombos);
         setTransfer(data.data[0]?.transfers)
         setCustomer(data.data[0]?.customerDetails)
-        // setCartLength(data.data.length);
-        // console.log((isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0].attractions.length))
         setCartLength(
           (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0].attractions.length) +
           (isNaN(data.data[0]?.landCombos?.length) ? 0 : data.data[0].landCombos.length) +
@@ -88,7 +86,7 @@ const Cart = () => {
 
   let totalCost = packageprice + attractionprice + landcombosprice + transferprice + vat;
 
-  const BookNow=()=>{
+  const BookNow = () => {
     fetch(`${APIPath}/api/v1/agent/booking/custom-booking`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -96,7 +94,7 @@ const Cart = () => {
       },
       method: "POST",
       mode: "cors",
-      body:JSON.stringify({"cartID":cartId})
+      body: JSON.stringify({ "cartID": cartId })
     }).then((res) => res.json())
       .then((data) => {
         alert(data.message)
@@ -105,20 +103,20 @@ const Cart = () => {
         alert(err)
       })
   }
-  
-  const DeleteAll=()=>{
-    if(cartLength == 0){
+
+  const DeleteAll = () => {
+    if (cartLength == 0) {
       alert("Cart is already empty");
       return;
     }
-    fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+    fetch(`${APIPath}/api/v1/agent/new-cart`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      method: "POST",
+      method: "DELETE",
       mode: "cors",
-      body:JSON.stringify({"cartID":cartId})
+      body: JSON.stringify({ "cartId": cartId })
     }).then((res) => res.json())
       .then((data) => {
         alert(data.message);
@@ -128,55 +126,35 @@ const Cart = () => {
         alert(err)
       })
   }
-  const ItemDelete={
-    "cartId":cartId,
-    ...(type === 1 && { transferId: pkgId, type:1}),
-    ...(type === 2 && { packageId: pkgId, type:2}),
-    ...(type === 3 && { attractionId: pkgId, type:3}),
-    ...(type === 4 && { landComboId: pkgId, type:4})
-  }
-  const DeleteOneItem =()=>{
-    console.log(ItemDelete)
-      fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        method: "DELETE",
-        mode: "cors",
-        body:JSON.stringify(ItemDelete)
-      }).then((res) => res.json())
-        .then((data) => {
-          alert(data.message);
-          LoadCartItem();
-        })
-        .catch((err) => {
-          alert(err)
-        })
+  const ItemDelete = {
+    "cartId": cartId,
+    ...(type == 1 && { transferId: pkgId, type: 1 }),
+    ...(type == 2 && { packageId: pkgId, type: 2 }),
+    ...(type == 3 && { attractionId: pkgId, type: 3 }),
+    ...(type == 4 && { landComboId: pkgId, type: 4 })
   }
 
-  // const DeleteOneItem = async () => {
-  //   try {
-  //     console.log(ItemDelete);
-  //     const response = await fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
-  //       method: "DELETE",
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`,
-  //         'Content-Type': 'application/json'
-  //       },
-  //       mode: "cors",
-  //       body: JSON.stringify(ItemDelete)
-  //     });
-  //     const data = await response.json();
-  //     alert(data.message);
-  //     LoadCartItem();
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
-  
+  const DeleteOneItem = () => {
 
-  const EditOneItem=()=>{
+    fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      method: "DELETE",
+      mode: "cors",
+      body: JSON.stringify(ItemDelete)
+    }).then((res) => res.json())
+      .then((data) => {
+        alert(data.message);
+        LoadCartItem();
+      })
+      .catch((err) => {
+        alert(err)
+      })
+  }
+
+  const EditOneItem = () => {
     console.log("Item should be edited");
   }
 
@@ -202,24 +180,28 @@ const Cart = () => {
                         <h4>#Id_{val.packageId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
-                        <button onClick={()=>{
+                        <button onClick={() => {
                           setType(2);
                           setPkgId(val._id);
-                          console.log(ItemDelete);
                           EditOneItem();
                         }}>
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
-                        <button onClick={()=>{
-                          setType(2);
-                          setPkgId(val._id);
-                          console.log(ItemDelete)
+                        <button
+                          onMouseEnter={() => {
+                            setType(2);
+                            setPkgId(val._id);
+                          }}
+                          onClick={() => {
                             DeleteOneItem();
-                        }}>
+                          }}
+                        >
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
+
+
                       </div>
                     </div>
                     <div className="card1-item-title-price">
@@ -274,21 +256,27 @@ const Cart = () => {
                         <h4>#Id_{val.attractionId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
-                        <button onClick={()=>{
-                          setType(3);
-                          setPkgId(val._id);
-                          console.log(ItemDelete);
-                          EditOneItem();
-                        }}>
+                        <button
+                          onMouseEnter={() => {
+                            setType(3);
+                            setPkgId(val._id);
+                          }}
+                          onClick={() => {
+                            DeleteOneItem();
+                          }}
+                        >
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
-                        <button onClick={()=>{
-                          setType(3);
-                          setPkgId(val._id);
-                          console.log(ItemDelete)
-                          DeleteOneItem();
-                        }}>
+                        <button
+                          onMouseEnter={() => {
+                            setType(3);
+                            setPkgId(val._id);
+                          }}
+                          onClick={() => {
+                            DeleteOneItem();
+                          }}
+                        >
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
@@ -345,7 +333,7 @@ const Cart = () => {
                         <h4>#Id_{val.landComboId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
-                        <button onClick={()=>{
+                        <button onClick={() => {
                           setType(4);
                           setPkgId(val._id);
                           console.log(ItemDelete);
@@ -354,12 +342,15 @@ const Cart = () => {
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
-                        <button onClick={()=>{
-                          setType(4);
-                          setPkgId(val._id);
-                          console.log(ItemDelete)
-                          DeleteOneItem();
-                        }}>
+                        <button
+                          onMouseEnter={() => {
+                            setType(4);
+                            setPkgId(val._id);
+                          }}
+                          onClick={() => {
+                            DeleteOneItem();
+                          }}
+                        >
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
@@ -415,7 +406,7 @@ const Cart = () => {
                       <h4>#Id_{val.transferId.slice(-4)}</h4>
                     </div>
                     <div className="cart-edit-delete-button">
-                      <button onClick={()=>{
+                      <button onClick={() => {
                         setType(1);
                         setPkgId(val._id);
                         console.log(ItemDelete);
@@ -424,12 +415,15 @@ const Cart = () => {
                         <img src="/editicon.svg" />&nbsp;
                         Edit
                       </button>
-                      <button onClick={()=>{
+                      <button
+                        onMouseEnter={() => {
                           setType(1);
                           setPkgId(val._id);
-                          console.log(ItemDelete)
+                        }}
+                        onClick={() => {
                           DeleteOneItem();
-                        }}>
+                        }}
+                      >
                         <img src="/deleteicon.svg" />&nbsp;
                         Delete
                       </button>
@@ -543,7 +537,7 @@ const Cart = () => {
           <button onClick={BookNow} >Book Now</button>
         </div>
         <div className="cart-delete-button">
-          <img src="/deleteicon1.svg"/>
+          <img src="/deleteicon1.svg" />
           <button onClick={DeleteAll}>Delete All</button>
         </div>
       </div>
