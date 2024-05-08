@@ -12,8 +12,9 @@ const User = () => {
     const { agentName, token } = useCart();
     const [bookingData, setBookingData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [seebookingdetails,setBookingDetails]=useState(false)
+    const [seebookingdetails,setBookingDetails]=useState(false);
     const [bookingdetailId,setBookingdetailId]=useState('');
+    
     useEffect(() => {
         fetch(`${APIPath}/api/v1/agent/booking`, {
             headers: {

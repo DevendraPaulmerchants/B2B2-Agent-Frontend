@@ -172,3 +172,7 @@
     border: 2px solid rgba(29, 48, 113, 1);
     border-radius: 20px;
 }
+.PhoneInput--readOnly {
+    z-index: -1;
+    cursor: not-allowed;
+}

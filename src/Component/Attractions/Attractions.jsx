@@ -108,7 +108,7 @@ const Attractions = () => {
                                             <h4>Price Starting From</h4>
                                         </div>
                                         <div className="card-price">
-                                            <h4>AED <b>{val.cost[0].cost1.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/Day</span></h4>
+                                            <h4>AED <b>{val.cost[0].cost1.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
                                         </div>
                                     </div>
                                 </div>

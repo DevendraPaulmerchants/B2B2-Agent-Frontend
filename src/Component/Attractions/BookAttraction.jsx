@@ -11,7 +11,7 @@ import { useCart } from "../context/CartContext";
 const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
-    const pkgId = packagedata[0]._id;
+    const pkgId = packagedata[0]?._id;
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(0);
     const [childPassenger, setChildPassenger] = useState(0);

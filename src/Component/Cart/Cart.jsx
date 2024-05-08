@@ -5,6 +5,9 @@ import './Cart.css';
 // import Checkout from "../Checkout/Checkout";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
+// import BookAttraction from "../Attractions/BookAttraction";
+import BookAttraction from "./EditAttraction";
+import BookPackage from "./EditPackage";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -22,7 +25,16 @@ const Cart = () => {
   const [landcombos, setLandcombos] = useState(null);
   const [transfers, setTransfer] = useState(null);
   const [type, setType] = useState();
-  const [pkgId, setPkgId] = useState('')
+  const [pkgId, setPkgId] = useState('');
+  const [editPkg, setEditPkg] = useState(false);
+  const [editPkgId,setEditPkgId]=useState(false);
+  const [pkgStartDate,setPkgStartDate]=useState();
+  const [pkgEndDate,setPkgEndDate]=useState();
+  const [editAtt, setEditAtt] = useState(false);
+  const [attId, setAttId] = useState('');
+  const [attDate, setAttDate] = useState();
+  const [editLnC, setEditLnC] = useState(false);
+  const [editTransfer, setEditTransfer] = useState(false);
 
   const LoadCartItem = () => {
     fetch(`${APIPath}/api/v1/agent/new-cart`, {
@@ -135,7 +147,6 @@ const Cart = () => {
   }
 
   const DeleteOneItem = () => {
-
     fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -157,7 +168,10 @@ const Cart = () => {
   const EditOneItem = () => {
     console.log("Item should be edited");
   }
-
+  const onClose = () => {
+    setEditAtt(false)
+    setEditPkg(false)
+  }
   return <>
     <div className="cart-container-main">
       <div className="cart-container">
@@ -180,21 +194,41 @@ const Cart = () => {
                         <h4>#Id_{val.packageId.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
-                        <button onClick={() => {
-                          setType(2);
-                          setPkgId(val._id);
-                          EditOneItem();
-                        }}>
+                        <button
+                          // onMouseEnter={() => {
+                            // setType(2);
+                            // setPkgId(val._id);
+                            // setEditPkgId(val.packageId)
+                            // setPkgStartDate(val.startDate.split("T")[0]);
+                            // setPkgEndDate(val.endDate.split("T")[0])     
+                          // }}
+                          onClick={() => {
+                            setType(2);
+                            setPkgId(val._id);
+                            setEditPkgId(val.packageId)
+                            setPkgStartDate(val.startDate.split("T")[0]);
+                            setPkgEndDate(val.endDate.split("T")[0])
+                            if(type === 2){
+                              setEditPkg(true)
+                            }
+                            
+                          }}
+                        >
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
                         <button
-                          onMouseEnter={() => {
+                          // onMouseEnter={() => {
+                          //   setType(2);
+                          //   setPkgId(val._id);
+                          // }}
+                          onClick={() => {
                             setType(2);
                             setPkgId(val._id);
-                          }}
-                          onClick={() => {
-                            DeleteOneItem();
+                            if(type === 2){
+                              DeleteOneItem();
+                            }
+                           
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -257,24 +291,38 @@ const Cart = () => {
                       </div>
                       <div className="cart-edit-delete-button">
                         <button
-                          onMouseEnter={() => {
+                          // onMouseEnter={() => {
+                            // setType(3);
+                            // setPkgId(val._id);
+                            // setAttId(val.attractionId)
+                            // setAttDate(val.startDate.split("T")[0])
+                          // }}
+                          onClick={() => {
                             setType(3);
                             setPkgId(val._id);
-                          }}
-                          onClick={() => {
-                            DeleteOneItem();
+                            setAttId(val.attractionId)
+                            setAttDate(val.startDate.split("T")[0])
+                            if(type === 3){
+                              setEditAtt(true)
+                            }
+                            
                           }}
                         >
                           <img src="/editicon.svg" />&nbsp;
                           Edit
                         </button>
                         <button
-                          onMouseEnter={() => {
+                          // onMouseEnter={() => {
+                          //   setType(3);
+                          //   setPkgId(val._id);
+                          // }}
+                          onClick={() => {
                             setType(3);
                             setPkgId(val._id);
-                          }}
-                          onClick={() => {
-                            DeleteOneItem();
+                            if(type === 3){
+                              DeleteOneItem();
+                            }
+                            
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -543,6 +591,40 @@ const Cart = () => {
       </div>
     </div>
     <Footer />
+    {editAtt && <BookAttraction
+      type={type}
+      cartId={cartId}
+      attractionId={attId}
+      pkgId={pkgId}
+      packagedata={attractions}
+      onClose={onClose}
+      price={attractionprice}
+      Pname={customer?.name}
+      Pmobile={customer?.phone}
+      Pemail={customer?.email}
+      adults={attractions?.[0].numberOfAdults}
+      child={attractions?.[0].numberOfChildrens}
+      attDate={attDate}
+      LoadCartItem={LoadCartItem}
+    />}
+    { editPkg && <BookPackage onClose={onClose}
+    type={type} 
+    cartId={cartId} 
+    pkgId={pkgId} 
+    packageId={editPkgId} 
+    packagedata={packages} 
+    price={packageprice} 
+    Pname={customer?.name}
+    Pmobile={customer?.phone} 
+    Pemail={customer?.email} 
+    adults={packages?.[0].numberOfAdults} 
+    pkgStartDate={pkgStartDate}
+    pkgEndDate={pkgEndDate}
+    child={packages?.[0].numberOfChildrens} 
+    LoadCartItem={LoadCartItem} 
+    />
+    }
+
   </>
 }
 
