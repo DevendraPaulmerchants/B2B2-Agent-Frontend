@@ -21,6 +21,7 @@ import AttractionDetails from './Component/Attractions/AttractionDetails';
 import Privacy from './Component/Footer/Privacy';
 import Condition from './Component/Footer/Condition';
 import Aboutus from './Component/AboutUs/Aboutus';
+import PasswordReset from './Component/ForgotPassword/PasswordReset';
 
 function App() {
   document.body.style.overflow="auto";
@@ -47,6 +48,7 @@ function App() {
           <Route path='/attractiondetails' element={<AttractionDetails/>}/>
           <Route path='/transfers' element={<Transfers/>} />
           <Route path='/cart' element={<Cart/>}/>
+          <Route path='/reset' element={<PasswordReset/>} />
           {/* <Route path='/card' element={<Card/>}/> */}
          {/* <Route path='/checkout' element={<Checkout/>}/>*/}
           <Route path='/contactus' element={<ContactUs/>}/>

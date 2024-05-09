@@ -1,6 +1,10 @@
 import React,{useState,useEffect} from "react";
 import { IoEyeOffSharp } from "react-icons/io5";
 import { MdRemoveRedEye } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import { APIPath } from "../../Config";
+
 
 const PasswordReset = () => {
     const [pass1,setPass1]=useState(false)
@@ -10,6 +14,11 @@ const PasswordReset = () => {
     const [error,setError]=useState(true);
     const [isValid, setIsValid] = useState(false);
 
+    const[token1,setToken1] = useState("");
+    const[id,setId] = useState("")
+
+    let [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
     const handlePasswordChange = (e) => {
         e.preventDefault();
         const value = e.target.value.trim();
@@ -29,7 +38,13 @@ const PasswordReset = () => {
     const showPassword2=()=>{
         setPass2(!pass2);
     }
+    useEffect(()=>{
+        setToken1(searchParams.get("token"));
+        setId(searchParams.get("id"))
+    },[])
+
     const resetPassword =()=>{
+         
         if(!isValid){
             alert("password not full fill all creteria")
             return
@@ -37,9 +52,31 @@ const PasswordReset = () => {
         if(password1 != password2){
             setError(false)
             alert("Password not matching")
+            return
         }
         else {
-            setError(true)
+            setError(true);
+            fetch(`${APIPath}/api/v1/agent/auth/forgot-password`, {
+                headers: {
+                    // 'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify({
+                    token:token1,
+                    userId:id,
+                    password:password1
+                })
+            }).then((res) => res.json())
+                .then((data) => {
+                    alert("Password reseted successfully.....")
+                    navigate('/login')
+                })
+                .catch((err) => {
+                    alert(err)
+                    return
+                })
         }
     }
     return <>

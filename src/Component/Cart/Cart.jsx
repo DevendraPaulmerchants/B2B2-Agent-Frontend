@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 // import BookAttraction from "../Attractions/BookAttraction";
 import BookAttraction from "./EditAttraction";
-import BookPackage from "./EditPackage";
+// import BookPackage from "./EditPackage";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -99,6 +99,7 @@ const Cart = () => {
   let totalCost = packageprice + attractionprice + landcombosprice + transferprice + vat;
 
   const BookNow = () => {
+    console.log("booking clicked")
     fetch(`${APIPath}/api/v1/agent/booking/custom-booking`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -607,7 +608,7 @@ const Cart = () => {
       attDate={attDate}
       LoadCartItem={LoadCartItem}
     />}
-    { editPkg && <BookPackage onClose={onClose}
+    {/* { editPkg && <BookPackage onClose={onClose}
     type={type} 
     cartId={cartId} 
     pkgId={pkgId} 
@@ -623,7 +624,7 @@ const Cart = () => {
     child={packages?.[0].numberOfChildrens} 
     LoadCartItem={LoadCartItem} 
     />
-    }
+    } */}
 
   </>
 }
