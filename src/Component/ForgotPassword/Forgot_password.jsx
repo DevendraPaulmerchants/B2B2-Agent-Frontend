@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import './Forgot_password.css';
-import PasswordReset from "./PasswordReset";
+// import PasswordReset from "./PasswordReset";
+import {useNavigate} from "react-router-dom";
 import { APIPath } from "../../Config";
 
 const ForgotPassword = ({ onClose }) => {
     document.body.style.overflow = 'hidden';
     const [email, setEmail] = useState('');
-    const [resetScreen, setResetScreen] = useState(false);
-
+    // const [resetScreen, setResetScreen] = useState(false);
+    
     const onEmailChange = (e) => {
         setEmail(e.target.value)
     }
+    const navigate=useNavigate();
     const sendLink = async () => {
         try {
             const response = await fetch(`${APIPath}/api/v1/agent/auth/request-forgot-password`, {
@@ -23,14 +25,15 @@ const ForgotPassword = ({ onClose }) => {
                     email: email
                 })
             });
-            
-            if (!response.ok) {
-                throw new Error('Failed to send reset link');
+            if(!response.ok) {
+                // throw new Error(data.message);
+                // console.log(response)
+                // navigate('/login')
             }
-    
             const data = await response.json();
             alert(data.message)
-            setResetScreen(true)
+            onClose();
+            navigate('/login');
         } catch (error) {
             alert(error.message);
         }
@@ -47,7 +50,7 @@ const ForgotPassword = ({ onClose }) => {
                     sendLink();
                 }}>
                     <div className="forgot-password-input-container">
-                        <p>Eneter your registered email</p>
+                        <p>Enter your registered email</p>
                         <input type="email" placeholder="Enter your email" value={email} required maxLength={40} onChange={(e) => {
                             onEmailChange(e)
                         }} />
@@ -61,7 +64,7 @@ const ForgotPassword = ({ onClose }) => {
                 </form>
             </div>
         </div>
-        {resetScreen && <PasswordReset />}
+        {/* {resetScreen && <PasswordReset />} */}
     </>
 }
 export default ForgotPassword;
