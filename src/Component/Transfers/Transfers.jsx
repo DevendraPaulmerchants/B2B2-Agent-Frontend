@@ -308,7 +308,7 @@ const Transfers = () => {
                 } else {
                     setFilterList([]);
                     // setFilteredList([])
-                    setDataNotFound('NO RECORDS FOUND');
+                    setDataNotFound('Transfer not found');
                     setLoading(false);
                 }
             })

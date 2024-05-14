@@ -5,9 +5,8 @@ import './Cart.css';
 // import Checkout from "../Checkout/Checkout";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
-// import BookAttraction from "../Attractions/BookAttraction";
 import BookAttraction from "./EditAttraction";
-// import BookPackage from "./EditPackage";
+import BookPackage from "./EditPackage";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -608,7 +607,7 @@ const Cart = () => {
       attDate={attDate}
       LoadCartItem={LoadCartItem}
     />}
-    {/* { editPkg && <BookPackage onClose={onClose}
+    { editPkg && <BookPackage onClose={onClose}
     type={type} 
     cartId={cartId} 
     pkgId={pkgId} 
@@ -624,7 +623,7 @@ const Cart = () => {
     child={packages?.[0].numberOfChildrens} 
     LoadCartItem={LoadCartItem} 
     />
-    } */}
+    }
 
   </>
 }

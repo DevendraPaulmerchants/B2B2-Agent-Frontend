@@ -46,13 +46,13 @@
 //             setName(sanitizedValue)
 //         }
 //     };
-//     const handleEmailChange = (e) => {
-//         const email = e.target.value.trim(); 
-//         setEmail(email);
-//         if (email === "" || /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
-//             setEmail(email);
-//         }
-//     }
+//     // const handleEmailChange = (e) => {
+//     //     const email = e.target.value.trim(); 
+//     //     setEmail(email);
+//     //     if (email === "" || /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+//     //         setEmail(email);
+//     //     }
+//     // }
 //     const getCurrentDate = () => {
 //         const now = new Date();
 //         const year = now.getFullYear();
@@ -263,4 +263,4 @@
 //         </div>
 //     </>
 // }
-// export default BookPackage;s
+// export default BookPackage;
