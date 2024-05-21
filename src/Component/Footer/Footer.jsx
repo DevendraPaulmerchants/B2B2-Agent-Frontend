@@ -61,14 +61,14 @@ const Footer = () => {
                             <a href="mailto:info@magicalvacation.com">info@magicalvacation.com</a>
                         </p>
                     </div>
-                    <div>
+                    {/* <div>
                         <p className='india-address'>
                             <b>India Representative Office: Paul Merchants Ltd.</b><br />
                             <b>Head Office:</b> <span>SCO 829-830, Sector 22 A, Chandigarh – 160022</span> <br />
                             <b>Regd Office:</b> <span>DSM 335, 336, 337, 3rd Floor, DLF Tower, 15,
                                 Shivaji Marg, Najafgarh Road, New Delhi -110015</span>
                         </p>
-                    </div>
+                    </div> */}
 
                 </div>
                 <div className='subscribe1'>

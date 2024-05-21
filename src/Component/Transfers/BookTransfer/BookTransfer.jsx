@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDate, selectedDateTo }) => {
     document.body.style.overflow = 'hidden';
     const { token, setBookTransfer, transferDetails, setDescriptionPage } = useCart()
-    // console.log(transferDetails,tripType)
+    // console.log(transferDetails)
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(adultsPassengers);
     const [childPassenger, setChildPassenger] = useState(childPassengers);
@@ -85,12 +85,34 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenge email:");
+            alert("please fill passenger email:");
             return;
         }
         if (adultPassenger <= 0 ) {
             alert("please Add at least 1 Adult")
             return
+        }
+        if((adultPassenger + childPassenger ) > transferDetails.vehicle.maxPassenger){
+            alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers` )
+            return;
+        }
+        if(flightArrivalCode.length < 7) {
+            alert("please fill arrival flight code..")
+            return
+        }
+        if (arrivalPickupTime.length < 5){
+            alert("please fill pickup time from airport...")
+           return
+        }
+        if(tripType === 'ROUND_TRIP'){
+            if(flightDepartureCode.length < 7) {
+                alert("please fill departure flight Code..");
+                return
+            }
+            if(departurePickupTime.length < 5){
+                alert("please fill departure time to airport...");
+                return
+            }
         }
         else {
             fetch(`${APIPath}/api/v1/agent/transfer/book-transfer`, {
@@ -145,9 +167,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         }
     
     const addToCart = () => {
-        //    e.preventDefault();
         if (name.length <= 0) {
-            alert("please fill lead passenger details")
+            alert("please fill lead passenger name...")
             return
         }
         if (mobile.toString().length < 8) {
@@ -162,8 +183,29 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             alert("please Add at least 1 Adult")
             return
         }
+        if((adultPassenger + childPassenger ) > transferDetails.vehicle.maxPassenger){
+            alert(`This Vehicle can not allow more then ${transferDetails.vehicle.maxPassenger} passengers` )
+            return;
+        }
+        if(flightArrivalCode.length < 7) {
+            alert("please fill arrival flight code..")
+            return
+        }
+        if (arrivalPickupTime.length < 5){
+            alert("please fill pickup time from airport...")
+           return
+        }
+        if(tripType === 'ROUND_TRIP'){
+            if(flightDepartureCode.length < 7) {
+                alert("please fill departure flight Code..");
+                return
+            }
+            if(departurePickupTime.length < 5){
+                alert("please fill departure time to airport...");
+                return
+            }
+        }
         else {
-            console.log("add to cart:",bookingTransferDetails )
             fetch(`${APIPath}/api/v1/agent/new-cart`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -195,10 +237,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                     /></h2>
                 </div>
                 <div className="booking-passenger-details">
-                    <form onSubmit={(e) => { 
-                        e.preventDefault(); 
-                        // bookThisTransfer() ;
-                        }}>
+                    <form onSubmit={(e) => { e.preventDefault();}}>
                         <br />
                         {/* -------------------------------Passenger Deatils------------------------- */}
                         <div className="lead-passenger-parent-container">
@@ -271,7 +310,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 </div>
                             </div>
                         </div>
-                        {/* </div> */}
                         {/* ----------------------------Flight Details------------ */}
                         {transferDetails.type === 'AirportToHotel' &&
                             <div className="booking-flight-arrival-departure-container">
@@ -312,7 +350,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
                                         <div className="flight-departure-code-time">
-                                            {/* {tripType === 'ROUND_TRIP' && ( */}
                                             <div id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}>
                                                 <h2>Departure Info.</h2>
                                                 <div className="booking-flight-arrival-input">
@@ -347,7 +384,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
-                                            {/* )} */}
                                         </div>
                                     </div>
                                 </div>
@@ -392,7 +428,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
                                         <div className="flight-departure-code-time">
-                                            {/* {tripType === 'ROUND_TRIP' && ( */}
                                             <div id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}>
                                                 <h2>Departure Info.</h2>
                                                 <div className="booking-flight-arrival-input">
@@ -427,7 +462,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
-                                            {/* )} */}
                                         </div>
                                     </div>
                                 </div>
@@ -472,7 +506,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
                                         <div className="flight-departure-code-time">
-                                            {/* {tripType === 'ROUND_TRIP' && ( */}
                                             <div id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}>
                                                 <h2>Departure Info.</h2>
                                                 <div className="booking-flight-arrival-input">
@@ -507,7 +540,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
-                                            {/* )} */}
                                         </div>
                                     </div>
                                 </div>
@@ -519,16 +551,15 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 <h4><b>Total Amount:</b></h4>
                                 <h4><b>&nbsp;AED {transferDetails.cost}</b><sub>+Taxes</sub></h4>
                             </div>
+                          {/* -------------------------Close and Book Transfer button------------------ */}
                             <div className="booking-transfer-btn">
                                 <button onClick={() => addToCart()}>Add To cart</button>
                                 <button onClick={()=>{bookThisTransfer()}}>Book Now</button>
                             </div>
                         </div>
-                        {/* -------------------------Close and Book Transfer button------------------ */}
                     </form>
                 </div>
             </div>
-
         </div>
     </>
 }

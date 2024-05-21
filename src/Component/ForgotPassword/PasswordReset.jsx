@@ -45,7 +45,7 @@ const PasswordReset = () => {
 
     const resetPassword = () => {
         if (!isValid) {
-            alert("password not fulfill all criteria")
+            alert("Password criteria do not match");
             return
         }
         if (password1 !== password2) {

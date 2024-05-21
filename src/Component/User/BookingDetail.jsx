@@ -55,7 +55,7 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                 </div>
                                 <div>
                                     <h4>Mobile no. </h4>
-                                    <p>{bookingDetail[0].customerDetails.phone}</p>
+                                    <p>+{bookingDetail[0].customerDetails.phone}</p>
                                 </div>
                                 <div>
                                     <h4>Email </h4>

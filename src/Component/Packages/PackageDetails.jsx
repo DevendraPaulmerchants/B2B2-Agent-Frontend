@@ -9,13 +9,15 @@ import { Navigate, useNavigate } from "react-router-dom";
 import html2pdf from 'html2pdf.js';
 import BookPackage from "./BookPackage";
 import './Packages.css';
+import { useParams } from "react-router-dom";
 
 const PacKageDetails = () => {
+    const { packageId} = useParams();
     // document.body.style.overflow = 'auto';
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    const { packageId, setPackageId, token } = useCart();
+    const { setPackageId, token } = useCart();
     const [packagedata, setPackagedata] = useState(null);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(1);
@@ -44,7 +46,6 @@ const PacKageDetails = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (packageId) {
             fetch(`${APIPath}/api/v1/packages/?id=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -64,11 +65,6 @@ const PacKageDetails = () => {
                     alert(err)
                     setLoading(false)
                 })
-        }
-        else {
-            navigate('/packages')
-        }
-
     }, [packageId])
 
     const handleDownloadPDF = () => {

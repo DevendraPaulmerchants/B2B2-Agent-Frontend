@@ -8,7 +8,7 @@ import { IoSearchSharp } from "react-icons/io5";
 
 const LandCombos = () => {
     document.body.style.overflow = 'auto';
-    const { lancCombosId, setLandCombosId } = useCart()
+    // const { lancCombosId, setLandCombosId } = useCart();
     const [landCombosData, setLandCombosData] = useState(null);
     const [originalLnC, setOriginalLnC] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -37,9 +37,10 @@ const LandCombos = () => {
             })
     }, [])
     const navigate = useNavigate()
-    const clickedLandCombos = (id) => {
-        setLandCombosId(id)
-        navigate('/landcombosDetails')
+    const clickedLandCombos = (packageId) => {
+        // setLandCombosId(id);
+        // navigate('/landcombosDetails');
+        navigate(`/landcombosDetails/${packageId}`);
     }
 
     const handleSearch = () => {

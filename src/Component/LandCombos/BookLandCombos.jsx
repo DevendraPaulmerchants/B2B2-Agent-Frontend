@@ -127,7 +127,7 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenge email:");
+            alert("please fill passenger email:");
             return;
         }
         if (adultPassenger <= 0 ) {

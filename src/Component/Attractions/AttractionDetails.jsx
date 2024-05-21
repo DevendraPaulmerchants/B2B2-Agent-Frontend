@@ -10,8 +10,10 @@ import { GoDotFill } from "react-icons/go";
 // import BookLandCombos from "../LandCombos/BookLandCombos";
 import BookAttraction from "./BookAttraction";
 import './Attraction.css';
+import { useParams } from "react-router-dom";
 
 const AttractionDetails = () => {
+    const { packageId} = useParams();
     // document.body.style.overflow = 'auto';
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -46,8 +48,8 @@ const AttractionDetails = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (attractionId) {
-            fetch(`${APIPath}/api/v1/attractions/?id=${attractionId}`, {
+        // if (attractionId) {
+            fetch(`${APIPath}/api/v1/attractions/?id=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -67,12 +69,8 @@ const AttractionDetails = () => {
                     alert(err)
                     setLoading(false)
                 })
-        }
-        else {
-            navigate('/attractions')
-        }
 
-    }, [attractionId])
+    }, [packageId])
 
     const handleDownloadPDF = () => {
         const element = document.getElementById('package-details');

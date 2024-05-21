@@ -3,8 +3,6 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useCart } from '../context/CartContext';
 import { APIPath } from "../../Config";
 import BookingDetails from "./BookingDetail";
-// import { writeFile } from 'xlsx';
-// import { saveAs } from 'file-saver';
 import './User.css';
 
 const User = () => {
@@ -12,9 +10,11 @@ const User = () => {
     const { agentName, token } = useCart();
     const [bookingData, setBookingData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [seebookingdetails,setBookingDetails]=useState(false);
-    const [bookingdetailId,setBookingdetailId]=useState('');
-    
+    const [seebookingdetails, setBookingDetails] = useState(false);
+    const [bookingdetailId, setBookingdetailId] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 15;
+
     useEffect(() => {
         fetch(`${APIPath}/api/v1/agent/booking`, {
             headers: {
@@ -26,106 +26,101 @@ const User = () => {
         }).then((res) => res.json())
             .then((data) => {
                 console.log(data.data);
-                // setTimeout(() => {
-                setBookingData(data.data)
-                // setOriginalPackages(data.data)
-                setLoading(false)
-                // }, 2000)
+                setBookingData(data.data);
+                setLoading(false);
             })
             .catch((err) => {
-                alert(err)
-                setLoading(false)
-            })
-    }, [])
-    const seeDetails=(id)=>{
-        setBookingDetails(true)
-        setBookingdetailId(id)
-    }
-    const donotseeDetails=()=>{
-        setBookingDetails(false)
-    }
+                alert(err);
+                setLoading(false);
+            });
+    }, []);
 
-    // const exportToExcel = () => {
-    //     const header = ['ID', 'Customer Name', 'Customer Email', 'Type', 'Amount', 'Date of Booking', 'Booking Status'];
-    //     const data = bookingData?.map(val => [val.bookingID, val.customerDetails.name, val.customerDetails.email, val.bookingType, val.totalCost, val.createdAt.split("T")[0], val.bookingStatus]);
-    //     const ws = { SheetNames: ['Sheet1'], Sheets: { 'Sheet1': [...[header], ...data] } };
-    //     const wb = { Sheets: ws, SheetNames: ['Sheet1'] };
-    //     const excelBuffer = writeFile(wb, { bookType: 'xlsx', type: 'buffer' });
-    //     saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'booking_data.xlsx');
-    // };
-    
-    return <>
-        <div className="agent-booking-container">
-            <h5 style={{ textTransform: "capitalize" }}> welcome {agentName}</h5>
-            {/* <button onClick={exportToExcel}>Download as Excel</button> */}
+    const seeDetails = (id) => {
+        setBookingDetails(true);
+        setBookingdetailId(id);
+    };
 
-            {loading ? (<div className="loader">
+    const donotseeDetails = () => {
+        setBookingDetails(false);
+    };
 
-            </div>) : (
-                <>
-                {bookingData?.length > 0 ? (
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = bookingData?.slice(indexOfFirstItem, indexOfLastItem);
+
+    const paginate = pageNumber => setCurrentPage(pageNumber);
+
+    return (
+        <>
+            <div className="agent-booking-container">
+                <h5 style={{ textTransform: "capitalize" }}> welcome {agentName}</h5>
+
+                {loading ? (
+                    <div className="loader"></div>
+                ) : (
                     <>
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Customer Name</th>
-                                <th>Customer Email</th>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                <th>Date of Booking</th>
-                                {/* <th>Date of Journey</th> */}
-                                <th>Booking Status</th>
-                                {/* <th>Actions</th> */}
-                                <th>Details</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                    {bookingData?.map((val, id) => {
-                                        return <>
+                        {currentItems?.length > 0 ? (
+                            <>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Customer Name</th>
+                                            <th>Customer Email</th>
+                                            <th>Type</th>
+                                            <th>Amount</th>
+                                            <th>Date of Booking</th>
+                                            <th>Booking Status</th>
+                                            <th>Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {currentItems?.map((val, id) => (
                                             <tr key={id}>
                                                 <td>{val.bookingID}</td>
-                                                {/* <td>{val._id.slice(-4)}</td> */}
-                                                {/* <td>{`PKG_${val._id.slice(-4)}`}</td> */}
                                                 <td>{val.customerDetails.name}</td>
                                                 <td>{val.customerDetails.email}</td>
                                                 <td>{val.bookingType}</td>
-                                                {/* <td>{val.createdAt.split("T")[0]}</td> */}
                                                 <td>{val.totalCost}</td>
                                                 <td>{val.createdAt.split("T")[0]}</td>
-                                                {/* <td>{val.bookingStatus}</td> */}
                                                 <td>
-                                                <p id={(val.bookingStatus === "Pending" && "pending") ||
-                                                    (val.bookingStatus === "On Hold" && "on-hold") ||
-                                                    (val.bookingStatus === "Awaiting Payment" && "Awaiting_Payment") ||
-                                                    (val.bookingStatus === "Confirmed" && "confirm") ||
-                                                    (val.bookingStatus === "Rejected" && "rejected")
-
-                                                    }>{val.bookingStatus}</p> 
+                                                    <p id={(val.bookingStatus === "Pending" && "pending") ||
+                                                        (val.bookingStatus === "On Hold" && "on-hold") ||
+                                                        (val.bookingStatus === "Awaiting Payment" && "Awaiting_Payment") ||
+                                                        (val.bookingStatus === "Confirmed" && "confirm") ||
+                                                        (val.bookingStatus === "Rejected" && "rejected")}>
+                                                        {val.bookingStatus}
+                                                    </p>
                                                 </td>
                                                 <td className="agent-view-booking">
-                                                   <button onClick={()=>{
-                                                    seeDetails(val._id)
-                                                   }}>
-                                                     <MdOutlineRemoveRedEye/>
-                                                   </button>
+                                                    <button onClick={() => seeDetails(val._id)}>
+                                                        <MdOutlineRemoveRedEye />
+                                                    </button>
                                                 </td>
                                             </tr>
-                                        </>
-                                    })}
-                            </tbody>
-                        </table>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <div className="pagination">
+                                    {[...Array(Math.ceil(bookingData.length / itemsPerPage)).keys()].map(number => (
+                                        <button className={currentPage === number + 1 ? "clicked" : ""}
+                                        key={number + 1} onClick={() => paginate(number + 1)}>
+                                            {number + 1}
+                                        </button>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <div>
+                                <h2>No Data Found</h2>
+                            </div>
+                        )}
                     </>
-                ):(
-                    <div>
-                        <h2>No Data Found</h2>
-                    </div>
                 )}
-                    
-                </>
-            )}
-        </div>
-      {seebookingdetails && <BookingDetails  onClose={donotseeDetails} bookingId={bookingdetailId} />}
-    </>
-}
+            </div>
+            {seebookingdetails && <BookingDetails onClose={donotseeDetails} bookingId={bookingdetailId} />}
+        </>
+    );
+};
+
 export default User;

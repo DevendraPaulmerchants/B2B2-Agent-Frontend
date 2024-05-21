@@ -41,11 +41,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/registration" element={<Registration/>} />
           <Route path='/packages' element={<Packages/>}/>
-          <Route path='/packageDetails' element={<PacKageDetails/>}/>
+          <Route path="/packageDetails/:packageId" element={<PacKageDetails/>} />
           <Route path='/landcombos' element={<LandCombos/>}/>
-          <Route path='/landcombosDetails' element={<LandCombosDetails/>}/>
+          <Route path='/landcombosDetails/:packageId' element={<LandCombosDetails/>}/>
           <Route path='/attractions' element={<Attractions/>}/>
-          <Route path='/attractiondetails' element={<AttractionDetails/>}/>
+          <Route path='/attractiondetails/:packageId' element={<AttractionDetails/>}/>
           <Route path='/transfers' element={<Transfers/>} />
           <Route path='/cart' element={<Cart/>}/>
           <Route path='/reset' element={<PasswordReset/>} />

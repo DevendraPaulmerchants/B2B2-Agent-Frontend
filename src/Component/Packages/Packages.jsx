@@ -11,19 +11,13 @@ import './Packages.css';
 
 const Packages = () => {
     document.body.style.overflow = 'auto';
-    const { packageId, setPackageId } = useCart()
+    // const { packageId, setPackageId } = useCart();
     const [packages, setPackages] = useState(null);
     const [originalPackages, setOriginalPackages] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const navigate = useNavigate();
-
-    const clickedPackage = (id) => {
-        console.log(id)
-        setPackageId(id)
-        navigate('/packageDetails')
-    }
+   
     useEffect(() => {
         fetch(`${APIPath}/api/v1/packages`, {
             headers: {
@@ -47,6 +41,13 @@ const Packages = () => {
             })
     }, [])
     
+    const navigate = useNavigate();
+    const clickedPackage = (packageId) => {
+        // console.log(id)
+        // setPackageId(packageId);
+        // navigate('/packageDetails');
+        navigate(`/packageDetails/${packageId}`);
+    }
     const handleSearch = () => {
         const searchTermLower = searchTerm.toLowerCase();
         if (searchTermLower === "") {
@@ -87,7 +88,7 @@ const Packages = () => {
                     {packages?.map((val, id) => {
                         return <>
                             <div className="package-card"
-                                onClick={(e) => { e.preventDefault(); clickedPackage(val._id) }}
+                                onClick={() => {clickedPackage(val._id) }}
                             >
                                 <div className="package-card-image">
                                     {/* <img src="/package1.png" /> */}

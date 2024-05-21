@@ -52,7 +52,8 @@ const Registration = () => {
             return;
         }
         if(!isValid){
-            alert("password not fulfill all criteria")
+            // alert("password not fulfill all criteria")
+            alert("Password criteria do not match");
             return;
         }
         fetch('https://admin.magicalvacation.com/api/v1/agent/auth/register', {
@@ -66,7 +67,8 @@ const Registration = () => {
             .then((data) => {
                 console.log(data)
                 if (data.message === 'agent registered successfully!!') {
-                    alert("Agent created successfully!!")
+                    // alert("Agent created successfully!!")
+                    alert("Account created Succesfully");
                     navigate('/login')
                 } else {
                     alert(data.message)
@@ -77,7 +79,6 @@ const Registration = () => {
                 alert(err)
             })
     };
-
 
     return <>
         <div className="registration-page-container">

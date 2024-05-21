@@ -12,10 +12,12 @@ import html2pdf from 'html2pdf.js';
 import BookPackage from "../Packages/BookPackage";
 import BookLandCombos from "./BookLandCombos";
 import Rating from '@mui/material/Rating';
+import { useParams } from "react-router-dom";
 
 const LandCombosDetails = () => {
+    const { packageId} = useParams();
     // document.body.style.overflow = 'auto';
-    const { lancCombosId, setLandCombosId, token } = useCart()
+    const { token } = useCart()
     const [landCombosDeatils, setLandCombosDetails] = useState(null);
     const [active, setActive] = useState(1);
     const [loading, setLoading] = useState(true);
@@ -44,8 +46,8 @@ const LandCombosDetails = () => {
     }
     const navigate = useNavigate();
     useEffect(() => {
-        if (lancCombosId) {
-            fetch(`${APIPath}/api/v1/land_combos?id=${lancCombosId}`, {
+        // if (lancCombosId) {
+            fetch(`${APIPath}/api/v1/land_combos?id=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -65,12 +67,7 @@ const LandCombosDetails = () => {
                     alert(err)
                     setLoading(false)
                 })
-        }
-        else {
-            navigate('/landcombos')
-        }
-
-    }, [lancCombosId])
+    }, [packageId])
     
     const handleDownloadPDF = () => {
         const element = document.getElementById('package-details');

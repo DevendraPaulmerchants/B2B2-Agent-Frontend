@@ -10,7 +10,7 @@ import Footer from "../Footer/Footer";
 
 const Attractions = () => {
     document.body.style.overflow = 'auto';
-    const { attractionId, setAttractionId } = useCart();
+    // const { attractionId, setAttractionId } = useCart();
     const [attraction, setAttraction] = useState(null);
     const [originalAtt, setOriginalAtt] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -39,9 +39,10 @@ const Attractions = () => {
             })
     }, [])
     const navigate = useNavigate()
-    const clickedAttraction = (id) => {
-        setAttractionId(id)
-        navigate('/attractiondetails')
+    const clickedAttraction = (packageId) => {
+        // setAttractionId(packageId)
+        // navigate('/attractiondetails');
+        navigate(`/attractiondetails/${packageId}`);
     }
     const handleSearch = () => {
         const searchTermLower = searchTerm.toLowerCase();

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import BookAttraction from "./EditAttraction";
 import BookPackage from "./EditPackage";
+import BookLandCombos from "./EditLandCombo";
+import BookTransfer from "./EditTransfer";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -26,14 +28,27 @@ const Cart = () => {
   const [type, setType] = useState();
   const [pkgId, setPkgId] = useState('');
   const [editPkg, setEditPkg] = useState(false);
-  const [editPkgId,setEditPkgId]=useState(false);
-  const [pkgStartDate,setPkgStartDate]=useState();
-  const [pkgEndDate,setPkgEndDate]=useState();
+  const [editPkgId, setEditPkgId] = useState(false);
+  const [pkgStartDate, setPkgStartDate] = useState();
+  const [pkgEndDate, setPkgEndDate] = useState();
   const [editAtt, setEditAtt] = useState(false);
   const [attId, setAttId] = useState('');
   const [attDate, setAttDate] = useState();
   const [editLnC, setEditLnC] = useState(false);
+  const [lncId, setLnCId] = useState('');
+  const [lncStartDate, setlncStartDate] = useState();
+  const [lncEndDate, setlncEndDate] = useState();
   const [editTransfer, setEditTransfer] = useState(false);
+  const [trnasferId, setTransferId] = useState('');
+  const [tripType, setTripType] = useState('');
+  const [selectedTransferType, setselectedTransferType] = useState('');
+  const [totalCost1, settotalCost] = useState();
+  const [selectedDate, setselectedDate] = useState();
+  const [arrivalFlightCode, setarrivalFlightCode] = useState();
+  const [arrivalPickupTime, setarrivalPickupTime] = useState();
+  const [departureFlightCode, setdepartureFlightCode] = useState();
+  const [departurePickupTime, setdeparturePickupTime] = useState();
+  const [selectedDateTo, setselectedDateTo] = useState();
 
   const LoadCartItem = () => {
     fetch(`${APIPath}/api/v1/agent/new-cart`, {
@@ -109,7 +124,8 @@ const Cart = () => {
       body: JSON.stringify({ "cartID": cartId })
     }).then((res) => res.json())
       .then((data) => {
-        alert(data.message)
+        alert(data.message);
+        LoadCartItem();
       })
       .catch((err) => {
         alert(err)
@@ -169,8 +185,10 @@ const Cart = () => {
     console.log("Item should be edited");
   }
   const onClose = () => {
-    setEditAtt(false)
-    setEditPkg(false)
+    setEditAtt(false);
+    setEditPkg(false);
+    setEditLnC(false);
+    setEditTransfer(false);
   }
   return <>
     <div className="cart-container-main">
@@ -196,11 +214,11 @@ const Cart = () => {
                       <div className="cart-edit-delete-button">
                         <button
                           // onMouseEnter={() => {
-                            // setType(2);
-                            // setPkgId(val._id);
-                            // setEditPkgId(val.packageId)
-                            // setPkgStartDate(val.startDate.split("T")[0]);
-                            // setPkgEndDate(val.endDate.split("T")[0])     
+                          // setType(2);
+                          // setPkgId(val._id);
+                          // setEditPkgId(val.packageId)
+                          // setPkgStartDate(val.startDate.split("T")[0]);
+                          // setPkgEndDate(val.endDate.split("T")[0])     
                           // }}
                           onClick={() => {
                             setType(2);
@@ -208,10 +226,10 @@ const Cart = () => {
                             setEditPkgId(val.packageId)
                             setPkgStartDate(val.startDate.split("T")[0]);
                             setPkgEndDate(val.endDate.split("T")[0])
-                            if(type === 2){
+                            if (type === 2) {
                               setEditPkg(true)
                             }
-                            
+
                           }}
                         >
                           <img src="/editicon.svg" />&nbsp;
@@ -225,10 +243,10 @@ const Cart = () => {
                           onClick={() => {
                             setType(2);
                             setPkgId(val._id);
-                            if(type === 2){
+                            if (type === 2) {
                               DeleteOneItem();
                             }
-                           
+
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -292,20 +310,20 @@ const Cart = () => {
                       <div className="cart-edit-delete-button">
                         <button
                           // onMouseEnter={() => {
-                            // setType(3);
-                            // setPkgId(val._id);
-                            // setAttId(val.attractionId)
-                            // setAttDate(val.startDate.split("T")[0])
+                          // setType(3);
+                          // setPkgId(val._id);
+                          // setAttId(val.attractionId)
+                          // setAttDate(val.startDate.split("T")[0])
                           // }}
                           onClick={() => {
                             setType(3);
                             setPkgId(val._id);
                             setAttId(val.attractionId)
                             setAttDate(val.startDate.split("T")[0])
-                            if(type === 3){
+                            if (type === 3) {
                               setEditAtt(true)
                             }
-                            
+
                           }}
                         >
                           <img src="/editicon.svg" />&nbsp;
@@ -319,10 +337,10 @@ const Cart = () => {
                           onClick={() => {
                             setType(3);
                             setPkgId(val._id);
-                            if(type === 3){
+                            if (type === 3) {
                               DeleteOneItem();
                             }
-                            
+
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -384,8 +402,13 @@ const Cart = () => {
                         <button onClick={() => {
                           setType(4);
                           setPkgId(val._id);
-                          console.log(ItemDelete);
+                          setLnCId(val.landComboId);
+                          setlncStartDate(val.startDate.split("T")[0]);
+                          setlncEndDate(val.endDate.split("T")[0])
                           EditOneItem();
+                          if (type === 4) {
+                            setEditLnC(true)
+                          }
                         }}>
                           <img src="/editicon.svg" />&nbsp;
                           Edit
@@ -457,8 +480,19 @@ const Cart = () => {
                       <button onClick={() => {
                         setType(1);
                         setPkgId(val._id);
-                        console.log(ItemDelete);
-                        EditOneItem();
+                        setTransferId(val.transferId);
+                        setTripType(val.selectedTripType);
+                        setselectedTransferType(val.selectedTransferType)
+                        settotalCost(val.totalCost);
+                        setselectedDate(val.pickupTimeForArrival);
+                        setarrivalFlightCode(val.arrivalFlightCode);
+                        setarrivalPickupTime(val.arrivalPickupTime);
+                        setselectedDateTo(val.pickupTimeForDeparture);
+                        setdepartureFlightCode(val.departureFlightCode);
+                        setdeparturePickupTime(val.departurePickupTime)
+                        if (type === 1) {
+                          setEditTransfer(true)
+                        }
                       }}>
                         <img src="/editicon.svg" />&nbsp;
                         Edit
@@ -607,23 +641,59 @@ const Cart = () => {
       attDate={attDate}
       LoadCartItem={LoadCartItem}
     />}
-    { editPkg && <BookPackage onClose={onClose}
-    type={type} 
-    cartId={cartId} 
-    pkgId={pkgId} 
-    packageId={editPkgId} 
-    packagedata={packages} 
-    price={packageprice} 
-    Pname={customer?.name}
-    Pmobile={customer?.phone} 
-    Pemail={customer?.email} 
-    adults={packages?.[0].numberOfAdults} 
-    pkgStartDate={pkgStartDate}
-    pkgEndDate={pkgEndDate}
-    child={packages?.[0].numberOfChildrens} 
-    LoadCartItem={LoadCartItem} 
+    {editLnC && <BookLandCombos onClose={onClose}
+      type={type}
+      cartId={cartId}
+      pkgId={pkgId}
+      landComboId={lncId}
+      landCombosData={landcombos}
+      price={landcombosprice}
+      Pname={customer?.name}
+      Pmobile={customer?.phone}
+      Pemail={customer?.email}
+      adults={landcombos?.[0].numberOfAdults}
+      lncStartDate={lncStartDate}
+      lncEndDate={lncEndDate}
+      child={landcombos?.[0].numberOfChildrens}
+      LoadCartItem={LoadCartItem}
+    />}
+    {editPkg && <BookPackage onClose={onClose}
+      type={type}
+      cartId={cartId}
+      pkgId={pkgId}
+      packageId={editPkgId}
+      packagedata={packages}
+      price={packageprice/(packages?.[0].numberOfAdults + packages?.[0].numberOfChildrens)}
+      Pname={customer?.name}
+      Pmobile={customer?.phone}
+      Pemail={customer?.email}
+      adults={packages?.[0].numberOfAdults}
+      pkgStartDate={pkgStartDate}
+      pkgEndDate={pkgEndDate}
+      child={packages?.[0].numberOfChildrens}
+      LoadCartItem={LoadCartItem}
     />
     }
+    {editTransfer && <BookTransfer onClose={onClose}
+      tripType={tripType}
+      selectedTransferType={selectedTransferType}
+      cartId={cartId}
+      pkgId={pkgId}
+      price={totalCost1}
+      transferId={trnasferId}
+      adultsPassengers={transfers?.[0].numberOfAdults}
+      childPassengers={transfers?.[0].numberOfChildrens}
+      selectedDate={selectedDate}
+      selectedDateTo={selectedDateTo}
+      Pname={customer?.name}
+      Pmobile={customer?.phone}
+      Pemail={customer?.email}
+      arrivalPickupTime1={arrivalPickupTime}
+      arrivalFlightCode={arrivalFlightCode}
+      departureFlightCode={departureFlightCode}
+      departurePickupTime1={departurePickupTime}
+      LoadCartItem={LoadCartItem}
+    />}
 
   </>
 }

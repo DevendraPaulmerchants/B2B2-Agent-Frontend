@@ -18,7 +18,7 @@ const Home = () => {
         window.scrollTo(0, 0);
     }, []);
     document.body.style.overflow = "auto";
-    const { packageId, setPackageId, setLandCombosId, setAttractionId } = useCart();
+    // const {setLandCombosId } = useCart();
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     // -----------------------------------Package List------------------------------------------------
@@ -58,10 +58,11 @@ const Home = () => {
             })
     }, [])
     const navigate = useNavigate();
-    const clickedPackage = (id) => {
-        console.log(id)
-        setPackageId(id)
-        navigate('/packageDetails')
+    const clickedPackage = (packageId) => {
+        // console.log(id)
+        // setPackageId(id)
+        // navigate('/packageDetails');
+        navigate(`/packageDetails/${packageId}`);
     }
     const topThreePackages = packageData?.slice(startIndexP, startIndexP + 3);
     const handleNextPkg = () => {
@@ -98,6 +99,11 @@ const Home = () => {
             filteredPackages = originalPackages.filter((packages) =>
                 packages.title.toLowerCase().includes(searchTermLower)
             );
+            // filteredPackages = originalPackages.filter((packages) => {
+            //     const searchWords = searchTermLower.trim().split(" ");
+            //     return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            // });
+            
             filteredLnC = originalLnC.filter((packages) =>
                 packages.title.toLowerCase().includes(searchTermLower)
             );
@@ -153,9 +159,10 @@ const Home = () => {
                 setLoading(false)
             })
     }, [])
-    const clickedAttraction = (id) => {
-        setAttractionId(id)
-        navigate('/attractiondetails')
+    const clickedAttraction = (packageId) => {
+        // setAttractionId(packageId);
+        // navigate('/attractiondetails');
+        navigate(`/attractiondetails/${packageId}`);
     }
     const topThreeAttraction = attractionData?.slice(startIndexAtt, startIndexAtt + 3);
     const handleNextAtt = () => {
@@ -199,9 +206,10 @@ const Home = () => {
             })
     }, [])
     const topThreeLandCombos = landCombosData?.slice(startIndexLnC, startIndexLnC + 3);
-    const clickedLandCombos = (id) => {
-        setLandCombosId(id)
-        navigate('/landcombosDetails')
+    const clickedLandCombos = (packageId) => {
+        // setLandCombosId(id)
+        // navigate('/landcombosDetails')
+        navigate(`/landcombosDetails/${packageId}`);
     }
     const handleNextLnC = () => {
         if (startIndexLnC + 3 < landCombosData.length) {
@@ -259,7 +267,7 @@ const Home = () => {
                         {topThreePackages?.map((val, id) => {
                             return <>
                                 <div className="package-card" style={{ width: "32.4%" }}
-                                    onClick={(e) => { e.preventDefault(); clickedPackage(val._id) }}
+                                    onClick={(e) => {clickedPackage(val._id) }}
                                 >
                                     <div className="package-card-image">
                                         <img src={val.thumbnailImage} />
