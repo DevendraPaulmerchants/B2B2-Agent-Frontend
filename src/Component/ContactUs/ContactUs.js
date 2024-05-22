@@ -88,12 +88,12 @@ const ContactUs = () => {
             <b><i class="fa fa-home"></i>Office no: </b>
             202 Rania Business Center Al Barsha first, Dubai, UAE
           </p>
-          <p className='india-address'>
+          {/* <p className='india-address'>
             <b>India Representative Office: Paul Merchants Ltd.</b><br />
             <b>Head Office:</b> <span>SCO 829-830, Sector 22 A, Chandigarh – 160022</span> <br />
             <b>Regd Office:</b> <span>DSM 335, 336, 337, 3rd Floor, DLF Tower, 15,
               Shivaji Marg, Najafgarh Road, New Delhi -110015</span>
-          </p>
+          </p> */}
           <p style={{margin:0}}>
             <b><i class="fa fa-phone"></i></b>
             +971 444 52101
