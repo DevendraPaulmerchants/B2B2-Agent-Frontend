@@ -268,7 +268,7 @@ const Transfers = () => {
         }
     }
     const [filterList, setFilterList] = useState(null);
-    const [dataNotfound, setDataNotFound] = useState('')
+    const [dataNotfound, setDataNotFound] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const searchList = (e) => {
@@ -308,7 +308,7 @@ const Transfers = () => {
                 } else {
                     setFilterList([]);
                     // setFilteredList([])
-                    setDataNotFound('Transfer not found');
+                    setDataNotFound(true);
                     setLoading(false);
                 }
             })
@@ -1014,7 +1014,11 @@ const Transfers = () => {
                             </div>
                         </>
                     }) : (<div className="data-not-found">
-                        <h2>{dataNotfound}</h2>
+                        {dataNotfound && <div style={{textAlign:"center"}}>
+                              <img src="NotFound.svg"/>
+                              <p>No Transfer Found</p>
+                            </div>
+                        }
                     </div>)}
 
                 </div>
