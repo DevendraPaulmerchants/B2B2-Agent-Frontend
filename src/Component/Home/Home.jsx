@@ -86,7 +86,7 @@ const Home = () => {
     let filteredAtt;
     const handleSearch = () => {
         const searchTermLower = searchTerm.toLowerCase();
-        if (searchTermLower === "") {
+        if (searchTermLower == "") {
             setPackageData(originalPackages);
             setLandCombosData(originalLnC);
             setAttractionData(originalAtt)
@@ -245,7 +245,7 @@ const Home = () => {
                             value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
-                                // handleSearch();
+                                handleSearch();
                             }}
                         />
                         <IoSearchSharp style={{ fontSize: "20px", cursor: "pointer" }} onClick={handleSearch} />

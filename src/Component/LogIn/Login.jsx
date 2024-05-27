@@ -25,6 +25,7 @@ const Login = ({ setLoggedIn }) => {
   }
 
   const navigate = useNavigate();
+
   const handleLogin = () => {
     fetch(`${APIPath}/api/v1/agent/auth/login`, {
             headers: {
@@ -53,6 +54,54 @@ const Login = ({ setLoggedIn }) => {
             alert(err)
         })
   };
+
+//   const handleLogin = () => {
+//     fetch(`${APIPath}/api/v1/agent/auth/login`, {
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         method: 'POST',
+//         mode: 'cors',
+//         body: JSON.stringify(ExistUser)
+//     })
+//     .then((res) => res.json())
+//     .then((data) => {
+//         console.log(data);
+//         if (data.message === "Login successful") {
+//             setAgentName(data.data.account.agentName);
+//             setToken(data.data.tokens.access.token);
+//             setCartLength(data.data.account.cart);
+//             setCartLengthValue(true);
+//             setLoggedIn(true);
+//             navigate('/');
+
+//             // Send the second request with login=success
+//             fetch(`${APIPath}/api/v1/agent/auth/loginSuccess`, {
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 method: 'POST',
+//                 mode: 'cors',
+//                 body: JSON.stringify({ login: 'success' })
+//             })
+//             .then((response) => response.json())
+//             .then((result) => {
+//                 console.log('Login success payload sent:', result);
+//             })
+//             .catch((error) => {
+//                 console.error('Error sending login success payload:', error);
+//             });
+//         } else {
+//             alert("Please Check Email and Password");
+//             return false;
+//         }
+//     })
+//     .catch((err) => {
+//         alert(err);
+//     });
+// };
+
+
   const forgotClose=()=>{
     setForgot(false);
   }

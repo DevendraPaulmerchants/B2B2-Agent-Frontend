@@ -75,7 +75,7 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                           <img src="/suitcasebookingpage.svg" />
                           {/* <TiTick style={{fontSize:"24px", color:"green"}} /> */}
                           </div>
-                        <div><p><b>{descriptionPageData.vehicle.suitCaseAllowed}</b> max. Suitcase allowedd</p></div>
+                        <div><p><b>{descriptionPageData.vehicle.suitCaseAllowed}</b> max. Suitcase allowed</p></div>
                       </div>   
                     </div>
                     <div className="transfer-suit-allow">
@@ -84,7 +84,7 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                           <img src="handbagbookingpage.svg" />
                           {/* <TiTick style={{fontSize:"24px", color:"green"}} /> */}
                           </div>
-                        <div><p><b>{descriptionPageData.vehicle.handbagAllowed}</b> max. Handbag allowedd</p></div>
+                        <div><p><b>{descriptionPageData.vehicle.handbagAllowed}</b> max. Handbag allowed</p></div>
                       </div>   
                     </div>
 
