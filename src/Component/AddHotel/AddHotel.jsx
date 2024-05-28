@@ -28,7 +28,6 @@ const AddHotel=({countryId,cityId})=>{
         }
     }
     const addNewHotelName=()=>{
-        // console.log(hotelObj)
         setLoading(true);
       fetch(`${APIPath}/api/v1/agent/hotel`, {
         headers: {
@@ -113,7 +112,7 @@ const AddHotel=({countryId,cityId})=>{
                                     // e.preventDefault();
                                     // addNewHotelName();
                                 //  }}
-                                >Add Vehicle</button>
+                                >Add Hotel</button>
                             </>
                         )}
                     </div>
