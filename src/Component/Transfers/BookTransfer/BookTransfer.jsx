@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDate, selectedDateTo }) => {
     document.body.style.overflow = 'hidden';
     const { token, setBookTransfer, transferDetails, setDescriptionPage } = useCart()
-    // console.log(transferDetails)
+    console.log(transferDetails.type)
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(adultsPassengers);
     const [childPassenger, setChildPassenger] = useState(childPassengers);
@@ -57,8 +57,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 arrivalFlightCode: flightArrivalCode,
                 departurePickupTime: flightDepartureTime,
                 departureFlightCode: flightDepartureCode,
-                numberOfAdults: parseInt(adultPassenger), 
-                numberOfChildrens: parseInt(childPassenger),  
+                numberOfAdults: parseInt(adultPassenger),
+                numberOfChildrens: parseInt(childPassenger),
                 vehicle: transferDetails.vehicle.type,
                 remarks: transferDetails.additionalDetails,
                 pickupTimeForArrival: arrivalPickupTime,
@@ -75,6 +75,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             }
         }
     }
+    const validTypes = ["AirportToHotel", "AirportToAirport", "HotelToAirport"];
     const bookThisTransfer = () => {
         if (name.length <= 0) {
             alert("please fill lead passenger details")
@@ -88,28 +89,29 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             alert("please fill passenger email:");
             return;
         }
-        if (adultPassenger <= 0 ) {
+        if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult")
             return
         }
-        if((adultPassenger + childPassenger ) > transferDetails.vehicle.maxPassenger){
-            alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers` )
+        if ((adultPassenger + childPassenger) > transferDetails.vehicle.maxPassenger) {
+            alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers`)
             return;
         }
-        if(flightArrivalCode.length < 7) {
-            alert("please fill arrival flight code..")
+        if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 7) {
+            alert("please fill arrival flight code...");
+            return;
+        }
+
+        if ( validTypes.includes(transferDetails.type) && arrivalPickupTime.length < 5) {
+            alert("please fill pickup time from airport...")
             return
         }
-        if (arrivalPickupTime.length < 5){
-            alert("please fill pickup time from airport...")
-           return
-        }
-        if(tripType === 'ROUND_TRIP'){
-            if(flightDepartureCode.length < 7) {
-                alert("please fill departure flight Code..");
+        if (tripType === 'ROUND_TRIP') {
+            if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 7) {
+                alert("please fill departure flight Code...");
                 return
             }
-            if(departurePickupTime.length < 5){
+            if (validTypes.includes(transferDetails.type) && departurePickupTime.length < 5) {
                 alert("please fill departure time to airport...");
                 return
             }
@@ -137,70 +139,69 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         }
     }
     const addtransfertoCart =
-        {
-            type:1,
-            transfers: [
-                {
-                    selectedTripType:tripType ,
-                    selectedTransferType: transferDetails.type,
-                    transferId: transferDetails._id,
-                    pickupTimeForArrival: flightArrivalTime,
-                    arrivalPickupTime: arrivalPickupTime,
-                    arrivalFlightCode: flightArrivalCode,
-                    numberOfAdults: adultPassenger,
-                    numberOfChildrens: childPassenger,
-                    pickupTimeForDeparture: flightDepartureTime,
-                    departurePickupTime: departurePickupTime,
-                    departureFlightCode: flightDepartureCode,
-                    vehicle: transferDetails.vehicle.type,
-                    remarks: "FINDING YOUR DRIVER."
-                }
-            ],
-            customerDetails: {
-                name: name,
-                email: email,
-                phone: mobile,
-                address: {
-                    city: "Chandigarh",
-                }
+    {
+        type: 1,
+        transfers: [
+            {
+                selectedTripType: tripType,
+                selectedTransferType: transferDetails.type,
+                transferId: transferDetails._id,
+                pickupTimeForArrival: flightArrivalTime,
+                arrivalPickupTime: arrivalPickupTime,
+                arrivalFlightCode: flightArrivalCode,
+                numberOfAdults: adultPassenger,
+                numberOfChildrens: childPassenger,
+                pickupTimeForDeparture: flightDepartureTime,
+                departurePickupTime: departurePickupTime,
+                departureFlightCode: flightDepartureCode,
+                vehicle: transferDetails.vehicle.type,
+                remarks: "FINDING YOUR DRIVER."
+            }
+        ],
+        customerDetails: {
+            name: name,
+            email: email,
+            phone: mobile,
+            address: {
+                city: "Chandigarh",
             }
         }
-    
+    }
     const addToCart = () => {
         if (name.length <= 0) {
             alert("please fill lead passenger name...")
             return
         }
         if (mobile.toString().length < 8) {
-            alert("Please check mobile number");
+            alert("Please check mobile number...");
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenge email:");
+            alert("please fill passenge email...");
             return;
         }
         if (adultPassenger <= 0) {
-            alert("please Add at least 1 Adult")
+            alert("please Add at least 1 Adult...")
             return
         }
-        if((adultPassenger + childPassenger ) > transferDetails.vehicle.maxPassenger){
-            alert(`This Vehicle can not allow more then ${transferDetails.vehicle.maxPassenger} passengers` )
+        if ((adultPassenger + childPassenger) > transferDetails.vehicle.maxPassenger) {
+            alert(`This Vehicle can not allow more then ${transferDetails.vehicle.maxPassenger} passengers`)
             return;
         }
-        if(flightArrivalCode.length < 7) {
-            alert("please fill arrival flight code..")
+        if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 7) {
+            alert("please fill arrival flight code...")
             return
         }
-        if (arrivalPickupTime.length < 5){
+        if (validTypes.includes(transferDetails.type) && arrivalPickupTime.length < 5) {
             alert("please fill pickup time from airport...")
-           return
+            return
         }
-        if(tripType === 'ROUND_TRIP'){
-            if(flightDepartureCode.length < 7) {
-                alert("please fill departure flight Code..");
+        if (tripType === 'ROUND_TRIP') {
+            if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 7) {
+                alert("please fill departure flight Code...");
                 return
             }
-            if(departurePickupTime.length < 5){
+            if (validTypes.includes(transferDetails.type) && departurePickupTime.length < 5) {
                 alert("please fill departure time to airport...");
                 return
             }
@@ -237,7 +238,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                     /></h2>
                 </div>
                 <div className="booking-passenger-details">
-                    <form onSubmit={(e) => { e.preventDefault();}}>
+                    <form onSubmit={(e) => { e.preventDefault(); }}>
                         <br />
                         {/* -------------------------------Passenger Deatils------------------------- */}
                         <div className="lead-passenger-parent-container">
@@ -262,7 +263,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                             <div className="lead-passenger-name">
                                 <label htmlFor="Lead-Passenger-Email">Email</label>
                                 <input type="email" placeholder="EnterEmail.. " required
-                                maxLength={40}
+                                    maxLength={40}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
@@ -551,10 +552,10 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 <h4><b>Total Amount:</b></h4>
                                 <h4><b>&nbsp;AED {transferDetails.cost}</b><sub>+Taxes</sub></h4>
                             </div>
-                          {/* -------------------------Close and Book Transfer button------------------ */}
+                            {/* -------------------------Close and Book Transfer button------------------ */}
                             <div className="booking-transfer-btn">
                                 <button onClick={() => addToCart()}>Add To cart</button>
-                                <button onClick={()=>{bookThisTransfer()}}>Book Now</button>
+                                <button onClick={() => { bookThisTransfer() }}>Book Now</button>
                             </div>
                         </div>
                     </form>

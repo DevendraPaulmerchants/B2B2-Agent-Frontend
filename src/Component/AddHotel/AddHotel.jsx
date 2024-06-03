@@ -105,14 +105,8 @@ const AddHotel=({countryId,cityId})=>{
                             <div className="loader"></div>
                         ) : (
                             <>
-
                                 <button onClick={cancelHotel} id="cancel">Cancel</button>
-                                <button type="submit" id="add-hotel"
-                                //  onClick={(e)=>{
-                                    // e.preventDefault();
-                                    // addNewHotelName();
-                                //  }}
-                                >Add Hotel</button>
+                                <button type="submit" id="add-hotel" >Add Hotel</button>
                             </>
                         )}
                     </div>

@@ -22,6 +22,8 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
     const [mobile, setMobile] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const pkgPrice = ((packagedata[0].price[0].price) * (adultPassenger) + (packagedata[0].price[1].price) * (childPassenger));
 
     useEffect(() => {
@@ -49,7 +51,7 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
         }
     };
     const handleEmailChange = (e) => {
-        const email = e.target.value.trim(); 
+        const email = e.target.value.trim();
         setEmail(email);
         if (email === "" || /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
             setEmail(email);
@@ -78,26 +80,27 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
     const navigate = useNavigate();
     const bookThisPackage = () => {
         if (name.length <= 0) {
-            alert("please fill lead passenger details")
+            alert("please fill lead passenger details...")
             return
         }
         if (mobile.toString().length < 8) {
-            alert("Please check mobile number");
+            alert("Please check mobile number...");
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenge email:");
+            alert("please fill passenge email...");
             return;
         }
-        if (adultPassenger <= 0 ) {
-            alert("please Add at least 1 Adult")
+        if (adultPassenger <= 0) {
+            alert("please Add at least 1 Adult...")
             return
         }
         if (fromDate.length < 2) {
-            alert("please select package start date: ")
+            alert("please select package start date...")
             return;
         }
         else {
+            setLoading(true);
             fetch(`${APIPath}/api/v1/agent/package/book-package`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -109,10 +112,12 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
             }).then((res) => res.json())
                 .then((data) => {
                     alert("Request successfully sent to admin...")
+                    setLoading(false);
                     navigate('/packages')
                 })
                 .catch((err) => {
                     alert(err)
+                    setLoading(false);
                     return
                 })
         }
@@ -140,28 +145,28 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
     }
     const addToCart = () => {
         if (name.length <= 0) {
-            alert("please fill lead passenger details")
+            alert("please fill lead passenger details...")
             return
         }
         if (mobile.toString().length < 8) {
-            alert("Please check your mobile number ");
-            
+            alert("Please check your mobile number...");
+
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenger email:");
+            alert("please fill passenger email...");
             return;
         }
-        if (adultPassenger <= 0 ) {
-            alert("please Add at least 1 Adult")
+        if (adultPassenger <= 0) {
+            alert("please Add at least 1 Adult...")
             return
         }
-        if (fromDate.length < 2 ) {
-            alert("please select package start date: ")
+        if (fromDate.length < 2) {
+            alert("please select package start date...")
             return;
         }
         else {
-            console.log("add to cart:", BookingPackageData)
+            setLoading(true)
             fetch(`${APIPath}/api/v1/agent/new-cart`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -172,12 +177,13 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
                 body: JSON.stringify(addToCartPackage)
             }).then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
-                    alert(data.message)
+                    alert(data.message);
+                    setLoading(false);
                     navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)
+                    setLoading(false);
                     return
                 })
         }
@@ -227,7 +233,7 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
 
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Adults</span> (&gt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -247,7 +253,7 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Children</span> (&lt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -299,12 +305,18 @@ const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
                             </p>
                         </div>
                         <div className="package-price-btn">
-                            <button onClick={() => {
-                                addToCart();
-                            }}>Add To Cart</button> &nbsp; &nbsp; &nbsp;
-                            <button onClick={() => {
-                                bookThisPackage();
-                            }}>Book Now</button>
+                            {loading ? (
+                                <div className="loader"></div>
+                            ) : (
+                                <>
+                                    <button onClick={() => {
+                                        addToCart();
+                                    }}>Add To Cart</button> &nbsp; &nbsp; &nbsp;
+                                    <button onClick={() => {
+                                        bookThisPackage();
+                                    }}>Book Now</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </form>

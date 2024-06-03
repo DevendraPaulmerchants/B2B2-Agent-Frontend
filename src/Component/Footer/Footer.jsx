@@ -80,9 +80,9 @@ const Footer = () => {
                     <br /><br />
                     <div>
                         <h5 style={{ marginBottom: "0", fontFamily: "Montserrat", fontWeight: "600" }}>We Accept Debit and Credit Cards </h5>
-                        <img src='/Master.png' alt='Master-Card' style={{ width: "120px" }} />
-                        <img src='/Visa.webp' alt='Master-Card' style={{ width: "120px" }} />
-                        <img src='/UnionPay.png' alt='Master-Card' style={{ width: "120px" }} />
+                        <img src='/Master.png' alt='Master-Card' style={{ width: "120px",height:"100px" }} />
+                        <img src='/Visa.webp' alt='Master-Card' style={{ width: "120px",height:"100px" }} />
+                        <img src='/UnionPay.png' alt='Master-Card' style={{ width: "120px",height:"100px" }} />
                     </div>
                 </div>
             </div>

@@ -13,6 +13,7 @@ const PasswordReset = () => {
     const [password2, setPassword2] = useState('');
     const [error, setError] = useState(true);
     const [isValid, setIsValid] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const [token1, setToken1] = useState("");
     const [id, setId] = useState("")
@@ -55,6 +56,7 @@ const PasswordReset = () => {
         }
         else {
             setError(true);
+            setLoading(true)
             fetch(`${APIPath}/api/v1/agent/auth/forgot-password`, {
                 headers: {
                     // 'Authorization': `Bearer ${token}`,
@@ -69,10 +71,12 @@ const PasswordReset = () => {
                 })
             }).then((res) => res.json())
                 .then((data) => {
+                    setLoading(false)
                     alert("Password reseted successfully...")
                     navigate('/login')
                 })
                 .catch((err) => {
+                    setLoading(false)
                     alert(err)
                     return
                 })
@@ -116,7 +120,11 @@ const PasswordReset = () => {
                     <br />
                     <br />
                     <div style={{ textAlign: "center" }}>
-                        <button>Reset</button>
+                        {loading ? <div className="loader"></div> :
+                            <>
+                                <button
+                                >Reset</button>
+                            </>}
                     </div>
                 </form>
             </div>

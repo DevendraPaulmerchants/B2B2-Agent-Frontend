@@ -22,6 +22,7 @@ const Registration = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [isValid, setIsValid] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const handlePasswordChange = (e) => {
         e.preventDefault();
@@ -56,28 +57,32 @@ const Registration = () => {
             alert("Password criteria do not match");
             return;
         }
-        fetch('https://admin.magicalvacation.com/api/v1/agent/auth/register', {
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify(formData)
-        }).then((res) => res.json())
-            .then((data) => {
-                console.log(data)
-                if (data.message === 'agent registered successfully!!') {
-                    // alert("Agent created successfully!!")
-                    alert("Account created Succesfully");
-                    navigate('/login')
-                } else {
-                    alert(data.message)
-                    navigate('/registration')
-                }
-            })
-            .catch((err) => {
-                alert(err)
-            })
+        else {
+            setLoading(true)
+            fetch('https://admin.magicalvacation.com/api/v1/agent/auth/register', {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: 'POST',
+                mode: 'cors',
+                body: JSON.stringify(formData)
+            }).then((res) => res.json())
+                .then((data) => {
+                    // console.log(data)
+                    setLoading(false);
+                    if (data.message === 'agent registered successfully!!') {
+                        alert("Account created Succesfully");
+                        navigate('/login')
+                    } else {
+                        alert(data.message)
+                        navigate('/registration')
+                    }
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
     };
 
     return <>
@@ -207,7 +212,10 @@ const Registration = () => {
                         {isValid && <br/> }
                         {/* -----------------------------Register button---------- */}
                         <div className="registration-btn">
-                            <button type="submit">REGISTER</button>
+                        {loading ? <div className="loader"></div> :
+                            <>
+                                <button type="submit">REGISTER</button>
+                            </>}
                         </div>
                     </form>
                     {/* --------------------------- Do not have account------------- */}

@@ -2,19 +2,21 @@ import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import './Forgot_password.css';
 // import PasswordReset from "./PasswordReset";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 
 const ForgotPassword = ({ onClose }) => {
     document.body.style.overflow = 'hidden';
     const [email, setEmail] = useState('');
+    const [loading, setLoading] = useState(false);
     // const [resetScreen, setResetScreen] = useState(false);
-    
+
     const onEmailChange = (e) => {
         setEmail(e.target.value)
     }
-    const navigate=useNavigate();
+    const navigate = useNavigate();
     const sendLink = async () => {
+        setLoading(true)
         try {
             const response = await fetch(`${APIPath}/api/v1/agent/auth/request-forgot-password`, {
                 method: 'POST',
@@ -25,20 +27,19 @@ const ForgotPassword = ({ onClose }) => {
                     email: email
                 })
             });
-            if(!response.ok) {
-                // throw new Error(data.message);
-                // console.log(response)
-                // navigate('/login')
+            if (!response.ok) {
             }
             const data = await response.json();
             alert(data.message)
+            setLoading(false)
             onClose();
             navigate('/login');
         } catch (error) {
             alert(error.message);
+            setLoading(false)
         }
     };
-    
+
     return <>
         <div className="forgot-password-container">
             <div className="forgot-password-main">
@@ -56,15 +57,16 @@ const ForgotPassword = ({ onClose }) => {
                         }} />
                     </div>
                     <div className="forgot-password-button">
-                        <button
-                        // onClick={sendLink}
-                        >Send Link</button>
+                        {loading ? <div className="loader"></div> :
+                            <>
+                                <button
+                                >Send Link</button>
+                            </>}
                     </div>
                     <br />
                 </form>
             </div>
         </div>
-        {/* {resetScreen && <PasswordReset />} */}
     </>
 }
 export default ForgotPassword;

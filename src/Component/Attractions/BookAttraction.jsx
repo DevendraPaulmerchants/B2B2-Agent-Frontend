@@ -19,6 +19,8 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
     const [mobile, setMobile] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const pkgPrice = price * (adultPassenger) + price * (childPassenger)
     const handleNameChange = (e) => {
         const name = e.target.value;
@@ -62,16 +64,16 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
             alert("please fill passenger email:");
             return;
         }
-        if (adultPassenger <= 0 ) {
+        if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult")
             return
         }
-        if (fromDate.length < 2 ) {
+        if (fromDate.length < 2) {
             alert("please select date : ")
             return;
         }
         else {
-            // console.log("submitted Attractions: ",BookingPackageData)
+            setLoading(true)
             fetch(`${APIPath}/api/v1/agent/attraction/book-attraction`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -83,10 +85,12 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
             }).then((res) => res.json())
                 .then((data) => {
                     alert("Request successfully sent to admin...")
+                    setLoading(false)
                     navigate('/attractions')
                 })
                 .catch((err) => {
                     alert(err)
+                    setLoading(false)
                     return
                 })
         }
@@ -113,29 +117,28 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
         }
     }
     const addToCart = () => {
-        //    e.preventDefault();
         if (name.length <= 0) {
-            alert("please fill lead passenger details")
+            alert("please fill lead passenger details...")
             return
         }
         if (mobile.toString().length < 8) {
-            alert("Mobile number should have 10 digits");
+            alert("Mobile number should have 10 digits...");
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenge email:");
+            alert("please fill passenge email...");
             return;
         }
-        if (adultPassenger <= 0 ) {
-            alert("please Add at least 1 Adult")
+        if (adultPassenger <= 0) {
+            alert("please Add at least 1 Adult...")
             return
         }
-        if (fromDate.length < 2 ) {
-            alert("please select Attraction date ")
+        if (fromDate.length < 2) {
+            alert("please select Attraction date...")
             return;
         }
         else {
-            console.log("add to cart:", BookingPackageData)
+            setLoading(true)
             fetch(`${APIPath}/api/v1/agent/new-cart`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -147,10 +150,12 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
             }).then((res) => res.json())
                 .then((data) => {
                     alert(data.message)
+                    setLoading(false)
                     navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)
+                    setLoading(false)
                     return
                 })
         }
@@ -200,7 +205,7 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
 
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Adults</span> (&lt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -220,7 +225,7 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Children</span> (&lt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -271,12 +276,18 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
                             </p>
                         </div>
                         <div className="package-price-btn">
-                            <button onClick={() => {
-                                addToCart();
-                            }}>Add To Cart</button> &nbsp; &nbsp; &nbsp;
-                            <button onClick={() => {
-                                bookThisPackage();
-                            }}>Book Now</button>
+                            {loading ? (
+                                <div className="loader"></div>
+                            ) : (
+                                <>
+                                    <button onClick={() => {
+                                        addToCart();
+                                    }}>Add To Cart</button> &nbsp; &nbsp; &nbsp;
+                                    <button onClick={() => {
+                                        bookThisPackage();
+                                    }}>Book Now</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </form>

@@ -19,6 +19,8 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
     const [mobile, setMobile] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const pkgPrice = price * (adultPassenger) + price * (childPassenger)
     const handleNameChange = (e) => {
         const name = e.target.value;
@@ -51,30 +53,31 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
     const navigate = useNavigate();
     const bookThisPackage = () => {
         if (name.length <= 0) {
-            alert("please fill lead passenger details")
+            alert("please fill lead passenger details...")
             return
         }
         if (mobile.toString().length < 8) {
-            alert("Mobile number should have 10 digits");
+            alert("Mobile number should have 10 digits...");
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenge email:");
+            alert("please fill passenge email...");
             return;
         }
-        if (adultPassenger <= 0 ) {
-            alert("please Add at least 1 Adult")
+        if (adultPassenger <= 0) {
+            alert("please Add at least 1 Adult...")
             return
         }
-        if (fromDate.length < 2 ) {
-            alert("please select from date: ")
+        if (fromDate.length < 2) {
+            alert("please select from date...")
             return;
         }
-        if(toDate.length < 2) {
-            alert("please select to date : ")
+        if (toDate.length < 2) {
+            alert("please select to date...")
             return;
         }
         else {
+            setLoading(true)
             fetch(`${APIPath}/api/v1/agent/landCombo/book-landCombo`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -85,11 +88,13 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
                 body: JSON.stringify(BookingPackageData)
             }).then((res) => res.json())
                 .then((data) => {
-                    alert("Request successfully sent to admin...")
+                    alert("Request successfully sent to admin...");
+                    setLoading(false);
                     navigate('/landcombos')
                 })
                 .catch((err) => {
                     alert(err)
+                    setLoading(false);
                     return
                 })
 
@@ -117,32 +122,32 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
         }
     }
     const addToCart = () => {
-        //    e.preventDefault();
         if (name.length <= 0) {
-            alert("please fill lead passenger details")
+            alert("please fill lead passenger details...")
             return
         }
         if (mobile.toString().length < 8) {
-            alert("Please check mobile number");
+            alert("Please check mobile number...");
             return;
         }
         if (email.length <= 10) {
-            alert("please fill passenger email:");
+            alert("please fill passenger email...");
             return;
         }
-        if (adultPassenger <= 0 ) {
-            alert("please Add at least 1 Adult")
+        if (adultPassenger <= 0) {
+            alert("please Add at least 1 Adult...")
             return
         }
-        if (fromDate.length < 2 ) {
-            alert("please select from date: ")
+        if (fromDate.length < 2) {
+            alert("please select from date...")
             return;
         }
-        if(toDate.length < 2) {
-            alert("please select to date : ")
+        if (toDate.length < 2) {
+            alert("please select to date...")
             return;
         }
         else {
+            setLoading(true)
             fetch(`${APIPath}/api/v1/agent/new-cart`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -154,10 +159,12 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
             }).then((res) => res.json())
                 .then((data) => {
                     alert(data.message)
+                    setLoading(false)
                     navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)
+                    setLoading(false)
                     return
                 })
         }
@@ -172,10 +179,10 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
                     </h2>
                     <h2 onClick={onClose} style={{ cursor: "pointer" }}><IoMdClose /></h2>
                 </div>
-                <form onSubmit={(e) => { 
-                    e.preventDefault(); 
+                <form onSubmit={(e) => {
+                    e.preventDefault();
                     // bookThisPackage(); 
-                    }}>
+                }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
                             <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
@@ -207,7 +214,7 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
 
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Adults</span> (&gt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -227,7 +234,7 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Children</span> (&lt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -278,12 +285,18 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
                             </p>
                         </div>
                         <div className="package-price-btn">
-                            <button onClick={() => {
-                                addToCart();
-                            }}>Add To Cart</button> &nbsp; &nbsp; &nbsp;
-                            <button onClick={() => {
-                                bookThisPackage();
-                            }}>Book Now</button>
+                            {loading ? (
+                                <div className="loader"></div>
+                            ) : (
+                                <>
+                                    <button onClick={() => {
+                                        addToCart();
+                                    }}>Add To Cart</button> &nbsp; &nbsp; &nbsp;
+                                    <button onClick={() => {
+                                        bookThisPackage();
+                                    }}>Book Now</button>
+                                </>
+                            )}
                         </div>
                     </div>
                 </form>
