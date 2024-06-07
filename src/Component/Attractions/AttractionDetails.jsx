@@ -7,14 +7,12 @@ import { MdArrowOutward } from "react-icons/md";
 import html2pdf from 'html2pdf.js';
 import { Navigate, useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
-// import BookLandCombos from "../LandCombos/BookLandCombos";
 import BookAttraction from "./BookAttraction";
 import './Attraction.css';
 import { useParams } from "react-router-dom";
 
 const AttractionDetails = () => {
     const { packageId} = useParams();
-    // document.body.style.overflow = 'auto';
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -48,7 +46,6 @@ const AttractionDetails = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // if (attractionId) {
             fetch(`${APIPath}/api/v1/attractions/?id=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -58,12 +55,9 @@ const AttractionDetails = () => {
                 mode: 'cors',
             }).then((res) => res.json())
                 .then((data) => {
-                    // console.log(data.data[0].cost[0].cost1.split(" ")[1]);
                     setatPrice(data.data[0].cost[0].cost1.split(" ")[1])
-                    // setTimeout(() => {
                     setAttractiondata(data.data)
                     setLoading(false)
-                    // }, 2000)
                 })
                 .catch((err) => {
                     alert(err)
@@ -126,15 +120,11 @@ const AttractionDetails = () => {
                                     <button
                                         onClick={handleDownloadPDF}
                                     ><img src="/download.svg" />&nbsp; Download
-                                        {/* <MdDownload /> */}
                                     </button>
                                     <button
                                         onClick={handleShare}
                                     ><img src="/shareB.svg" />&nbsp; Share
-                                        {/* <MdShare /> */}
                                     </button>
-                                    {/* <button onClick={handleShare}><MdEmail /></button> */}
-
                                 </div>
                             </div>
                             <div className="package-description">
@@ -148,26 +138,11 @@ const AttractionDetails = () => {
                                 >
                                     <h4>Inclusions/Exclusion</h4>
                                 </div>
-                                {/* <div className={active === 3 ? "package-overview active" : "package-overview"}
-                                    onClick={() => handleActiveClass(3)}
-                                >
-                                    <h4>Day Plan</h4>
-                                </div> */}
-                                {/* <div className={active === 4 ? "package-overview active" : "package-overview"}
-                                    onClick={() => handleActiveClass(4)}
-                                >
-                                    <h4>Booking Procedure</h4>
-                                </div> */}
                                 <div className={active === 5 ? "package-overview active" : "package-overview"}
                                     onClick={() => handleActiveClass(5)}
                                 >
                                     <h4>Cancellation Policy</h4>
                                 </div>
-                                {/* <div className={active === 6 ? "package-overview active" : "package-overview"}
-                                    onClick={() => handleActiveClass(6)}
-                                >
-                                    <h4>Must Carry</h4>
-                                </div> */}
                             </div>
                             {(active === 1) && (
                                 <div className="package-overview-details">
@@ -184,7 +159,6 @@ const AttractionDetails = () => {
                                     </div>
 
                                     <br /> <br/>
-                                    {/* <h4>Contact Info</h4> */}
                                 </div>
                             )}
                             {(active === 2) && (
@@ -213,44 +187,6 @@ const AttractionDetails = () => {
                                     <br/> <br/> 
                                 </div>
                             )}
-                            {/* {(active === 3) && (
-                                <div className="package-daywise-plan">
-                                    {val.dayWisePlan ? val.dayWisePlan.map((plan, id) => {
-                                        return <>
-                                            <div key={id} className="daywise-plan">
-                                                <div className="daywise-image">
-                                                    {(id === 0) && <img src="/dayl.png" />}
-                                                    {(id === (val.dayWisePlan.length - 1)) && <img src="/dayS.png" />}
-                                                    {(id != 0 && id != (val.dayWisePlan.length - 1)) && <img src="/daym.png" />}
-                                                </div>
-                                                <div>
-                                                    <h4>{plan.title}</h4>
-                                                    <p>{plan.description}</p>
-                                                </div>
-                                                {id !== (val.dayWisePlan.length - 1) && <div className="blue-line"></div>}
-                                            </div>
-                                        </>
-                                    }) : (
-                                        <div>
-                                            <h2 style={{ fontSize: "16px", color: "#00081d" }}>Please Send Booking Form to Know more about this</h2>
-                                        </div>
-                                    )}
-                                </div>
-                            )} */}
-                            {/* {(active === 4) && (<div>
-                                <br></br>
-                                {val.bookingProcedure ? val.bookingProcedure.map((val, id) => {
-                                    return <>
-                                        <ul>
-                                            <li>{val}</li>
-                                        </ul>
-                                    </>
-                                }) : (
-                                    <div>
-                                        <h2 style={{ fontSize: "16px", color: "#00081d" }}>Please Send Booking Form to Know more about this</h2>
-                                    </div>
-                                )}
-                            </div>)} */}
                             {(active === 5) && (<div className="attraction-cancellation-policy">
                                 <br></br>
                                 {val.cancellationRefundPolicy ? val.cancellationRefundPolicy.map((val, id) => {
@@ -265,30 +201,7 @@ const AttractionDetails = () => {
                                     <h2 style={{ fontSize: "16px", color: "#00081d" }}>Please Send Booking Form to Know more about this</h2>
                                 </div>)}
                                 <br/> <br/>
-                                {/* <div className="inclusion">
-                                        <h4>Notes</h4>
-                                        {val.policyNote.map((note, id) => {
-                                            return <>
-                                                <ul key={id}>
-                                                    <li>{note}</li>
-                                                </ul>
-                                            </>
-                                        })}
-                                    </div> */}
                             </div>)}
-                            {/* {(active === 6) && (
-                                <div className="package-overview-details">
-                                    <ol key={id}>
-                                        {val.mustCarry ? val.mustCarry.map((carry, id) => {
-                                            return <>
-                                                <li>{carry}</li>
-                                            </>
-                                        }) : (<div>
-                                            <h2 style={{ fontSize: "16px", color: "#00081d" }}>Please Send Booking Form to Know more about this</h2>
-                                        </div>)}
-                                    </ol>
-                                </div>
-                            )} */}
                         </div>
                         <div className={isScrolled ? "footer-none":"package-footer"}>
                             <div className="package-price-text-value">
@@ -296,13 +209,11 @@ const AttractionDetails = () => {
                                     <p>Starting from</p>
                                 </div>
                                 <div className="package-price-value">
-                                    {/* <p><b>AED {val.price[0].price}</b> <sub>/ Per person</sub></p> */}
                                     <p><b>AED {atPrice}</b> <sub>/ Per person</sub></p>
                                 </div>
                             </div>
                             <div className="package-query-text-button">
                                 <div className="package-query-text">
-                                    {/* <p>To Plan your next tour with US!! click on</p> */}
                                 </div>
                                 <div className="package-query-button">
                                     <button onClick={() => {

@@ -1,6 +1,4 @@
 .login-page-container {
-    /* background: url('../public/riverbanksky.jpg'); */
-    /* background: url('../../../public/loginBanner.jpg'); */
     background: url('../../../public/banner.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -11,7 +9,6 @@
 }
 .Login-page {
     border-radius: 15px;
-    /* background-color: rgba(225, 225, 225, 0.75); */
     background-color: rgba(252, 252, 252, 0.9);
     margin: auto;
     display: flex; 
@@ -63,7 +60,6 @@
 .remenderme-forget-password p {
     font-size: 14px;
     font-weight: 500;
-    /* line-height: 24px; */
     display: flex;
     gap: 5px;
     align-items: center;
@@ -72,14 +68,9 @@
     width: 16px;
     height: 16px;
 }
-/* .forgot-password p a {
-    text-decoration: none;
-    color: #297CBB;
-} */
 .login-page-login-btn {
     width: 100%;
     background-color: #52CCFC;
-    /* height: 43px; */
     padding: 5px 10px;
     font-size: 14px;
     font-weight: 500;

@@ -25,7 +25,6 @@ const User = () => {
             mode: 'cors',
         }).then((res) => res.json())
             .then((data) => {
-                console.log(data.data);
                 setBookingData(data.data);
                 setLoading(false);
             })

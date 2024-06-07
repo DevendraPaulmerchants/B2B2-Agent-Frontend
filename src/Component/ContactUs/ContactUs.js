@@ -34,7 +34,6 @@ const ContactUs = () => {
   };
   const handleEmailChange = (e) => {
     const email = e.target.value;
-    // const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (email || email === "") {
       setEmail(email);
     }
@@ -53,7 +52,6 @@ const ContactUs = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log("Form data:", user);
     fetch(`${APIPath}/api/v1/contactus`, {
       headers: {
         'Content-Type': 'application/json'
@@ -88,12 +86,6 @@ const ContactUs = () => {
             <b><i class="fa fa-home"></i>Office no: </b>
             202 Rania Business Center Al Barsha first, Dubai, UAE
           </p>
-          {/* <p className='india-address'>
-            <b>India Representative Office: Paul Merchants Ltd.</b><br />
-            <b>Head Office:</b> <span>SCO 829-830, Sector 22 A, Chandigarh – 160022</span> <br />
-            <b>Regd Office:</b> <span>DSM 335, 336, 337, 3rd Floor, DLF Tower, 15,
-              Shivaji Marg, Najafgarh Road, New Delhi -110015</span>
-          </p> */}
           <p style={{margin:0}}>
             <b><i class="fa fa-phone"></i></b>
             +971 444 52101

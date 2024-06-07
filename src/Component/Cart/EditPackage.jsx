@@ -135,7 +135,6 @@ const BookPackage = ({ onClose, packagedata, price,Pname,Pmobile,Pemail,
                 </div>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    // bookThisPackage();
                 }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
@@ -153,7 +152,6 @@ const BookPackage = ({ onClose, packagedata, price,Pname,Pmobile,Pemail,
                                 international
                                 country={'in'}
                                 value={mobile}
-                                // onChange={setMobile}
                                 className="PhoneInput--readOnly"
                             />
                         </div>
@@ -162,7 +160,6 @@ const BookPackage = ({ onClose, packagedata, price,Pname,Pmobile,Pemail,
                             <input type="email" placeholder="Enter Email.. " required
                                 maxLength={30}
                                 value={email}
-                                // onChange={(e) => { handleEmailChange(e) }}
                                 className="PhoneInput--readOnly"
                             />
                         </div>
@@ -234,7 +231,6 @@ const BookPackage = ({ onClose, packagedata, price,Pname,Pmobile,Pemail,
                         <div className="booking-price-text-value">
                             <p>Total Price: AED &nbsp;
                                 <b>
-                                    {/* {(packagedata[0].price[0].price) * (adultPassenger) + (packagedata[0].price[1].price) * (childPassenger)} */}
                                     {pkgPrice}
                                 </b>&nbsp;
                                 <sub>
@@ -243,9 +239,6 @@ const BookPackage = ({ onClose, packagedata, price,Pname,Pmobile,Pemail,
                             </p>
                         </div>
                         <div className="package-price-btn">
-                            {/* <button onClick={() => {
-                                addToCart();
-                            }}>Add To Cart</button> &nbsp; &nbsp; &nbsp; */}
                             <button onClick={() => {
                                 EditPackage();
                             }}>Submit</button>

@@ -2,7 +2,6 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-// import './Packages.css';
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
@@ -181,7 +180,6 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
                 </div>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    // bookThisPackage(); 
                 }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
@@ -276,7 +274,6 @@ const BookLandCombos = ({ onClose, bookingPackageId, packagedata, price }) => {
                         <div className="booking-price-text-value">
                             <p>Total Price: AED&nbsp;
                                 <b>
-                                    {/* {(price) * (adultPassenger) + (price) * (childPassenger)} */}
                                     {pkgPrice}
                                 </b>&nbsp;
                                 <sub>

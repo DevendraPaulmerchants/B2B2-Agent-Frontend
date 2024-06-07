@@ -50,7 +50,6 @@
     border-radius: 20px;
 }
 .lead-passenger-name .react-tel-input .form-control {
-  /* width: fit-content; */
   border: 1.5px solid skyblue;
   border-radius: 20px;
 }
@@ -107,7 +106,6 @@
 .booking-flight-arrival-departure-container {
    display: flex;
    padding: 0 2rem;
-   /* gap: 4rem; */
 }
 .flight-arrival-code-time {
     display: flex;

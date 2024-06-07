@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import './SelectTransfer.css';
 import { IoMdClose } from "react-icons/io";
-import { MdInfo } from "react-icons/md";
-import { MdOutlineRoomService } from "react-icons/md";
 import { SiPrivateinternetaccess } from "react-icons/si";
-import { TiTick } from "react-icons/ti";
 import { TiShoppingCart } from "react-icons/ti";
-import {APIPath,userToken} from "../../../Config";
+import {APIPath} from "../../../Config";
 import { useNavigate } from "react-router-dom";
 import {useCart} from "../../context/CartContext"
 const SelectTransfer=({onClose,selectTransferPageData,tripType})=>{
@@ -49,7 +46,6 @@ const SelectTransfer=({onClose,selectTransferPageData,tripType})=>{
 
     const addToCart=(e)=>{
         e.preventDefault();
-
         if((flightCodeArrival && flightTimeArrival) === ""){
             alert("Must fill Flight Code and Arrival Time")
         }
@@ -184,9 +180,7 @@ const SelectTransfer=({onClose,selectTransferPageData,tripType})=>{
                     ><TiShoppingCart style={{fontSize:"1.5rem"}} /> Add To Cart</button>
                   </div>
                 </div>
-                {/* </form> */}
             </div>
-
      </div>
     </>
 }

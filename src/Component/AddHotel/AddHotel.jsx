@@ -7,7 +7,6 @@ import './AddHotel.css';
 const AddHotel=({countryId,cityId})=>{
     const {token,addNewHotel,setAddNewHotel}=useCart();
     document.body.style.overflow='hidden';
-    // console.log("countryId",countryId,"CityId",cityId)
     const [hotelName,setHotelName]=useState('');
     const [hotelAddress,setHotelAddress]=useState('');
     const [hotelZipCode,setHotelZipCode]=useState('');

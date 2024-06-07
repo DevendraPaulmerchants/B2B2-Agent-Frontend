@@ -126,7 +126,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                                 minLength={3} maxLength={30}
                                 value={name}
                                 onChange={(e) => { handleNameChange(e) }}
-                                // contentEditable={true}
                             />
                         </div>
                         <div className="lead-passenger-name" style={{ width: "100%" }}>
@@ -135,11 +134,7 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                                 international
                                 country={'in'}
                                 value={mobile}
-                                // onChange={setMobile}
-                                // contentEditable={false}
-                                // readOnlyinputProps={{ readOnly: true }} 
                                 className="PhoneInput--readOnly"
-                                // style={{ backgroundColor: '#fff', cursor: 'not-allowed'}}
                             />
                             
                         </div>
@@ -147,10 +142,8 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                             <label htmlFor="Lead-Passenger-Email">Email</label>
                             <input type="email" placeholder="EnterEmail.. " required maxLength={40}
                                 value={email}
-                                // onChange={(e) => setEmail(e.target.value)}
                                 contentEditable={false}
                                 className="PhoneInput--readOnly"
-                                // style={{ backgroundColor: '#fff', cursor: 'not-allowed' }}
                             />
                         </div>
                     </div>
@@ -221,9 +214,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                             </p>
                         </div>
                         <div className="package-price-btn">
-                            {/* <button onClick={() => {
-                                addToCart();
-                            }}>Add To Cart</button> &nbsp; &nbsp; &nbsp; */}
                             <button onClick={() => {
                                 EditAttraction();
                             }}>Submit</button>

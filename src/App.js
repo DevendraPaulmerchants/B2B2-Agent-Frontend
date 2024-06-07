@@ -7,8 +7,6 @@ import Navbar from './Component/Navbar/Navbar';
 import Registration from './Component/Registration/Registration';
 import Transfers from './Component/Transfers/Transfers';
 import Cart from './Component/Cart/Cart';
-// import Card from './Component/Card/Card';
-// import Checkout from './Component/Checkout/Checkout';
 import ContactUs from './Component/ContactUs/ContactUs';
 import { CartProvider } from "./Component/context/CartContext";
 import User from './Component/User/User';
@@ -26,6 +24,7 @@ import PasswordReset from './Component/ForgotPassword/PasswordReset';
 function App() {
   document.body.style.overflow="auto";
   const [isLoggedIn, setLoggedIn] = useState(false);
+
   const handleLogout = () => {
     setLoggedIn(false);
   };
@@ -49,8 +48,6 @@ function App() {
           <Route path='/transfers' element={<Transfers/>} />
           <Route path='/cart' element={<Cart/>}/>
           <Route path='/reset' element={<PasswordReset/>} />
-          {/* <Route path='/card' element={<Card/>}/> */}
-         {/* <Route path='/checkout' element={<Checkout/>}/>*/}
           <Route path='/contactus' element={<ContactUs/>}/>
           <Route path='/privacy_policy' element={<Privacy/>}/>
           <Route path='/term&condition' element={<Condition/>}/>

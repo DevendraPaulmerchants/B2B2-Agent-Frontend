@@ -37,9 +37,7 @@ const Footer = () => {
                     <ul className='social'>
                         <li className='social'>
                             <a href="https://www.facebook.com/profile.php?id=61552300956220" target='blank'><span><i class="fa fa-facebook"></i></span></a>
-                            {/* <a href="#" target='_blank'> */}
                             <span className='twitter'><i class="fa fa-twitter"></i></span>
-                            {/* </a> */}
                             <a href="https://www.youtube.com/channel/UC7dtLCXl2SOnGdWvtGT6cEg" target='blank'><span><i class="fa fa-youtube-play"></i></span>   </a>
                             <a href="https://www.instagram.com/magicalvacations7/?next=%2F" target='blank'><span className='instagram'><i class="fa fa-instagram"></i></span></a>
                         </li>
@@ -61,15 +59,6 @@ const Footer = () => {
                             <a href="mailto:info@magicalvacation.com">info@magicalvacation.com</a>
                         </p>
                     </div>
-                    {/* <div>
-                        <p className='india-address'>
-                            <b>India Representative Office: Paul Merchants Ltd.</b><br />
-                            <b>Head Office:</b> <span>SCO 829-830, Sector 22 A, Chandigarh – 160022</span> <br />
-                            <b>Regd Office:</b> <span>DSM 335, 336, 337, 3rd Floor, DLF Tower, 15,
-                                Shivaji Marg, Najafgarh Road, New Delhi -110015</span>
-                        </p>
-                    </div> */}
-
                 </div>
                 <div className='subscribe1'>
                     <form >

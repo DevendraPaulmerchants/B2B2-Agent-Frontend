@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { APIPath } from "../../Config";
-import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import { MdArrowOutward } from "react-icons/md";
@@ -10,7 +9,6 @@ import Footer from "../Footer/Footer";
 
 const Attractions = () => {
     document.body.style.overflow = 'auto';
-    // const { attractionId, setAttractionId } = useCart();
     const [attraction, setAttraction] = useState(null);
     const [originalAtt, setOriginalAtt] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -40,8 +38,6 @@ const Attractions = () => {
     }, [])
     const navigate = useNavigate()
     const clickedAttraction = (packageId) => {
-        // setAttractionId(packageId)
-        // navigate('/attractiondetails');
         navigate(`/attractiondetails/${packageId}`);
     }
     const handleSearch = () => {

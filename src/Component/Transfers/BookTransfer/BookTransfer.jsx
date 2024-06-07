@@ -16,7 +16,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     const [childPassenger, setChildPassenger] = useState(childPassengers);
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState();
-    // const [city,setCity]=useState('');
     const [flightArrivalCode, setFlightArrivalCode] = useState('');
     const [flightArrivalTime, setFLightArrivalTime] = useState(selectedDate);
     const [flightDepartureCode, setFlightDepartureCode] = useState('');
@@ -42,10 +41,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         const year = now.getFullYear();
         const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
-        // const hour = String(now.getHours()).padStart(2, '0');
-        // const minute = String(now.getMinutes()).padStart(2, '0');
         return `${year}-${month}-${day}`;
-        // T${hour}:${minute}`;
     }
     const bookingTransferDetails = {
         transfers: [
@@ -116,7 +112,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 return
             }
         }
-        else {
             fetch(`${APIPath}/api/v1/agent/transfer/book-transfer`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -136,8 +131,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 .catch((err) => (
                     alert(err)
                 ))
-        }
     }
+
     const addtransfertoCart =
     {
         type: 1,
@@ -167,6 +162,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             }
         }
     }
+    
     const addToCart = () => {
         if (name.length <= 0) {
             alert("please fill lead passenger name...")
@@ -206,7 +202,6 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 return
             }
         }
-        else {
             fetch(`${APIPath}/api/v1/agent/new-cart`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -217,15 +212,15 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 body: JSON.stringify(addtransfertoCart)
             }).then((res) => res.json())
                 .then((data) => {
-                    console.log(data);
-                    alert(data.message)
+                    alert(data.message);
+                    setBookTransfer(false)
+                    setDescriptionPage(false)
                     navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)
                     return
                 })
-        }
     }
 
     return <>

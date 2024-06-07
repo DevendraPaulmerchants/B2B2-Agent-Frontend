@@ -2,13 +2,11 @@ import React, { useEffect, useState } from "react";
 import './LandCombos.css';
 import Footer from "../Footer/Footer";
 import { APIPath } from "../../Config";
-import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { IoSearchSharp } from "react-icons/io5";
 
 const LandCombos = () => {
     document.body.style.overflow = 'auto';
-    // const { lancCombosId, setLandCombosId } = useCart();
     const [landCombosData, setLandCombosData] = useState(null);
     const [originalLnC, setOriginalLnC] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +15,6 @@ const LandCombos = () => {
     useEffect(() => {
         fetch(`${APIPath}/api/v1/land_combos`, {
             headers: {
-                // 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             method: 'GET',
@@ -25,11 +22,9 @@ const LandCombos = () => {
         }).then((res) => res.json())
             .then((data) => {
                 console.log(data.data);
-                // setTimeout(() => {
                 setLandCombosData(data.data)
                 setOriginalLnC(data.data)
                 setLoading(false)
-                // }, 2000)
             })
             .catch((err) => {
                 alert(err)
@@ -38,8 +33,6 @@ const LandCombos = () => {
     }, [])
     const navigate = useNavigate()
     const clickedLandCombos = (packageId) => {
-        // setLandCombosId(id);
-        // navigate('/landcombosDetails');
         navigate(`/landcombosDetails/${packageId}`);
     }
 

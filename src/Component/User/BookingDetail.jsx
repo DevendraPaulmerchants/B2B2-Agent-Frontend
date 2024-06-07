@@ -4,10 +4,13 @@ import { useCart } from '../context/CartContext';
 import { APIPath } from "../../Config";
 import './User.css';
 const BookingDetails = ({ onClose, bookingId }) => {
-    document.body.style.overflow='hidden';
-    const { agentName, token } = useCart();
+    document.body.style.overflow = 'hidden';
+    const { token } = useCart();
     const [bookingDetail, setBookingDetail] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [packagedata, setPackagedata] = useState(null);
+    const [landComboData, setLandComboData] = useState(null);
+    const[attractionData,setAttractionData]=useState(null);
 
     useEffect(() => {
         fetch(`${APIPath}/api/v1/agent/booking?id=${bookingId}`, {
@@ -19,12 +22,12 @@ const BookingDetails = ({ onClose, bookingId }) => {
             mode: 'cors',
         }).then((res) => res.json())
             .then((data) => {
-                console.log(data.data);
-                // setTimeout(() => {
-                setBookingDetail(data.data)
-                // setOriginalPackages(data.data)
+                console.log(data.data)
+                setBookingDetail(data.data);
+                setPackagedata(data.data[0].packages);
+                setLandComboData(data.data[0].landCombos);
+                setAttractionData(data.data[0].attractions);
                 setLoading(false)
-                // }, 2000)
             })
             .catch((err) => {
                 alert(err)
@@ -61,14 +64,85 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                     <h4>Email </h4>
                                     <p>{bookingDetail[0].customerDetails.email}</p>
                                 </div>
-                                <div style={{ textAlign: "center" }}>
+                                {/* <div style={{ textAlign: "center" }}>
                                     <h4>Total passengers </h4>
-                                    <p>{(bookingDetail[0].numberOfAdults) + (bookingDetail[0].numberOfChildrens)}</p>
-                                </div>
+                                    <p>{(packagedata?.[0]?.numberOfAdults) + (packagedata?.[0]?.numberOfChildrens)}</p>
+                                </div> */}
                             </div>
                         </div>
                         <hr />
-                        <div className="booking-main-container" style={{ paddingTop: "0" }}>
+                        {packagedata && packagedata.length > 0 && (
+                            <>
+                                <div className="booking-main-container">
+                                    <h2>Package Details </h2>
+                                    <br />
+                                    <div className="agent-booking-passenger-details">
+                                        <div >
+                                            <h4>Title </h4>
+                                            <p>{packagedata?.[0]?.title}</p>
+                                        </div>
+                                        <div style={{ textAlign: "center" }}>
+                                            <h4>Total passengers </h4>
+                                            <p>{(packagedata?.[0]?.numberOfAdults) + (packagedata?.[0]?.numberOfChildrens)}</p>
+                                        </div>
+                                        <div >
+                                            <h4>Total Cost </h4>
+                                            <p><b>AED {packagedata?.[0]?.cost}</b></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        <hr />
+                        {landComboData && landComboData.length > 0 && (
+                            <>
+                                <div className="booking-main-container">
+                                    <h2>Package Details </h2>
+                                    <br />
+                                    <div className="agent-booking-passenger-details">
+                                        <div >
+                                            <h4>Title </h4>
+                                            <p>{landComboData?.[0]?.title}</p>
+                                        </div>
+                                        <div style={{ textAlign: "center" }}>
+                                            <h4>Total passengers </h4>
+                                            <p>{(landComboData?.[0]?.numberOfAdults) + (landComboData?.[0]?.numberOfChildrens)}</p>
+                                        </div>
+                                        <div >
+                                            <h4>Total Cost </h4>
+                                            <p><b>AED {landComboData?.[0]?.cost}</b></p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        <hr />
+                        {attractionData && attractionData.length > 0 && (
+                            <>
+                                <div className="booking-main-container">
+                                    <h2>Package Details </h2>
+                                    <br />
+                                    <div className="agent-booking-passenger-details">
+                                        <div >
+                                            <h4>Title </h4>
+                                            <p>{attractionData?.[0]?.title}</p>
+                                        </div>
+                                        <div style={{ textAlign: "center" }}>
+                                            <h4>Total passengers </h4>
+                                            <p>{(attractionData?.[0]?.numberOfAdults) + (attractionData?.[0]?.numberOfChildrens)}</p>
+                                        </div>
+                                        <div >
+                                            <h4>Total Cost </h4>
+                                            <p><b>AED {attractionData?.[0]?.cost}</b></p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </>
+                        )}
+                        <hr/>
+                        <div className="booking-main-container" style={{ paddingTop: "10px" }}>
                             <h2>Booking Details</h2>
                             <br />
                             <div className="agent-booking-passenger-details">

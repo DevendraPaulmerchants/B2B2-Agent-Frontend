@@ -6,18 +6,19 @@ import { IoLocationOutline } from "react-icons/io5";
 import { MdArrowOutward, MdDownload } from "react-icons/md";
 import { MdEmail, MdShare } from "react-icons/md";
 import { Navigate, useNavigate } from "react-router-dom";
-import html2pdf from 'html2pdf.js';
+// import html2pdf from 'html2pdf.js';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 import BookPackage from "./BookPackage";
 import './Packages.css';
 import { useParams } from "react-router-dom";
 
 const PacKageDetails = () => {
     const { packageId} = useParams();
-    // document.body.style.overflow = 'auto';
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    const { setPackageId, token } = useCart();
+    const {token } = useCart();
     const [packagedata, setPackagedata] = useState(null);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(1);
@@ -67,10 +68,20 @@ const PacKageDetails = () => {
                 })
     }, [packageId])
 
+    // const handleDownloadPDF = () => {
+    //     const element = document.getElementById('package-details');
+    //     html2pdf().from(element).save();
+    // }
     const handleDownloadPDF = () => {
-        const element = document.getElementById('package-details');
-        html2pdf().from(element).save();
-    }
+        const input = document.getElementById('package-details');
+        html2canvas(input).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF();
+            pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.save('package-details.pdf');
+        });
+    };
+
     const [isScrolled, setIsScrolled] = useState(true);
     useEffect(() => {
         const handleScroll = () => {

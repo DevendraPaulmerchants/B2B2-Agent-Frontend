@@ -2,7 +2,6 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-// import './Packages.css';
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
@@ -172,7 +171,6 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
                 </div>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    // bookThisPackage();
                 }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
@@ -253,21 +251,12 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
                                     onChange={(e) => setFromDate(e.target.value)}
                                 />
                             </div>
-                            {/* <div className="lead-passenger-name">
-                                <p style={{ marginBottom: "5px" }}> Return date</p>
-                                <input type="date" style={{ width: "225px" }}
-                                    min={fromDate}
-                                    value={toDate} required
-                                    onChange={(e) => setToDate(e.target.value)}
-                                />
-                            </div> */}
                         </div>
                     </div>
                     <div className="booking-package-price">
                         <div className="booking-price-text-value">
                             <p>Total Price: AED&nbsp;
                                 <b>
-                                    {/* {(price) * (adultPassenger) + (price) * (childPassenger)} */}
                                     {pkgPrice}
                                 </b>&nbsp;
                                 <sub>

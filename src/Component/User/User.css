@@ -74,7 +74,6 @@
     gap: 10px;
 }
 .pagination button {
-    /* padding: 5px 10px; */
     border: none;
     background: none;
     cursor: pointer;
@@ -86,7 +85,6 @@
 /* ---------------------------------------CSS for Booking Details-------- */
 .booking-main-container {
     padding: 1rem 2rem;
-    /* text-align: center; */
 }
 .booking-main-container h2 {
     font-size: 20px;
@@ -97,7 +95,6 @@
     display: flex;
     gap: 2rem;
     justify-content: space-between;
-    /* padding: 10px 4rem; */
 }
 .agent-booking-passenger-details h4 {
     font-size: 16px;

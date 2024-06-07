@@ -16,7 +16,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
     const [childPassenger, setChildPassenger] = useState(childPassengers);
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
-    // const [city,setCity]=useState('');
     const [flightArrivalCode, setFlightArrivalCode] = useState(arrivalFlightCode);
     const [flightArrivalTime, setFLightArrivalTime] = useState(selectedDate);
     const [flightDepartureCode, setFlightDepartureCode] = useState(departureFlightCode);
@@ -74,25 +73,15 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
         }
     
     const bookThisPackage = () => {
-        //    e.preventDefault();
         if (name.length <= 0) {
             alert("please fill lead passenger details")
             return
-        }
-        if (mobile.toString().length < 8) {
-            alert("Please check mobile number");
-            return;
-        }
-        if (email.length <= 10) {
-            alert("please fill passenge email:");
-            return;
         }
         if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult")
             return
         }
         else {
-            // console.log("add to cart:",bookingTransferDetails )
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -103,7 +92,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                 body: JSON.stringify(addtransfertoCart)
             }).then((res) => res.json())
                 .then((data) => {
-                    // console.log(data);
                     alert(data.message)
                     LoadCartItem();
                     navigate('/cart')
@@ -127,7 +115,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                 <div className="booking-passenger-details">
                     <form onSubmit={(e) => { 
                         e.preventDefault(); 
-                        // bookThisTransfer() ;
                         }}>
                         <br />
                         {/* -------------------------------Passenger Deatils------------------------- */}
@@ -147,7 +134,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                     international
                                     country={'in'}
                                     value={mobile}
-                                    // onChange={setMobile}
                                     className="PhoneInput--readOnly"
                                 />
                             </div>
@@ -156,7 +142,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                 <input type="email" placeholder="EnterEmail.. " required
                                 maxLength={40}
                                     value={email}
-                                    // onChange={(e) => setEmail(e.target.value)}
                                     className="PhoneInput--readOnly"
                                 />
                             </div>
@@ -203,7 +188,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                 </div>
                             </div>
                         </div>
-                        {/* </div> */}
                         {/* ----------------------------Flight Details------------ */}
                         {selectedTransferType === 'AirportToHotel' &&
                             <div className="booking-flight-arrival-departure-container">
@@ -323,7 +307,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
                                         <div className="flight-departure-code-time">
-                                            {/* {tripType === 'ROUND_TRIP' && ( */}
                                             <div id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}>
                                                 <h2>Departure Info.</h2>
                                                 <div className="booking-flight-arrival-input">
@@ -358,7 +341,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                                     />
                                                 </div>
                                             </div>
-                                            {/* )} */}
                                         </div>
                                     </div>
                                 </div>
@@ -403,7 +385,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
                                         <div className="flight-departure-code-time">
-                                            {/* {tripType === 'ROUND_TRIP' && ( */}
                                             <div id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}>
                                                 <h2>Departure Info.</h2>
                                                 <div className="booking-flight-arrival-input">
@@ -438,7 +419,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                                     />
                                                 </div>
                                             </div>
-                                            {/* )} */}
                                         </div>
                                     </div>
                                 </div>
@@ -451,11 +431,9 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                                 <h4><b>&nbsp;AED {price}</b><sub>+Taxes</sub></h4>
                             </div>
                             <div className="booking-transfer-btn">
-                                {/* <button onClick={() => addToCart()}>Add To cart</button> */}
                                 <button onClick={()=>{bookThisPackage()}}>Submit</button>
                             </div>
                         </div>
-                        {/* -------------------------Close and Book Transfer button------------------ */}
                     </form>
                 </div>
             </div>

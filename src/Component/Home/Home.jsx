@@ -92,9 +92,7 @@ const Home = () => {
             setAttractionData(originalAtt)
             setAttState(false)
             setPkgState(false)
-            setLnCState(false)
-            // setPkgState(true)
-        }
+            setLnCState(false)        }
         else {
             filteredPackages = originalPackages.filter((packages) =>
                 packages.title.toLowerCase().includes(searchTermLower)
@@ -160,8 +158,6 @@ const Home = () => {
             })
     }, [])
     const clickedAttraction = (packageId) => {
-        // setAttractionId(packageId);
-        // navigate('/attractiondetails');
         navigate(`/attractiondetails/${packageId}`);
     }
     const topThreeAttraction = attractionData?.slice(startIndexAtt, startIndexAtt + 3);
@@ -207,8 +203,6 @@ const Home = () => {
     }, [])
     const topThreeLandCombos = landCombosData?.slice(startIndexLnC, startIndexLnC + 3);
     const clickedLandCombos = (packageId) => {
-        // setLandCombosId(id)
-        // navigate('/landcombosDetails')
         navigate(`/landcombosDetails/${packageId}`);
     }
     const handleNextLnC = () => {
@@ -258,10 +252,6 @@ const Home = () => {
                 <>
                     <div className="package-topbar">
                         <h2>Top Packages for Dubai</h2>
-                        {/* <h2>
-                            <button onClick={handlePrevPkg} className="supersell-btn"> <IoIosArrowBack /> </button>
-                            <button onClick={handleNextPkg} className="supersell-btn"> <IoIosArrowForward /> </button>
-                        </h2> */}
                     </div>
                     <div className="package-card-container" style={{ paddingTop: "1rem" }}>
                         {topThreePackages?.map((val, id) => {
@@ -318,10 +308,6 @@ const Home = () => {
                 <>
                     <div className="package-topbar">
                         <h2>Top Land Combos in Dubai</h2>
-                        {/* <h2>
-                            <button onClick={handlePrevLnC} className="supersell-btn"> <IoIosArrowBack /> </button>
-                            <button onClick={handleNextLnC} className="supersell-btn"> <IoIosArrowForward /> </button>
-                        </h2> */}
                     </div>
                     <div className="land-combos-container" style={{ paddingTop: "1rem" }}>
                         {topThreeLandCombos?.map((val, id) => {
@@ -355,10 +341,6 @@ const Home = () => {
                 <>
                     <div className="package-topbar">
                         <h2>Top Attractions in Dubai</h2>
-                        {/* <h2>
-                            <button onClick={handlePrevAtt} className="supersell-btn"> <IoIosArrowBack /> </button>
-                            <button onClick={handleNextAtt} className="supersell-btn"> <IoIosArrowForward /> </button>
-                        </h2> */}
                     </div>
                     <div className="land-combos-container" style={{ paddingTop: "1rem" }}>
                         {topThreeAttraction?.map((val, id) => {

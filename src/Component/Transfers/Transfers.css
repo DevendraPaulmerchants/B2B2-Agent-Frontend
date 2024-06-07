@@ -5,13 +5,10 @@
     background: url('../../../public/banner.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
-    /* padding: 4rem 10rem; */
 }
 /* ------------------------form class------------ */
 .terminal-acco-details {
-    /* padding:0 2rem 2rem 0; */
     margin: 0;
-    /* background-color: rgba(225, 225, 225, 0.75); */
     border-radius: 10px;
 }
 .terminal-acco-details form p {
@@ -200,7 +197,6 @@
 }
 .transfer-card-price .select-transfer-btn {
   background-color: #05307a;
-  /* margin-top: 3rem; */
   border-radius: 20px;
   width: fit-content;
   float: right;
@@ -214,22 +210,6 @@
     font-weight: 500;
     
 }
-/* ---------------------------Date Input Calander CSS---------- -----------------------------*/
-/* .css-b62m3t-container .css-13cymwt-control {
-    border-radius: 20px;
-}
-.css-b62m3t-container:focus {
-    border-radius: 20px;
-}
-.css-13cymwt-control {
-    background: #fff;
-}
-.css-13cymwt-control:focus,.css-13cymwt-control:hover,.css-13cymwt-control:visited{
-    border-radius: 20px;
-}
-.css-t3ipsp-control:hover{
-    border-radius: 20px;
-} */
 .numberOfPassenger {
     background: #fff;
     border-radius: 20px;

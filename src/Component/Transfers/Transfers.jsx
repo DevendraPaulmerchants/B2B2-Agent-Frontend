@@ -12,10 +12,10 @@ import './Transfers.css';
 import Footer from "../Footer/Footer";
 
 const Transfers = () => {
-    const { bookTransfer, setBookTransfer, transferDetails, setTransferDetails,
-        descriptionPage, setDescriptionPage, filteredList, setFilteredList } = useCart()
+    const { bookTransfer, setBookTransfer, setTransferDetails,
+        descriptionPage, setDescriptionPage } = useCart()
     document.body.style.overflow = 'auto';
-    const { token, addNewHotel, setAddNewHotel, adult, setadult, setChild } = useCart();
+    const { token, addNewHotel, setAddNewHotel, setadult, setChild } = useCart();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -49,7 +49,6 @@ const Transfers = () => {
         const selectedCityId = selectedOption ? selectedOption.value : '';
         console.log(selectedCityId);
         setCityId(selectedCityId);
-        // setAirport([]); 
     };
     // ------------------------------------Date-picker-------------------------------------------------------   
     const [selectedDate, setSelectedDate] = useState('');
@@ -273,7 +272,6 @@ const Transfers = () => {
 
     const searchList = (e) => {
         e.preventDefault();
-        // console.log(adult)
         setLoading(true);
         if (!countryId || !cityId) {
             alert("Please Select Country and City to Continue..");
@@ -301,13 +299,10 @@ const Transfers = () => {
                     setSearchHeight(true);
                     setTimeout(() => {
                         setFilterList(data.data);
-                        // console.log(data.data)
-                        // setFilteredList(data.data);
                         setLoading(false);
                     }, 2000)
                 } else {
                     setFilterList([]);
-                    // setFilteredList([])
                     setDataNotFound(true);
                     setLoading(false);
                 }
@@ -829,7 +824,6 @@ const Transfers = () => {
                                                     />
                                                 </div>
 
-                                                {/* {tripType === 'ROUND_TRIP' && ( */}
                                                 <div className="country" id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}
                                                     style={{ width: "50%" }}
                                                 >
@@ -846,7 +840,6 @@ const Transfers = () => {
                                                         disabled={tripType === 'ROUND_TRIP' ? false : true}
                                                     />
                                                 </div>
-                                                {/* //    )} */}
                                             </div>
                                             <div className="passenger-transfertype-container">
                                                 <div className="Adults-passengers">
@@ -874,7 +867,6 @@ const Transfers = () => {
                                                 </div>
                                                 <div className="Adults-passengers">
                                                     <p>Children
-                                                        {/* (<LiaLessThanSolid />12 Years) */}
                                                     </p>
                                                     <div className="numberOfPassenger">
                                                         <button className="inc-dec-btn"

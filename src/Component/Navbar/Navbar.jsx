@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { FaCircleUser } from 'react-icons/fa6';
-import { FaShoppingCart } from 'react-icons/fa';
-import { IoIosWallet } from 'react-icons/io';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 import { useCart } from '../context/CartContext';
 
 const Navbar = ({ isLoggedIn, onLogout }) => {
-  const { cartLength,setCartLength } = useCart();
-  const [displayedCartLength, setDisplayedCartLength] = useState(0);
+  const { cartLength } = useCart();
   const [userClick, setUserClick] = useState(false)
   const location = useLocation();
-
-  // useEffect(() => {
-  //   if (location.pathname === '/cart') {
-  //     setDisplayedCartLength(cartLiveLength);
-  //   } else {
-  //     setDisplayedCartLength(cartLiveLength);
-  //   }
-  // }, [cartLength, cartLiveLength, location]);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ margin: "0", padding: "0" }}>
@@ -83,14 +71,9 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
           <ul className="navbar-nav" id='navbarNav-mobile-tab'>
             {isLoggedIn ? (
               <>
-                {/* <li className="nav-item children">
-                  <NavLink className="nav-link" to="/wallet">
-                    <img src='wallet.svg'/>
-                  </NavLink>
-                </li> */}
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/cart">
-                    <img src='shoppingcart.svg' />
+                    <img src='shoppingcart.svg' alt='cart'/>
                     <sub style={{
                       background: "#595959", borderRadius: "50%", padding: "2px 6px 3px 6px", color: "#fff",
                       top: "-0.8rem", left: "-0.5rem"
@@ -102,7 +85,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
 
                 <li className="nav-item">
                   <NavLink className="nav-link user-login">
-                    <img src='user1.svg' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
+                    <img src='user1.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
                       onClick={() => {
                         setUserClick(!userClick)
                       }}

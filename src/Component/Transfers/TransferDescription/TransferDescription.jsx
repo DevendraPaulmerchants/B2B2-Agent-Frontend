@@ -3,29 +3,21 @@ import { IoMdClose } from "react-icons/io";
 import { MdInfo } from "react-icons/md";
 import { MdOutlineRoomService } from "react-icons/md";
 import { SiPrivateinternetaccess } from "react-icons/si";
-import { TiTick } from "react-icons/ti";
-import SelectTransfer from "../SelectTransfer/SelectTransfer";
 import './TransferDescription.css';
 import { useNavigate } from "react-router-dom";
 import BookTransfer from "../BookTransfer/BookTransfer";
 import { useCart } from "../../context/CartContext";
 
-const TransferDescription=({onClose,descriptionPageData,tripType})=>{
+const TransferDescription=({onClose,descriptionPageData})=>{
   document.body.style.overflow = 'hidden';
-  const [transferpage,setTransferPage]=useState(false)
-  // const [booktransfer,setBookTransfer]=useState(false)
-  const {bookTransfer,setBookTransfer,descriptionPage, setDescriptionPage,transferDetails} =useCart();
+  const {bookTransfer,setBookTransfer, setDescriptionPage} =useCart();
   const navigate =useNavigate()
-  console.log(transferDetails)
-  const selectTransfer=()=>{
-    setTransferPage(true)
-  }
   const bookThistransfer=()=>{
     setBookTransfer(true)
     setDescriptionPage(false)
   }
     return <>
-          <div className={transferpage ?"": "transferdescription"}>
+          <div className="transferdescription">
             <div className="transfer-description-container">
                 <div className="transfer-description-top">
                   <div className="generale-information-icon">
@@ -34,12 +26,7 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                   </div>
                   <p onClick={onClose} className="onclose-function"><IoMdClose/></p>
                 </div>
-                <hr/>
-                {/* <div className="transfer-description-standard">
-                     <h3>{descriptionPageData.vehicle.class}</h3>
-                     <hr/>
-                </div> */}
-                
+                <hr/> 
                 <div className="transfer-description-services">
                   <div className="generale-information-icon">
                     <div><MdOutlineRoomService style={{fontSize:"24px"}}/></div>
@@ -48,23 +35,10 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                   <hr/>
                   <br/>
                   <div className="transfer-time-minpass-maxpass-allow">
-                    {/* <div className="transfer-time">
-                      <div className="generale-information-icon">
-                        <div><TiTick style={{fontSize:"24px", color:"green"}} /></div>
-                        <div><p><b>{descriptionPageData.durationMinutes} </b>Min</p></div>
-                      </div>
-                    </div> */}
-                    {/* <div className="transfer-minpass">
-                      <div className="generale-information-icon">
-                        <div><TiTick style={{fontSize:"24px", color:"green"}} /></div>
-                        <div><p><b>{descriptionPageData.vehicle.minPassenger}</b> min. Passengers</p></div>
-                      </div>
-                    </div> */}
                     <div className="transfer-maxpass">
                      <div className="generale-information-icon">
                         <div>
                           <img src="/PassengerBookingPage.svg" />
-                          {/* <TiTick style={{fontSize:"24px", color:"green"}} /> */}
                           </div>
                         <div><p><b>{descriptionPageData.vehicle.maxPassenger}</b> max. Passengers</p></div>
                       </div>
@@ -73,7 +47,6 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                      <div className="generale-information-icon">
                         <div>
                           <img src="/suitcasebookingpage.svg" />
-                          {/* <TiTick style={{fontSize:"24px", color:"green"}} /> */}
                           </div>
                         <div><p><b>{descriptionPageData.vehicle.suitCaseAllowed}</b> max. Suitcase allowed</p></div>
                       </div>   
@@ -82,7 +55,6 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                      <div className="generale-information-icon">
                         <div>
                           <img src="handbagbookingpage.svg" />
-                          {/* <TiTick style={{fontSize:"24px", color:"green"}} /> */}
                           </div>
                         <div><p><b>{descriptionPageData.vehicle.handbagAllowed}</b> max. Handbag allowed</p></div>
                       </div>   
@@ -105,11 +77,6 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                   </div>
                   <div className="trnasfer-description-btn-block">
                     <button id="cancel" onClick={onClose}>Cancel</button>
-                    {/* <button id="select"
-                    onClick={() => { 
-                      selectTransfer(); 
-                    }}
-                    >Select Transfer</button> */}
                     <button id="select" 
                     onClick={()=>{
                       bookThistransfer();
@@ -120,10 +87,6 @@ const TransferDescription=({onClose,descriptionPageData,tripType})=>{
                   </div>
                 </div>
             </div>
-            {/* {transferpage && <SelectTransfer onClose={onClose} 
-            selectTransferPageData={descriptionPageData} 
-            tripType={tripType} />} */}
-
             {bookTransfer && < BookTransfer />}
 
           </div>

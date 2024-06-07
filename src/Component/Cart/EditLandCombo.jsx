@@ -134,7 +134,6 @@ const BookLandCombos = ({ onClose, type,
                 </div>
                 <form onSubmit={(e) => { 
                     e.preventDefault(); 
-                    // bookThisPackage(); 
                     }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
@@ -152,7 +151,6 @@ const BookLandCombos = ({ onClose, type,
                                 international
                                 country={'in'}
                                 value={mobile}
-                                // onChange={setMobile}
                                 className="PhoneInput--readOnly"
                             />
                         </div>
@@ -160,7 +158,6 @@ const BookLandCombos = ({ onClose, type,
                             <label htmlFor="Lead-Passenger-Email">Email</label>
                             <input type="email" placeholder="EnterEmail.. " required maxLength={40}
                                 value={email}
-                                // onChange={(e) => setEmail(e.target.value)}
                                 className="PhoneInput--readOnly"
                             />
                         </div>
@@ -231,7 +228,6 @@ const BookLandCombos = ({ onClose, type,
                         <div className="booking-price-text-value">
                             <p>Total Price: AED&nbsp;
                                 <b>
-                                    {/* {(price) * (adultPassenger) + (price) * (childPassenger)} */}
                                     {pkgPrice}
                                 </b>&nbsp;
                                 <sub>
@@ -240,9 +236,6 @@ const BookLandCombos = ({ onClose, type,
                             </p>
                         </div>
                         <div className="package-price-btn">
-                            {/* <button onClick={() => {
-                                addToCart();
-                            }}>Add To Cart</button> &nbsp; &nbsp; &nbsp; */}
                             <button onClick={() => {
                                 bookThisPackage();
                             }}>Submit</button>

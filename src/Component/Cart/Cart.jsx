@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 import './Cart.css';
-// import Checkout from "../Checkout/Checkout";
 import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import BookAttraction from "./EditAttraction";
@@ -84,28 +83,28 @@ const Cart = () => {
 
   let packageprice = 0;
   packages?.forEach((val, id) => {
-    if (val.totalCost && !isNaN(val.totalCost)) {
-      packageprice = packageprice + val.totalCost;
+    if (val.cost && !isNaN(val.cost)) {
+      packageprice = packageprice + val.cost;
     }
   });
 
   let attractionprice = 0;
   attractions?.forEach((val, id) => {
-    if (val.totalCost && !isNaN(val.totalCost)) {
-      attractionprice = attractionprice + val.totalCost;
+    if (val.cost && !isNaN(val.cost)) {
+      attractionprice = attractionprice + val.cost;
     }
   })
 
   let landcombosprice = 0;
   landcombos?.forEach((val, id) => {
-    if (val.totalCost && !isNaN(val.totalCost)) {
-      landcombosprice = landcombosprice + val.totalCost;
+    if (val.cost && !isNaN(val.cost)) {
+      landcombosprice = landcombosprice + val.cost;
     }
   })
   let transferprice = 0;
   transfers?.forEach((val, id) => {
-    if (val.totalCost && !isNaN(val.totalCost)) {
-      transferprice += val.totalCost;
+    if (val.cost && !isNaN(val.cost)) {
+      transferprice += val.cost;
     }
   })
   let vat = parseInt((packageprice + attractionprice + landcombosprice + transferprice) * 5 / 100);
@@ -213,13 +212,6 @@ const Cart = () => {
                       </div>
                       <div className="cart-edit-delete-button">
                         <button
-                          // onMouseEnter={() => {
-                          // setType(2);
-                          // setPkgId(val._id);
-                          // setEditPkgId(val.packageId)
-                          // setPkgStartDate(val.startDate.split("T")[0]);
-                          // setPkgEndDate(val.endDate.split("T")[0])     
-                          // }}
                           onClick={() => {
                             setType(2);
                             setPkgId(val._id);
@@ -236,10 +228,6 @@ const Cart = () => {
                           Edit
                         </button>
                         <button
-                          // onMouseEnter={() => {
-                          //   setType(2);
-                          //   setPkgId(val._id);
-                          // }}
                           onClick={() => {
                             setType(2);
                             setPkgId(val._id);
@@ -252,8 +240,6 @@ const Cart = () => {
                           <img src="/deleteicon.svg" />&nbsp;
                           Delete
                         </button>
-
-
                       </div>
                     </div>
                     <div className="card1-item-title-price">
@@ -262,7 +248,7 @@ const Cart = () => {
                         <h2>{val?.title ? val?.title : "Package Title"}</h2>
                       </div>
                       <div className="card1-item-price">
-                        <h2>AED {val.totalCost}</h2>
+                        <h2>AED {val.cost}</h2>
                       </div>
                     </div>
                   </>
@@ -309,12 +295,6 @@ const Cart = () => {
                       </div>
                       <div className="cart-edit-delete-button">
                         <button
-                          // onMouseEnter={() => {
-                          // setType(3);
-                          // setPkgId(val._id);
-                          // setAttId(val.attractionId)
-                          // setAttDate(val.startDate.split("T")[0])
-                          // }}
                           onClick={() => {
                             setType(3);
                             setPkgId(val._id);
@@ -330,17 +310,12 @@ const Cart = () => {
                           Edit
                         </button>
                         <button
-                          // onMouseEnter={() => {
-                          //   setType(3);
-                          //   setPkgId(val._id);
-                          // }}
                           onClick={() => {
                             setType(3);
                             setPkgId(val._id);
                             if (type === 3) {
                               DeleteOneItem();
                             }
-
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -354,7 +329,7 @@ const Cart = () => {
                         <h2>{val?.title ? val?.title : "Attraction Title"}</h2>
                       </div>
                       <div className="card1-item-price">
-                        <h2>AED {val.totalCost}</h2>
+                        <h2>AED {val.cost}</h2>
                       </div>
                     </div>
                   </>
@@ -433,7 +408,7 @@ const Cart = () => {
                         <h2>{val?.title ? val?.title : "LandCombo Title"}</h2>
                       </div>
                       <div className="card1-item-price">
-                        <h2>AED {val.totalCost}</h2>
+                        <h2>AED {val.cost}</h2>
                       </div>
                     </div>
                   </>
@@ -480,16 +455,16 @@ const Cart = () => {
                       <button onClick={() => {
                         setType(1);
                         setPkgId(val._id);
-                        setTransferId(val.transferId);
-                        setTripType(val.selectedTripType);
-                        setselectedTransferType(val.selectedTransferType)
-                        settotalCost(val.totalCost);
-                        setselectedDate(val.pickupTimeForArrival);
-                        setarrivalFlightCode(val.arrivalFlightCode);
-                        setarrivalPickupTime(val.arrivalPickupTime);
-                        setselectedDateTo(val.pickupTimeForDeparture);
-                        setdepartureFlightCode(val.departureFlightCode);
-                        setdeparturePickupTime(val.departurePickupTime)
+                        setTransferId(val?.transferId);
+                        setTripType(val?.selectedTripType);
+                        setselectedTransferType(val?.selectedTransferType)
+                        settotalCost(val?.cost);
+                        setselectedDate(val?.pickupTimeForArrival);
+                        setarrivalFlightCode(val?.arrivalFlightCode);
+                        setarrivalPickupTime(val?.arrivalPickupTime);
+                        setselectedDateTo(val?.pickupTimeForDeparture);
+                        setdepartureFlightCode(val?.departureFlightCode);
+                        setdeparturePickupTime(val?.departurePickupTime)
                         if (type === 1) {
                           setEditTransfer(true)
                         }
@@ -515,32 +490,32 @@ const Cart = () => {
                     <div className="card1-item-title">
                       <img src="transfericon.svg" />
                       <h2>{val._id.slice(-8)}</h2>
-                      <p>{val.selectedTripType}</p>
-                      <p>Tata Sumo</p>
+                      <p>{val?.selectedTripType}</p>
+                      <p>{val?.vehicle?.name}</p>
                     </div>
                     <div className="card1-item-price">
-                      <h2>AED {val.totalCost}</h2>
+                      <h2>AED {val.cost}</h2>
                     </div>
                   </div>
                   <div className="card1-item-passenger-details">
                     <div className="card1-item-passenger-name" style={{ marginBottom: "1rem" }}>
                       <h4>Pick Up</h4>
-                      <h2>Dubai International Airport</h2>
+                      <h2>{val?.from}</h2>
                     </div>
                     <div className="card1-item-passenger-name" style={{ maxWidth: "140px" }}>
                       <h4>Drop off</h4>
-                      <h2>Taj Dubai</h2>
+                      <h2>{val?.to}</h2>
                     </div>
                     <div className="card1-item-passenger-name">
                       <h4>Pick up dates & time</h4>
                       <div className="cart-item-arrival">
                         <h4>Arrival</h4>
-                        <h2>{val.pickupTimeForArrival} ({val.arrivalPickupTime})</h2>
+                        <h2>{val?.pickupTimeForArrival} ({val?.arrivalPickupTime})</h2>
                       </div>
                       {val.selectedTripType !== "ONE_WAY" && (
                         <div className="cart-item-arrival">
                           <h4>Departure</h4>
-                          <h2>{val.pickupTimeForDeparture} ({val.departurePickupTime})</h2>
+                          <h2>{val?.pickupTimeForDeparture} ({val?.departurePickupTime})</h2>
                         </div>
                       )}
 
@@ -694,7 +669,6 @@ const Cart = () => {
       departurePickupTime1={departurePickupTime}
       LoadCartItem={LoadCartItem}
     />}
-
   </>
 }
 
