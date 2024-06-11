@@ -64,6 +64,7 @@ const Cart = () => {
         setAttractions(data.data[0]?.attractions);
         setLandcombos(data.data[0]?.landCombos);
         setTransfer(data.data[0]?.transfers)
+        console.log(data.data[0]?.transfers)
         setCustomer(data.data[0]?.customerDetails)
         setCartLength(
           (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0].attractions.length) +
@@ -103,8 +104,8 @@ const Cart = () => {
   })
   let transferprice = 0;
   transfers?.forEach((val, id) => {
-    if (val.cost && !isNaN(val.cost)) {
-      transferprice += val.cost;
+    if (val.finalCost && !isNaN(val.finalCost)) {
+      transferprice += val.finalCost;
     }
   })
   let vat = parseInt((packageprice + attractionprice + landcombosprice + transferprice) * 5 / 100);
@@ -449,22 +450,22 @@ const Cart = () => {
                 return <>
                   <div className="card1-item-container-header">
                     <div className="card1-itemid">
-                      <h4>#Id_{val.transferId.slice(-4)}</h4>
+                      {/* <h4>#Id_{val.transferId.slice(-4)}</h4> */}
                     </div>
                     <div className="cart-edit-delete-button">
                       <button onClick={() => {
                         setType(1);
                         setPkgId(val._id);
-                        setTransferId(val?.transferId);
+                        setTransferId(val?.InOut[0].transferId);
                         setTripType(val?.selectedTripType);
                         setselectedTransferType(val?.selectedTransferType)
-                        settotalCost(val?.cost);
-                        setselectedDate(val?.pickupTimeForArrival);
-                        setarrivalFlightCode(val?.arrivalFlightCode);
-                        setarrivalPickupTime(val?.arrivalPickupTime);
-                        setselectedDateTo(val?.pickupTimeForDeparture);
-                        setdepartureFlightCode(val?.departureFlightCode);
-                        setdeparturePickupTime(val?.departurePickupTime)
+                        settotalCost(val?.finalCost);
+                        setselectedDate(val?.InOut[0].pickupTimeForArrival);
+                        setarrivalFlightCode(val?.InOut[0].arrivalFlightCode);
+                        setarrivalPickupTime(val?.InOut[0].arrivalPickupTime);
+                        setselectedDateTo(val?.InOut[1]?.pickupTimeForDeparture);
+                        setdepartureFlightCode(val?.InOut[1]?.departureFlightCode);
+                        setdeparturePickupTime(val?.InOut[1]?.departurePickupTime);
                         if (type === 1) {
                           setEditTransfer(true)
                         }
@@ -491,33 +492,37 @@ const Cart = () => {
                       <img src="transfericon.svg" />
                       <h2>{val._id.slice(-8)}</h2>
                       <p>{val?.selectedTripType}</p>
-                      <p>{val?.vehicle?.name}</p>
+                      <p>{val?.InOut[0].vehicle?.name}</p>
                     </div>
                     <div className="card1-item-price">
-                      <h2>AED {val.cost}</h2>
+                      <h2>AED {val.finalCost}</h2>
                     </div>
                   </div>
                   <div className="card1-item-passenger-details">
                     <div className="card1-item-passenger-name" style={{ marginBottom: "1rem" }}>
                       <h4>Pick Up</h4>
-                      <h2>{val?.from}</h2>
+                      <h2>{val?.InOut[0].from}</h2>
                     </div>
                     <div className="card1-item-passenger-name" style={{ maxWidth: "140px" }}>
                       <h4>Drop off</h4>
-                      <h2>{val?.to}</h2>
+                      <h2>{val?.InOut[0].to}</h2>
                     </div>
                     <div className="card1-item-passenger-name">
                       <h4>Pick up dates & time</h4>
-                      <div className="cart-item-arrival">
-                        <h4>Arrival</h4>
-                        <h2>{val?.pickupTimeForArrival} ({val?.arrivalPickupTime})</h2>
-                      </div>
-                      {val.selectedTripType !== "ONE_WAY" && (
+                      {/* {transfers?.[0]?.selectedTripType !== "ROUND_TRIP" && (
                         <div className="cart-item-arrival">
-                          <h4>Departure</h4>
-                          <h2>{val?.pickupTimeForDeparture} ({val?.departurePickupTime})</h2>
+                          <h2>{val.pickupTimeForDeparture} ({val.departurePickupTime})</h2>
                         </div>
-                      )}
+                      )} */}
+                      {/* {transfers?.[0]?.selectedTripType === "ROUND_TRIP" && ( */}
+                        <div className="cart-item-arrival">
+                          <h2><b>Arrival: </b>{val?.InOut[0].pickupTimeForArrival} ({val?.InOut[0].arrivalPickupTime})</h2>
+                          {transfers?.[0]?.selectedTripType === "ROUND_TRIP" && (
+                          <h2><b>Departure: </b>{val?.InOut[1].pickupTimeForDeparture} ({val?.InOut[1].departurePickupTime})</h2>
+                          )}
+                        </div>
+                      {/* )} */}
+                     
 
                     </div>
                   </div>
@@ -638,7 +643,7 @@ const Cart = () => {
       pkgId={pkgId}
       packageId={editPkgId}
       packagedata={packages}
-      price={packageprice/(packages?.[0].numberOfAdults + packages?.[0].numberOfChildrens)}
+      price={packageprice / (packages?.[0].numberOfAdults + packages?.[0].numberOfChildrens)}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}

@@ -59,7 +59,8 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                     departurePickupTime: departurePickupTime,
                     departureFlightCode: flightDepartureCode,
                     vehicle: "Car",
-                    remarks: "FINDING YOUR DRIVER."
+                    remarks: "FINDING YOUR DRIVER.",
+                    cost:price
                 }
             ],
             customerDetails: {

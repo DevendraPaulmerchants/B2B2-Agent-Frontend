@@ -98,13 +98,12 @@
 .cart2-item-container {
     padding: 1rem 2rem;
 }
-.cart-item-arrival {
-    display: flex;
-    gap: 1rem;
+.cart-item-arrival h2 {
+     margin-bottom: 10px;
 }
 .cart-item-arrival h4 {
     min-width: 40px;
-    /* max-width: 40px; */
+  
 }
 .cart-item-arrival h2 {
     font-size: 14px;
