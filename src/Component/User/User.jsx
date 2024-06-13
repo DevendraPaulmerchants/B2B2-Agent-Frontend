@@ -8,6 +8,7 @@ import './User.css';
 const User = () => {
     document.body.style.overflow='auto';
     const { agentName, token } = useCart();
+    // console.log(agentName)
     const [bookingData, setBookingData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [seebookingdetails, setBookingDetails] = useState(false);
@@ -25,6 +26,7 @@ const User = () => {
             mode: 'cors',
         }).then((res) => res.json())
             .then((data) => {
+                console.log(data.data)
                 setBookingData(data.data);
                 setLoading(false);
             })

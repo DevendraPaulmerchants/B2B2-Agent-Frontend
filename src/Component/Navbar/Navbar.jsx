@@ -4,10 +4,53 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 import { useCart } from '../context/CartContext';
 
-const Navbar = ({ isLoggedIn, onLogout }) => {
-  const { cartLength } = useCart();
+const Navbar = ({ isLoggedIn, onLogout,setLoggedIn }) => {
+  const { cartLength ,setToken,setAgentName} = useCart();
   const [userClick, setUserClick] = useState(false)
   const location = useLocation();
+    
+
+  const getCookie = (name) => {
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    const nameEQ = `${name}=`;
+    for (let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(nameEQ) === 0) {
+            return c.substring(nameEQ.length, c.length);
+        }
+    }
+    return null;
+};
+
+const getAgentInfoFromCookies = () => {
+    const token = getCookie('token');
+    const agentName = getCookie('agentName');
+    return { token, agentName };
+};
+
+useEffect(() => {
+  const { token, agentName } = getAgentInfoFromCookies();
+  if (token && agentName) {
+      setToken(token);
+      setAgentName(agentName);
+      setLoggedIn(true);
+  }
+}, []);
+
+const deleteCookie = (name) => {
+  document.cookie = `${name}=; path=/; max-age=0`;
+};
+
+// Function to handle logout and remove the cookies
+const handleLogout = () => {
+  deleteCookie('token');
+  deleteCookie('agentName');
+  // Additional logout logic (e.g., redirecting to login page)
+};
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ margin: "0", padding: "0" }}>
@@ -102,7 +145,10 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
                               Dashboard
                               </p></NavLink>
                           </li>
-                          <li to="/" onClick={onLogout}>
+                          <li to="/" onClick={()=>{
+                            handleLogout();
+                            onLogout();
+                          }}>
                             <NavLink className="nav-links-log-out" to="/">Log Out</NavLink>
                           </li>
                         </ul>

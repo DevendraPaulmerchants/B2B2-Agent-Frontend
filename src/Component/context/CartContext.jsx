@@ -5,7 +5,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [dataSecret, setDataSecret] = useState(null);
   const [cartCost, setCartCost] = useState(null);
-  const [cartLength,setCartLength]=useState();
+  const [cartLength,setCartLength]=useState(0);
   const [cartLiveLength,setCartLiveLength]=useState(0);
   const [token,setToken]=useState('');
   const [cartLengthValue,setCartLengthValue]=useState(false);
@@ -21,6 +21,7 @@ export const CartProvider = ({ children }) => {
   const [lancCombosId,setLandCombosId]=useState('');
   const [attractionId,setAttractionId]=useState('');
   const [cartItem, setCartItem]=useState(null);
+  
   return (
     <CartContext.Provider value={{ dataSecret, setDataSecret, cartCost, setCartCost,cartLength,setCartLength,
       token,setToken,cartLiveLength,setCartLiveLength,cartLengthValue,setCartLengthValue,addNewHotel,setAddNewHotel,

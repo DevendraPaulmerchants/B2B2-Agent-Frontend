@@ -94,6 +94,7 @@
 .agent-booking-passenger-details {
     display: flex;
     gap: 2rem;
+    padding: 10px 0;
     justify-content: space-between;
 }
 .agent-booking-passenger-details h4 {
@@ -114,4 +115,9 @@
     font-size: 20px;
     font-weight: 500;
     color: #0c456b;
+}
+::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

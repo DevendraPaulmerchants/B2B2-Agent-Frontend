@@ -26,34 +26,38 @@ const Login = ({ setLoggedIn }) => {
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    fetch(`${APIPath}/api/v1/agent/auth/login`, {
-            headers: {
-                'Content-Type': 'application/json' 
-              },    
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(ExistUser)
-      }).then((res)=>res.json())
-        .then((data)=>{ 
-          console.log(data)
-            if(data.message === "Login successful"){
-              setAgentName(data.data.account.agentName)
-              setToken(data.data.tokens.access.token)
-              setCartLength(data.data.account.cart)
-              setCartLengthValue(true)
-              setLoggedIn(true);
-              navigate('/')
-            }
-            else{
-              alert("Please Check Email and Password")
-              return false
-            }
-        })
-        .catch((err)=>{
-            alert(err)
-        })
-  };
+const handleLogin = () => {
+  fetch(`${APIPath}/api/v1/agent/auth/login`, {
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      credentials: 'include',
+      mode: 'cors',
+      body: JSON.stringify(ExistUser)
+  }).then((res) => res.json())
+    .then((data) => {
+        if (data.message === "Login successful") {
+            const agentName = data.data.account.agentName;
+            const token = data.data.tokens.access.token;
+            setAgentName(agentName);
+            setToken(token);
+            setCartLength(data.data.account.cart);
+            setCartLengthValue(true);
+            setLoggedIn(true);
+            document.cookie = `agentName=${agentName};path=/;max-age=${data.data.tokens.access.expiresIn}`;
+            document.cookie = `token=${token};path=/;max-age=${data.data.tokens.access.expiresIn}`;
+            navigate('/');
+        } else {
+            alert("Please Check Email and Password");
+            return false;
+        }
+    })
+    .catch((err) => {
+        alert(err);
+    });
+};
+
 
   const forgotClose=()=>{
     setForgot(false);

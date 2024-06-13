@@ -209,7 +209,7 @@ const Cart = () => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#Id_{val.packageId.slice(-4)}</h4>
+                        <h4>#Id_{val.packageId?.slice(-4)}</h4>
                       </div>
                       <div className="cart-edit-delete-button">
                         <button
@@ -217,12 +217,11 @@ const Cart = () => {
                             setType(2);
                             setPkgId(val._id);
                             setEditPkgId(val.packageId)
-                            setPkgStartDate(val.startDate.split("T")[0]);
-                            setPkgEndDate(val.endDate.split("T")[0])
+                            setPkgStartDate(val.startDate?.split("T")[0]);
+                            setPkgEndDate(val.endDate?.split("T")[0])
                             if (type === 2) {
                               setEditPkg(true)
                             }
-
                           }}
                         >
                           <img src="/editicon.svg" />&nbsp;
@@ -235,7 +234,6 @@ const Cart = () => {
                             if (type === 2) {
                               DeleteOneItem();
                             }
-
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -390,12 +388,12 @@ const Cart = () => {
                           Edit
                         </button>
                         <button
-                          onMouseEnter={() => {
+                          onClick={() => {
                             setType(4);
                             setPkgId(val._id);
-                          }}
-                          onClick={() => {
-                            DeleteOneItem();
+                            if (type === 4) {
+                              DeleteOneItem();
+                            }
                           }}
                         >
                           <img src="/deleteicon.svg" />&nbsp;
@@ -454,21 +452,23 @@ const Cart = () => {
                     </div>
                     <div className="cart-edit-delete-button">
                       <button onClick={() => {
-                        setType(1);
-                        setPkgId(val._id);
-                        setTransferId(val?.InOut[0].transferId);
-                        setTripType(val?.selectedTripType);
-                        setselectedTransferType(val?.selectedTransferType)
-                        settotalCost(val?.finalCost);
-                        setselectedDate(val?.InOut[0].pickupTimeForArrival);
-                        setarrivalFlightCode(val?.InOut[0].arrivalFlightCode);
-                        setarrivalPickupTime(val?.InOut[0].arrivalPickupTime);
-                        setselectedDateTo(val?.InOut[1]?.pickupTimeForDeparture);
-                        setdepartureFlightCode(val?.InOut[1]?.departureFlightCode);
-                        setdeparturePickupTime(val?.InOut[1]?.departurePickupTime);
-                        if (type === 1) {
-                          setEditTransfer(true)
-                        }
+                        console.log("trnasfer edit click")
+                        alert("we are working on it")
+                        // setType(1);
+                        // setPkgId(val._id);
+                        // setTransferId(val?.InOut[0].transferId);
+                        // setTripType(val?.selectedTripType);
+                        // setselectedTransferType(val?.selectedTransferType)
+                        // settotalCost(val?.finalCost);
+                        // setselectedDate(val?.InOut[0].pickupTimeForArrival);
+                        // setarrivalFlightCode(val?.InOut[0].arrivalFlightCode);
+                        // setarrivalPickupTime(val?.InOut[0].arrivalPickupTime);
+                        // setselectedDateTo(val?.InOut[1]?.pickupTimeForDeparture);
+                        // setdepartureFlightCode(val?.InOut[1]?.departureFlightCode);
+                        // setdeparturePickupTime(val?.InOut[1]?.departurePickupTime);
+                        // if (type === 1) {
+                        //   setEditTransfer(true)
+                        // }
                       }}>
                         <img src="/editicon.svg" />&nbsp;
                         Edit
@@ -643,7 +643,7 @@ const Cart = () => {
       pkgId={pkgId}
       packageId={editPkgId}
       packagedata={packages}
-      price={packageprice / (packages?.[0].numberOfAdults + packages?.[0].numberOfChildrens)}
+      price={packageprice}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './Component/Home/Home';
@@ -34,10 +34,10 @@ function App() {
     <div className="App">
       <CartProvider>
       <Router>
-        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout}/>
+        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} setLoggedIn={setLoggedIn}/>
         <Routes>
+           <Route path="/" element={<Home setLoggedIn={setLoggedIn}/>} />
           <Route path="/login" element={<Login setLoggedIn={setLoggedIn} /> }/>
-          <Route path="/" element={<Home />} />
           <Route path="/registration" element={<Registration/>} />
           <Route path='/packages' element={<Packages/>}/>
           <Route path="/packageDetails/:packageId" element={<PacKageDetails/>} />

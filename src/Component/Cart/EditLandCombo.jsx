@@ -33,7 +33,11 @@ const BookLandCombos = ({ onClose, type,
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(lncStartDate);
     const [toDate, setToDate] = useState(lncEndDate);
-    const pkgPrice = price * (adultPassenger) + price * (childPassenger)
+
+    const priceperPerson=price/(adults + child);
+    const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
+                               priceperPerson * (childPassenger - child))
+
     const handleNameChange = (e) => {
         const name = e.target.value;
         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);

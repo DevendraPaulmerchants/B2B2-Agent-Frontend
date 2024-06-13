@@ -18,8 +18,12 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(attDate);
-    const [toDate, setToDate] = useState('');
-    const pkgPrice = price * (adultPassenger) + price * (childPassenger)
+    // const [toDate, setToDate] = useState('');
+
+    const priceperPerson=price/(adults + child);
+    const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
+                               priceperPerson * (childPassenger - child))
+
     const handleNameChange = (e) => {
         const name = e.target.value;
         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
@@ -47,7 +51,7 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                 numberOfChildrens: childPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
-                endDate: toDate
+                // endDate: toDate
             }
         ],
         customerDetails: {

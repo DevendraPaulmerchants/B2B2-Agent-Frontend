@@ -14,11 +14,11 @@ import './Home.css';
 import '../LandCombos/LandCombos.css';
 
 const Home = () => {
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
     document.body.style.overflow = "auto";
-    // const {setLandCombosId } = useCart();
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     // -----------------------------------Package List------------------------------------------------
@@ -59,9 +59,6 @@ const Home = () => {
     }, [])
     const navigate = useNavigate();
     const clickedPackage = (packageId) => {
-        // console.log(id)
-        // setPackageId(id)
-        // navigate('/packageDetails');
         navigate(`/packageDetails/${packageId}`);
     }
     const topThreePackages = packageData?.slice(startIndexP, startIndexP + 3);
@@ -92,7 +89,8 @@ const Home = () => {
             setAttractionData(originalAtt)
             setAttState(false)
             setPkgState(false)
-            setLnCState(false)        }
+            setLnCState(false)
+        }
         else {
             filteredPackages = originalPackages.filter((packages) =>
                 packages.title.toLowerCase().includes(searchTermLower)
@@ -101,7 +99,7 @@ const Home = () => {
             //     const searchWords = searchTermLower.trim().split(" ");
             //     return searchWords.some(word => packages.title.toLowerCase().includes(word));
             // });
-            
+
             filteredLnC = originalLnC.filter((packages) =>
                 packages.title.toLowerCase().includes(searchTermLower)
             );
@@ -257,7 +255,7 @@ const Home = () => {
                         {topThreePackages?.map((val, id) => {
                             return <>
                                 <div className="package-card" style={{ width: "32.4%" }}
-                                    onClick={(e) => {clickedPackage(val._id) }}
+                                    onClick={(e) => { clickedPackage(val._id) }}
                                 >
                                     <div className="package-card-image">
                                         <img src={val.thumbnailImage} />
@@ -540,7 +538,7 @@ const Home = () => {
             <div className="home-page-transfer-card">
                 <h4>Transfer Bookings at your finger tips </h4>
                 <p>Now you can book transfer from airport to hotel or within city at best prices</p>
-                <button onClick={()=>getTransferPage()}>Book Now</button>
+                <button onClick={() => getTransferPage()}>Book Now</button>
             </div>
         </div>
         <Footer />
