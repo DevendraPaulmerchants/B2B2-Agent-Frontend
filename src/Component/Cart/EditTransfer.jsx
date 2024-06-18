@@ -95,7 +95,7 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                 .then((data) => {
                     alert(data.message)
                     LoadCartItem();
-                    navigate('/cart')
+                    // navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)

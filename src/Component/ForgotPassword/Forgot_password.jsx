@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import './Forgot_password.css';
-// import PasswordReset from "./PasswordReset";
 import { useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 
@@ -9,7 +8,6 @@ const ForgotPassword = ({ onClose }) => {
     document.body.style.overflow = 'hidden';
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
-    // const [resetScreen, setResetScreen] = useState(false);
 
     const onEmailChange = (e) => {
         setEmail(e.target.value)

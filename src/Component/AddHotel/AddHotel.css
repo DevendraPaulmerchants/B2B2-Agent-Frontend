@@ -29,6 +29,8 @@
 }
 .add-hotel-top-header #close {
     cursor: pointer;
+    font-size: 20px;
+    font-weight: 700;
 }
 .add-hotel-form-container {
     display: block;
@@ -42,6 +44,7 @@
 }
 .add-hotel-name input {
     border: 1.5px solid skyblue;
+    outline: none;
     border-radius: 20px;
     padding:5px 10px;
     width: 100%;
@@ -50,6 +53,9 @@
     border-radius: 10px;
     border: 1.5px solid skyblue;
     margin: 0;
+}
+.add-hotel-name textarea:focus {
+    outline: none;
 }
 .add-hotel-btn {
     margin-top: 2rem;

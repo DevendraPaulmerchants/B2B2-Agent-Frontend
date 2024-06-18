@@ -4,16 +4,14 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import './Packages.css';
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { APIPath } from "../../Config";
 
-const BookPackage = ({ onClose, bookingPackageId, packagedata }) => {
+const BookPackage = ({ onClose, packagedata }) => {
     const { token } = useCart()
     document.body.style.overflow = 'hidden';
-    // console.log(packagedata)
     const DayOrNight = parseInt(packagedata[0].duration.split("/")[1].split(" ")[1]);
-    // console.log(DayOrNight);
     const pkgId = packagedata[0]._id;
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(0);

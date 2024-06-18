@@ -16,7 +16,7 @@ const AttractionDetails = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    const { attractionId, setAttractionId, token } = useCart();
+    const { token } = useCart();
     const [attractiondata, setAttractiondata] = useState(null);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(1);

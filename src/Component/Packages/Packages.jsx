@@ -16,7 +16,6 @@ const Packages = () => {
     const [originalPackages, setOriginalPackages] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-
    
     useEffect(() => {
         fetch(`${APIPath}/api/v1/packages`, {
@@ -29,11 +28,9 @@ const Packages = () => {
         }).then((res) => res.json())
             .then((data) => {
                 console.log(data.data);
-                // setTimeout(() => {
                 setPackages(data.data)
                 setOriginalPackages(data.data)
                 setLoading(false)
-                // }, 2000)
             })
             .catch((err) => {
                 alert(err)
@@ -43,9 +40,6 @@ const Packages = () => {
     
     const navigate = useNavigate();
     const clickedPackage = (packageId) => {
-        // console.log(id)
-        // setPackageId(packageId);
-        // navigate('/packageDetails');
         navigate(`/packageDetails/${packageId}`);
     }
     const handleSearch = () => {

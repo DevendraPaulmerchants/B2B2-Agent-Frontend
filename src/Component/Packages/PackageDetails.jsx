@@ -3,10 +3,7 @@ import { useCart } from "../context/CartContext";
 import { APIPath } from "../../Config";
 import Rating from '@mui/material/Rating';
 import { IoLocationOutline } from "react-icons/io5";
-import { MdArrowOutward, MdDownload } from "react-icons/md";
-import { MdEmail, MdShare } from "react-icons/md";
-import { Navigate, useNavigate } from "react-router-dom";
-// import html2pdf from 'html2pdf.js';
+import { MdArrowOutward } from "react-icons/md";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import BookPackage from "./BookPackage";
@@ -44,7 +41,6 @@ const PacKageDetails = () => {
     const handleActiveClass = (index) => {
         setActive(index)
     }
-    const navigate = useNavigate();
 
     useEffect(() => {
             fetch(`${APIPath}/api/v1/packages/?id=${packageId}`, {
@@ -68,10 +64,6 @@ const PacKageDetails = () => {
                 })
     }, [packageId])
 
-    // const handleDownloadPDF = () => {
-    //     const element = document.getElementById('package-details');
-    //     html2pdf().from(element).save();
-    // }
     const handleDownloadPDF = () => {
         const input = document.getElementById('package-details');
         html2canvas(input).then((canvas) => {

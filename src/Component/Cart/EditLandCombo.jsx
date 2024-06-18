@@ -2,12 +2,10 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-// import './Packages.css';
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
-import { type } from "@testing-library/user-event/dist/type";
 
 const BookLandCombos = ({ onClose, type,
     cartId,
@@ -103,7 +101,6 @@ const BookLandCombos = ({ onClose, type,
             return;
         }
         else {
-            console.log(addToCartLandcombo)
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -117,7 +114,6 @@ const BookLandCombos = ({ onClose, type,
                     alert("LandCombos Edited successfully...")
                     LoadCartItem();
                     onClose();
-                    navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)

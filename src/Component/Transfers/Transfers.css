@@ -129,7 +129,7 @@
     color: #062633;
 }
 .transfer-card-details {
-    width: 100%;
+    width: 75%;
     display: flex;
     gap: 1rem;
     box-shadow: 0 0 15px #dedede;
@@ -138,12 +138,12 @@
     margin-bottom: 1.5rem;
 }
 .transfer-card-image {
-   width: 25%;
-   height: 150px;
+   width: 300px;
+   height: 200px;
    padding: 1rem;
 }
 .transfer-card-image img {
-    max-width: 100%;
+   max-width: 100%;
     max-height: 100%;
     object-fit: cover;
     transform: rotateY(180deg);
@@ -178,9 +178,12 @@
     cursor: pointer;
 }
 .transfer-card-price {
-   width: 30%;
-   padding: 0 1rem;
-   border-left: 1px solid silver;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    justify-content: space-between;
+    padding: 0 1rem 1rem;
+    border-left: 1px solid silver;
 }
 .transfer-card-price .price h4 {
     color: #05307a;
@@ -189,8 +192,6 @@
     float:right;
     color:#3d3e4a;
     font-size:12px;
-    min-height: 5.5rem;
-    max-height: 5.5rem;
 }
 .transfer-card-price .price h4 b {
     color: #3870fc;
@@ -199,7 +200,8 @@
   background-color: #05307a;
   border-radius: 20px;
   width: fit-content;
-  float: right;
+  display: flex;
+  align-self: end;
 }
 .transfer-card-price .select-transfer-btn button {
     border: none;

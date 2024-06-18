@@ -143,12 +143,9 @@ const Home = () => {
             mode: 'cors',
         }).then((res) => res.json())
             .then((data) => {
-                // console.log(data.data);
-                // setTimeout(() => {
                 setAttractionData(data.data)
                 setOriginalAtt(data.data)
                 setLoading(false)
-                // }, 2000)
             })
             .catch((err) => {
                 alert(err)
@@ -187,12 +184,9 @@ const Home = () => {
             mode: 'cors',
         }).then((res) => res.json())
             .then((data) => {
-                // console.log(data.data);
-                // setTimeout(() => {
                 setLandCombosData(data.data)
                 setOriginalLnC(data.data)
                 setLoading(false)
-                // }, 2000)
             })
             .catch((err) => {
                 alert(err)

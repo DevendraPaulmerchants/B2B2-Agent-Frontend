@@ -64,7 +64,7 @@ const AddHotel=({countryId,cityId})=>{
                 }}>
                     <div className="add-hotel-form-container">
                         <div className="add-hotel-name">
-                            <label htmlFor="hotelName">Hotel Name</label>
+                            <label htmlFor="hotelName">Hotel Name *</label>
                             <input type="text" placeholder="Enter Hotel Name.." required
                             value={hotelName}
                             onChange={(e)=>{
@@ -74,7 +74,7 @@ const AddHotel=({countryId,cityId})=>{
                             />
                         </div>
                         <div className="add-hotel-name">
-                            <label htmlFor="hotelName">Hotel Address</label>
+                            <label htmlFor="hotelName">Hotel Address *</label>
                             <textarea type="text" placeholder="Enter Hotel Address.." required
                             value={hotelAddress}
                             onChange={(e)=>{
@@ -84,8 +84,8 @@ const AddHotel=({countryId,cityId})=>{
                             />
                         </div>
                         <div className="add-hotel-name">
-                            <label htmlFor="hotelName">Zip Code</label>
-                            <input type="text" placeholder="Enter Zip Code.." required 
+                            <label htmlFor="hotelName">Zip Code (optional)</label>
+                            <input type="text" placeholder="Enter Zip Code.." 
                              value={hotelZipCode}
                              minLength={6} 
                              maxLength={6}

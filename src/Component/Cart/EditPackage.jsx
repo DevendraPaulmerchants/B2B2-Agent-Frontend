@@ -55,7 +55,6 @@ const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
         const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
-    const navigate = useNavigate();
 
     const addToCartPackage = {
         type: type,
@@ -103,7 +102,6 @@ const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
             return;
         }
         else {
-            console.log("add to cart:", addToCartPackage);
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -117,7 +115,6 @@ const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
                     alert("Package Edited successfully...")
                     onClose();
                     LoadCartItem()
-                    navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)

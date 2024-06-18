@@ -2,8 +2,8 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
@@ -18,8 +18,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(attDate);
-    // const [toDate, setToDate] = useState('');
-
     const priceperPerson=price/(adults + child);
     const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
                                priceperPerson * (childPassenger - child))
@@ -63,7 +61,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
             }
         }
     }
-    const navigate = useNavigate();
     const EditAttraction = () => {
         if (name.length <= 0) {
             alert("please fill lead passenger details")
@@ -86,7 +83,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
             return;
         }
         else {
-            console.log("submitted Attractions: ",addToCartAttraction);
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -97,10 +93,11 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                 body: JSON.stringify(addToCartAttraction)
             }).then((res) => res.json())
                 .then((data) => {
-                    alert("Attraction Edited successfully.....")
+                    console.log(data)
+                    alert("Attraction Edited successfully...")
                     onClose();
                     LoadCartItem()
-                    navigate('/cart')
+                    // navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)
@@ -110,8 +107,7 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
     }
    
 
-    return <>
-        <div className="booking-package-container">
+    return <div className="booking-package-container">
             <div className="booking-package-page">
                 <div className="booking-package-header">
                     <h2 style={{ fontSize: "14px", color: "#25867D" }}>You are booking:
@@ -121,7 +117,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                 </div>
                 <form onSubmit={(e) => {
                     e.preventDefault();
-                    // bookThisPackage();
                 }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
@@ -152,7 +147,6 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                         </div>
                     </div>
                     <div style={{ display: "flex", gap: "2rem" }}>
-
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
                                 <p><span style={{fontSize:"14px"}}>Adults</span> (&lt; 12 years)</p>
@@ -208,14 +202,7 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                     </div>
                     <div className="booking-package-price">
                         <div className="booking-price-text-value">
-                            <p>Total Price: AED&nbsp;
-                                <b>
-                                    {pkgPrice}
-                                </b>&nbsp;
-                                <sub>
-                                    +VAT(5%)
-                                </sub>
-                            </p>
+                            <p>Total Price: AED&nbsp;<b>{pkgPrice}</b>&nbsp;<sub>+VAT(5%)</sub></p>
                         </div>
                         <div className="package-price-btn">
                             <button onClick={() => {
@@ -226,6 +213,5 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                 </form>
             </div>
         </div>
-    </>
 }
 export default BookAttraction;

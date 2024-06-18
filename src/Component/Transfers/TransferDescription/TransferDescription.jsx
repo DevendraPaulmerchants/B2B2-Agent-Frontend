@@ -4,14 +4,12 @@ import { MdInfo } from "react-icons/md";
 import { MdOutlineRoomService } from "react-icons/md";
 import { SiPrivateinternetaccess } from "react-icons/si";
 import './TransferDescription.css';
-import { useNavigate } from "react-router-dom";
 import BookTransfer from "../BookTransfer/BookTransfer";
 import { useCart } from "../../context/CartContext";
 
 const TransferDescription=({onClose,descriptionPageData})=>{
   document.body.style.overflow = 'hidden';
   const {bookTransfer,setBookTransfer, setDescriptionPage} =useCart();
-  const navigate =useNavigate()
   const bookThistransfer=()=>{
     setBookTransfer(true)
     setDescriptionPage(false)

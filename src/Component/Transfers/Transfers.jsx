@@ -754,7 +754,7 @@ const Transfers = () => {
                                                 </div>
                                                 {travelTypeTo === 'terminal' && (
                                                     <div className="country">
-                                                        <p>To Terminal</p>
+                                                        <p>To Airport </p>
                                                         <Select id="select"
                                                             options={fromAirport
                                                                 .sort((a, b) => a.name.localeCompare(b.name))

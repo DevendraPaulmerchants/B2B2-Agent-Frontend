@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import './LandCombos.css';
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
-import { useNavigate } from "react-router-dom";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 import html2pdf from 'html2pdf.js';
@@ -38,7 +37,7 @@ const LandCombosDetails = () => {
     const handleActiveClass = (index) => {
         setActive(index)
     }
-    const navigate = useNavigate();
+
     useEffect(() => {
             fetch(`${APIPath}/api/v1/land_combos?id=${packageId}`, {
                 headers: {
@@ -49,7 +48,6 @@ const LandCombosDetails = () => {
                 mode: 'cors',
             }).then((res) => res.json())
                 .then((data) => {
-                    console.log(data.data);
                     setlcPrice(data.data[0].cost.split(" ")[1])
                     setLandCombosDetails(data.data)
                     setLoading(false)

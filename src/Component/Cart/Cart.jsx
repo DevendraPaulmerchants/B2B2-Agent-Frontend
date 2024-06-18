@@ -224,7 +224,7 @@ const Cart = () => {
                             }
                           }}
                         >
-                          <img src="/editicon.svg" />&nbsp;
+                          <img src="/editicon.svg" alt="edit" />&nbsp;
                           Edit
                         </button>
                         <button
@@ -305,7 +305,7 @@ const Cart = () => {
 
                           }}
                         >
-                          <img src="/editicon.svg" />&nbsp;
+                          <img src="/editicon.svg" alt="edit"/>&nbsp;
                           Edit
                         </button>
                         <button
@@ -384,7 +384,7 @@ const Cart = () => {
                             setEditLnC(true)
                           }
                         }}>
-                          <img src="/editicon.svg" />&nbsp;
+                          <img src="/editicon.svg"  alt="edit"/>&nbsp;
                           Edit
                         </button>
                         <button
@@ -470,7 +470,7 @@ const Cart = () => {
                         //   setEditTransfer(true)
                         // }
                       }}>
-                        <img src="/editicon.svg" />&nbsp;
+                        <img src="/editicon.svg" alt="edit" />&nbsp;
                         Edit
                       </button>
                       <button

@@ -2,8 +2,8 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
