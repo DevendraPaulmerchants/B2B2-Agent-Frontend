@@ -7,7 +7,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
-const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
+const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
     const pkgId = packagedata[0]?._id;
@@ -20,7 +20,7 @@ const BookAttraction = ({ onClose, bookingPackageId, packagedata, price }) => {
     const [toDate, setToDate] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const pkgPrice = price * (adultPassenger) + price * (childPassenger)
+    const pkgPrice = adultPrice * (adultPassenger) + childPrice * (childPassenger)
     const handleNameChange = (e) => {
         const name = e.target.value;
         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);

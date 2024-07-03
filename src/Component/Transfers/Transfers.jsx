@@ -97,7 +97,8 @@ const Transfers = () => {
     // ----------------------------------Terminal Or Hotel type--------------------------------    
     const TerminalHotel = [
         { value: "terminal", label: "Airport" },
-        { value: "stay", label: "Hotel" }
+        { value: "stay", label: "Hotel" },
+        { value: "zone", label: "Zone" }
     ]
     // -------------------------TransferType like private,shared, scheduled--------------------------
     const TransferType = [
@@ -132,6 +133,8 @@ const Transfers = () => {
     const [travelTypeTo, setTravelTypeTo] = useState('terminal');
     const [travelTypeToType, setTravelTypeToType] = useState('Airport');
     const TerminalOrStayTo = (e) => {
+        console.log(e.value);
+        console.log(e.label)
         setTravelTypeTo(e.value);
         setTravelTypeToType(e.label)
     }
@@ -211,8 +214,7 @@ const Transfers = () => {
     }, [cityId]);
     // ----------------------------------------setHotel List----------------------------------------------
     const [Hotel, setHotel] = useState([]);
-    const hotelsWithOther = Hotel
-        .sort((a, b) => a.name.localeCompare(b.name))
+    const hotelsWithOther = Hotel?.sort((a, b) => a.name.localeCompare(b.name))
         .map((val, id) => ({ value: val._id, label: val.name }));
     hotelsWithOther.push({ value: 'other', label: 'Other' });
 
@@ -235,9 +237,31 @@ const Transfers = () => {
                 ))
         }
     }, [cityId]);
+    //----------------------------Zone List----------------------------------------------------
+    const [zoneIdFrom, setZoneIdFrom] = useState("");
+    const [zoneIdTo, setZoneIdTo] = useState("");
+    const [zone, setZone] = useState(null);
+    useEffect(() => {
+        fetch(`${APIPath}/api/v1/agency/zone?city=${cityId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'GET',
+            mode: 'cors',
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setZone(data.data);
+            })
+            .catch((err) => {
+                alert(err)
+            })
+    }, [cityId])
     // --------------------------- Pessangers count------------------------------------------------------------------
     const [adultsPassengers, setAdultsPassengers] = useState(0);
     const [childPassengers, setChildPassengers] = useState(0);
+
 
     const TripDetails = {
         transferType: transferType,
@@ -257,12 +281,23 @@ const Transfers = () => {
             adults: adultsPassengers,
             children: childPassengers,
         }],
+        // arrival: {
+        //     pickupLocation: {
+        //         code: travelTypeFrom === 'terminal' ? selectedTerminal : selectedHotel
+        //     },
+        //     destinationLocation: {
+        //         code: travelTypeTo === 'terminal' ? selectedTerminalTo : selectedHotelTo
+        //     }
         arrival: {
             pickupLocation: {
-                code: travelTypeFrom === 'terminal' ? selectedTerminal : selectedHotel
+                code: travelTypeFrom === 'terminal' ? selectedTerminal
+                    : travelTypeFrom === 'zone' ? zoneIdFrom
+                        : selectedHotel
             },
             destinationLocation: {
-                code: travelTypeTo === 'terminal' ? selectedTerminalTo : selectedHotelTo
+                code: travelTypeTo === 'terminal' ? selectedTerminalTo
+                    : travelTypeTo === 'zone' ? zoneIdTo
+                        : selectedHotelTo
             }
         }
     }
@@ -405,6 +440,33 @@ const Transfers = () => {
                                         setAddNewHotel(true), setSelectedHotelName("OR")
                                     )}
 
+                                </div>
+                            )}
+                            {travelTypeFrom === 'zone' && (
+                                <div style={{ width: "100%" }}>
+                                    <div className="country">
+                                        <p>From Zone</p>
+                                        <Select
+                                            options={zone?.map((val, id) => ({ value: val._id, label: val.name }))}
+                                            onChange={(e) => {
+                                                setZoneIdFrom(e.value);
+                                            }}
+                                            placeholder="Select Zone"
+                                            isSearchable
+                                            styles={{
+                                                control: (provided) => ({
+                                                    ...provided,
+                                                    borderRadius: '20px',
+                                                    cursor: 'pointer'
+                                                }),
+                                                placeholder: (provided) => ({
+                                                    ...provided,
+                                                    whiteSpace: 'nowrap',
+                                                    fontSize: '14px'
+                                                }),
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             )}
                             <div className="country">
@@ -630,9 +692,7 @@ const Transfers = () => {
                                             <div className="country">
                                                 <p>From City</p>
                                                 <Select
-                                                    options={fromCity
-                                                        .sort((a, b) => a.name.localeCompare(b.name))
-                                                        .map((val, id) => ({ value: val._id, label: val.name }))}
+                                                    options={fromCity?.map((val, id) => ({ value: val._id, label: val.name }))}
                                                     onChange={handleCityChange}
                                                     placeholder="Select City"
                                                     isSearchable
@@ -654,11 +714,11 @@ const Transfers = () => {
                                         <div className="pickup-dropoff-container" style={{ display: "flex", gap: "4rem" }}>
                                             <div className="pickup-container" style={{ display: "flex", gap: "2rem", width: "100%" }}>
                                                 <div className="country">
-                                                    <p>From Airport/Hotel</p>
+                                                    <p>From Airport/Hotel/Zone</p>
                                                     <Select
                                                         options={TerminalHotel}
                                                         onChange={TerminalOrStay}
-                                                        placeholder="Airport/Hotel"
+                                                        placeholder="Airport/Hotel/Zone"
                                                         isSearchable
                                                         styles={{
                                                             control: (provided) => ({
@@ -678,9 +738,7 @@ const Transfers = () => {
                                                     <div className="country">
                                                         <p>From Airport</p>
                                                         <Select
-                                                            options={fromAirport
-                                                                .sort((a, b) => a.name.localeCompare(b.name))
-                                                                .map((val, id) => ({ value: val._id, label: val.name }))}
+                                                            options={fromAirport?.map((val, id) => ({ value: val._id, label: val.name }))}
                                                             onChange={handleTerminalChange}
                                                             placeholder="Select Airport"
                                                             isSearchable
@@ -729,14 +787,42 @@ const Transfers = () => {
 
                                                     </div>
                                                 )}
+                                                {travelTypeFrom === 'zone' && (
+                                                    <div style={{ width: "100%" }}>
+                                                        <div className="country">
+                                                            <p>From Zone</p>
+                                                            <Select
+                                                                options={zone?.map((val, id) => ({ value: val._id, label: val.name }))}
+                                                                onChange={(e) => {
+                                                                    setZoneIdFrom(e.value);
+                                                                    console.log(e.label)
+                                                                }}
+                                                                placeholder="Select Zone"
+                                                                isSearchable
+                                                                styles={{
+                                                                    control: (provided) => ({
+                                                                        ...provided,
+                                                                        borderRadius: '20px',
+                                                                        cursor: 'pointer'
+                                                                    }),
+                                                                    placeholder: (provided) => ({
+                                                                        ...provided,
+                                                                        whiteSpace: 'nowrap',
+                                                                        fontSize: '14px'
+                                                                    }),
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="dropoff-container" style={{ display: "flex", gap: "2rem", width: "100%" }} >
                                                 <div className="country">
-                                                    <p>To Airport/Hotel</p>
+                                                    <p>To Airport/Hotel/Zone</p>
                                                     <Select
                                                         options={TerminalHotel}
                                                         onChange={TerminalOrStayTo}
-                                                        placeholder="Airport/Hotel"
+                                                        placeholder="Airport/Hotel/Zone"
                                                         isSearchable
                                                         styles={{
                                                             control: (provided) => ({
@@ -756,9 +842,7 @@ const Transfers = () => {
                                                     <div className="country">
                                                         <p>To Airport </p>
                                                         <Select id="select"
-                                                            options={fromAirport
-                                                                .sort((a, b) => a.name.localeCompare(b.name))
-                                                                .map((val, id) => ({ value: val._id, label: val.name }))}
+                                                            options={fromAirport?.map((val, id) => ({ value: val._id, label: val.name }))}
                                                             onChange={handleTerminalChangeTo}
                                                             placeholder="Select Airport"
                                                             isSearchable
@@ -806,6 +890,33 @@ const Transfers = () => {
                                                     </div>
 
                                                 )}
+                                                {travelTypeTo === 'zone' && (
+                                                    <div className="country">
+                                                        <p>To Zone </p>
+                                                        <Select id="select"
+                                                            options={zone?.map((val, id) => ({ value: val._id, label: val.name }))}
+                                                            onChange={(e) => {
+                                                                setZoneIdTo(e.value);
+                                                                console.log(e.label)
+                                                            }}
+                                                            placeholder="Select Zone"
+                                                            isSearchable
+                                                            styles={{
+                                                                control: (provided) => ({
+                                                                    ...provided,
+                                                                    borderRadius: '20px',
+                                                                    cursor: 'pointer'
+                                                                }),
+                                                                placeholder: (provided) => ({
+                                                                    ...provided,
+                                                                    whiteSpace: 'nowrap',
+                                                                    fontSize: '14px'
+                                                                }),
+                                                            }}
+                                                        />
+                                                    </div>
+                                                )}
+
                                             </div>
                                         </div>
                                         <div className="date-passenger-transfertype-container">
@@ -1006,10 +1117,10 @@ const Transfers = () => {
                             </div>
                         </>
                     }) : (<div className="data-not-found">
-                        {dataNotfound && <div style={{textAlign:"center"}}>
-                              <img src="NotFound.svg"/>
-                              <p>No Transfer Found</p>
-                            </div>
+                        {dataNotfound && <div style={{ textAlign: "center" }}>
+                            <img src="NotFound.svg" />
+                            <p>No Transfer Found</p>
+                        </div>
                         }
                     </div>)}
 

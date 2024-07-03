@@ -16,7 +16,8 @@ const LandCombosDetails = () => {
     const [loading, setLoading] = useState(true);
     const [booking, setBooking] = useState(false);
     const [bookingPackageId, setBookingPackageId] = useState('');
-    const [lcPrice, setlcPrice] = useState()
+    const [adultPrice,setAdultPrice] = useState();
+    const [childPrice,setChildPrice]=useState()
 
     const handleBookingOn = (id) => {
         document.body.style.overflow = 'hidden';
@@ -48,8 +49,9 @@ const LandCombosDetails = () => {
                 mode: 'cors',
             }).then((res) => res.json())
                 .then((data) => {
-                    setlcPrice(data.data[0].cost.split(" ")[1])
-                    setLandCombosDetails(data.data)
+                    setAdultPrice(data.data[0].price[0].adultPrice);
+                    setChildPrice(data.data[0].price[0].childPrice)
+                    setLandCombosDetails(data.data);
                     setLoading(false)
                 })
                 .catch((err) => {
@@ -130,15 +132,15 @@ const LandCombosDetails = () => {
                                 <div className="package-overview-details">
                                     <p>{val.landComboOverview}</p>
                                     <br />
-                                    <h4>Travel Places</h4>
-                                    <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                                    {/* <h4>Travel Places</h4> */}
+                                    {/* <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                         <div style={{ background: "rgba(229, 228, 240, 1)", borderRadius: "50%", padding: "2px 5px", width: "fit-content" }}>
                                             <IoLocationOutline />
                                         </div>
                                         <div>
                                         </div>
                                         <p>CN Tower, Moraine Lake, Suspension Bridge Park, National Park and 12+ places</p>
-                                    </div>
+                                    </div> */}
 
                                     <br />
                                 </div>
@@ -178,7 +180,7 @@ const LandCombosDetails = () => {
                                     <p>Starting from</p>
                                 </div>
                                 <div className="package-price-value">
-                                    <p><b>AED {lcPrice}</b> <sub>/ Per person</sub></p>
+                                    <p><b>AED {adultPrice}</b> <sub>/ Per person</sub></p>
                                 </div>
                             </div>
                             <div className="package-query-text-button">
@@ -197,7 +199,7 @@ const LandCombosDetails = () => {
         )}
         {booking && <BookLandCombos onClose={handleBookingOff}
             bookingPackageId={bookingPackageId}
-            packagedata={landCombosDeatils} price={lcPrice} />}
+            packagedata={landCombosDeatils} adultPrice={adultPrice} childPrice={childPrice} />}
     </>
 }
 export default LandCombosDetails;

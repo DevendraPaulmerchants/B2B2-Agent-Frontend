@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { APIPath } from "../../Config";
 import Rating from '@mui/material/Rating';
-import { IoLocationOutline } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
@@ -62,7 +61,7 @@ const PacKageDetails = () => {
                     alert(err)
                     setLoading(false)
                 })
-    }, [packageId])
+    }, [])
 
     const handleDownloadPDF = () => {
         const input = document.getElementById('package-details');
@@ -110,7 +109,7 @@ const PacKageDetails = () => {
                     {packagedata.map((val, id) => {
                         return <>
                             <div className="package-banner-image" >
-                                <img src={val.bannerImage} />
+                                <img src={val.bannerImage} alt="Banner"/>
                             </div>
                             <div className="package-details">
                                 <div className="package-title-and-download-button">
@@ -127,13 +126,13 @@ const PacKageDetails = () => {
                                             onClick={handleDownloadPDF}
                                         >
                                             {/* <MdDownload /> */}
-                                            <img src="/download.svg" />&nbsp; Download
+                                            <img src="/download.svg" alt="download" />&nbsp; Download
                                         </button>
                                         <button
                                             onClick={handleShare}
                                         >
                                             {/* <MdShare />  */}
-                                            <img src="/shareB.svg" />&nbsp; Share
+                                            <img src="/shareB.svg" alt="Share"/>&nbsp; Share
                                         </button>
                                         {/* <button onClick={handleShare}><MdEmail /></button> */}
 
@@ -175,15 +174,15 @@ const PacKageDetails = () => {
                                     <div className="package-overview-details">
                                         <p>{val.packageOverview}</p>
                                         <br />
-                                        <h4>Travel Places</h4>
-                                        <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                                        {/* <h4>Travel Places</h4> */}
+                                        {/* <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
                                             <div style={{ background: "rgba(229, 228, 240, 1)", borderRadius: "50%", padding: "2px 5px", width: "fit-content" }}>
                                                 <IoLocationOutline />
                                             </div>
                                             <div>
                                             </div>
                                             <p>CN Tower, Moraine Lake, Suspension Bridge Park, National Park and 12+ places</p>
-                                        </div>
+                                        </div> */}
 
                                     </div>
                                 )}
@@ -219,9 +218,9 @@ const PacKageDetails = () => {
                                             return <>
                                                 <div key={id} className="daywise-plan">
                                                     <div className="daywise-image">
-                                                        {(id === 0) && <img src="/dayl.png" />}
-                                                        {(id === (val.dayWisePlan.length - 1)) && <img src="/dayS.png" />}
-                                                        {(id != 0 && id != (val.dayWisePlan.length - 1)) && <img src="/daym.png" />}
+                                                        {(id === 0) && <img src="/dayl.png" alt="Day1"/>}
+                                                        {(id === (val.dayWisePlan.length - 1)) && <img src="/dayS.png" alt="DayM"/>}
+                                                        {(id !== 0 && id !== (val.dayWisePlan.length - 1)) && <img src="/daym.png" alt="Day Last"/>}
                                                     </div>
                                                     <div>
                                                         <h4>{plan.title}</h4>

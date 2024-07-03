@@ -30,13 +30,16 @@ const Cart = () => {
   const [editPkgId, setEditPkgId] = useState(false);
   const [pkgStartDate, setPkgStartDate] = useState();
   const [pkgEndDate, setPkgEndDate] = useState();
+  const [pricePackage,setPricePackage]=useState();
   const [editAtt, setEditAtt] = useState(false);
   const [attId, setAttId] = useState('');
   const [attDate, setAttDate] = useState();
+  const [priceAtt,setPriceAtt]=useState()
   const [editLnC, setEditLnC] = useState(false);
   const [lncId, setLnCId] = useState('');
   const [lncStartDate, setlncStartDate] = useState();
   const [lncEndDate, setlncEndDate] = useState();
+  const [priceLnc,setPriceLnc]=useState();
   const [editTransfer, setEditTransfer] = useState(false);
   const [trnasferId, setTransferId] = useState('');
   const [tripType, setTripType] = useState('');
@@ -217,10 +220,13 @@ const Cart = () => {
                             setType(2);
                             setPkgId(val._id);
                             setEditPkgId(val.packageId)
-                            setPkgStartDate(val.startDate?.split("T")[0]);
-                            setPkgEndDate(val.endDate?.split("T")[0])
+                            setPkgStartDate(val.startDate);
+                            setPkgEndDate(val.endDate);
+                            setPricePackage(val.cost)
                             if (type === 2) {
-                              setEditPkg(true)
+                              setEditPkg(true);
+                              console.log("start date----",val.startDate,
+                                "end date---",val.endDate)
                             }
                           }}
                         >
@@ -299,6 +305,7 @@ const Cart = () => {
                             setPkgId(val._id);
                             setAttId(val.attractionId)
                             setAttDate(val.startDate.split("T")[0])
+                            setPriceAtt(val.cost);
                             if (type === 3) {
                               setEditAtt(true)
                             }
@@ -378,8 +385,8 @@ const Cart = () => {
                           setPkgId(val._id);
                           setLnCId(val.landComboId);
                           setlncStartDate(val.startDate.split("T")[0]);
-                          setlncEndDate(val.endDate.split("T")[0])
-                          EditOneItem();
+                          setlncEndDate(val.endDate.split("T")[0]);
+                          setPriceLnc(val.cost)
                           if (type === 4) {
                             setEditLnC(true)
                           }
@@ -517,8 +524,8 @@ const Cart = () => {
                       {/* {transfers?.[0]?.selectedTripType === "ROUND_TRIP" && ( */}
                         <div className="cart-item-arrival">
                           <h2><b>Arrival: </b>{val?.InOut[0].pickupTimeForArrival} ({val?.InOut[0].arrivalPickupTime})</h2>
-                          {transfers?.[0]?.selectedTripType === "ROUND_TRIP" && (
-                          <h2><b>Departure: </b>{val?.InOut[1].pickupTimeForDeparture} ({val?.InOut[1].departurePickupTime})</h2>
+                          {val?.selectedTripType === "ROUND_TRIP" && (
+                          <h2><b>Departure: </b>{val?.InOut[1]?.pickupTimeForDeparture} ({val?.InOut[1]?.departurePickupTime})</h2>
                           )}
                         </div>
                       {/* )} */}
@@ -612,7 +619,7 @@ const Cart = () => {
       pkgId={pkgId}
       packagedata={attractions}
       onClose={onClose}
-      price={attractionprice}
+      price={priceAtt}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}
@@ -627,7 +634,7 @@ const Cart = () => {
       pkgId={pkgId}
       landComboId={lncId}
       landCombosData={landcombos}
-      price={landcombosprice}
+      price={priceLnc}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}
@@ -643,7 +650,8 @@ const Cart = () => {
       pkgId={pkgId}
       packageId={editPkgId}
       packagedata={packages}
-      price={packageprice}
+      // price={packageprice}
+      price={pricePackage}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}

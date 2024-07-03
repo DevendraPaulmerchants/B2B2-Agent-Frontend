@@ -3,7 +3,6 @@ import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { APIPath } from "../../Config";
 
@@ -19,11 +18,11 @@ const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
     const [fromDate, setFromDate] = useState(pkgStartDate);
     const [toDate, setToDate] = useState(pkgEndDate);
 
-    const pkgPrice = price + (packagedata[0].price?.[0].price * (adultPassenger - adults) +
+    const pkgPrice =price + (packagedata[0].price?.[0].price * (adultPassenger - adults) +
         packagedata[0].price?.[1].price * (childPassenger - child));
 
     const DayOrNight = parseInt(packagedata[0]?.duration?.split("/")[1].split(" ")[1]);
-
+    
     useEffect(() => {
         if (fromDate) {
             const resultDate = new Date(fromDate);

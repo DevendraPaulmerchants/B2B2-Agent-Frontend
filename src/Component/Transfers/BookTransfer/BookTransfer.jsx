@@ -43,6 +43,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
+    const [fromRemarks,setfromRemarks]=useState("");
+    const [toRemarks,settoRemarks]=useState("");
     const bookingTransferDetails = {
         transfers: [
             {
@@ -58,8 +60,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 vehicle: transferDetails.vehicle.type,
                 remarks: transferDetails.additionalDetails,
                 pickupTimeForArrival: arrivalPickupTime,
-                pickupTimeForDeparture: departurePickupTime
-
+                pickupTimeForDeparture: departurePickupTime,
+                fromRemarks:fromRemarks,
+                toRemarks:toRemarks
             }
         ],
         customerDetails: {
@@ -93,17 +96,17 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers`)
             return;
         }
-        if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 7) {
+        if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 4) {
             alert("please fill arrival flight code...");
             return;
         }
 
-        if ( validTypes.includes(transferDetails.type) && arrivalPickupTime.length < 5) {
+        if (validTypes.includes(transferDetails.type) && arrivalPickupTime.length < 5) {
             alert("please fill pickup time from airport...")
             return
         }
         if (tripType === 'ROUND_TRIP') {
-            if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 7) {
+            if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 4) {
                 alert("please fill departure flight Code...");
                 return
             }
@@ -112,25 +115,25 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 return
             }
         }
-            fetch(`${APIPath}/api/v1/agent/transfer/book-transfer`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify(bookingTransferDetails)
+        fetch(`${APIPath}/api/v1/agent/transfer/book-transfer`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(bookingTransferDetails)
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                alert("You`r transfer booking request sent to Admin successfully, Waiting to approval.")
+                setBookTransfer(false)
+                setDescriptionPage(false)
+                navigate('/')
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert("You`r transfer booking request sent to Admin successfully, Waiting to approval.")
-                    setBookTransfer(false)
-                    setDescriptionPage(false)
-                    navigate('/')
-                })
-                .catch((err) => (
-                    alert(err)
-                ))
+            .catch((err) => (
+                alert(err)
+            ))
     }
 
     const addtransfertoCart =
@@ -150,6 +153,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 departurePickupTime: departurePickupTime,
                 departureFlightCode: flightDepartureCode,
                 vehicle: transferDetails.vehicle.type,
+                fromRemarks:fromRemarks,
+                toRemarks:toRemarks,
                 remarks: "FINDING YOUR DRIVER."
             }
         ],
@@ -162,7 +167,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             }
         }
     }
-    
+
     const addToCart = () => {
         if (name.length <= 0) {
             alert("please fill lead passenger name...")
@@ -184,7 +189,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             alert(`This Vehicle can not allow more then ${transferDetails.vehicle.maxPassenger} passengers`)
             return;
         }
-        if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 7) {
+        if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 4) {
             alert("please fill arrival flight code...")
             return
         }
@@ -193,7 +198,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             return
         }
         if (tripType === 'ROUND_TRIP') {
-            if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 7) {
+            if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 4) {
                 alert("please fill departure flight Code...");
                 return
             }
@@ -202,25 +207,25 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 return
             }
         }
-            fetch(`${APIPath}/api/v1/agent/new-cart`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'POST',
-                mode: 'cors',
-                body: JSON.stringify(addtransfertoCart)
-            }).then((res) => res.json())
-                .then((data) => {
-                    alert(data.message);
-                    setBookTransfer(false)
-                    setDescriptionPage(false)
-                    navigate('/cart')
-                })
-                .catch((err) => {
-                    alert(err)
-                    return
-                })
+        fetch(`${APIPath}/api/v1/agent/new-cart`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(addtransfertoCart)
+        }).then((res) => res.json())
+            .then((data) => {
+                alert(data.message);
+                setBookTransfer(false)
+                setDescriptionPage(false)
+                navigate('/cart')
+            })
+            .catch((err) => {
+                alert(err)
+                return
+            })
     }
 
     return <>
@@ -380,6 +385,20 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
+                                            <div>
+                                                <h2 style={{ marginBottom: "5px" }}>Remarks</h2>
+                                                <input style={{
+                                                    outline: "none",
+                                                    border: "1px solid skyblue",
+                                                    width: "100%",
+                                                    padding: "2px 15px",
+                                                    borderRadius: "20px"
+                                                }}
+                                                onChange={(e)=>{
+                                                    setfromRemarks(e.target.value);
+                                                }}
+                                                    type="textarea" placeholder="Enter your drop off location" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -457,6 +476,20 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                         disabled={tripType === 'ROUND_TRIP' ? false : true}
                                                     />
                                                 </div>
+                                            </div>
+                                            <div>
+                                                <h2 style={{ marginBottom: "5px" }}>Remarks</h2>
+                                                <input style={{
+                                                    outline: "none",
+                                                    border: "1px solid skyblue",
+                                                    width: "100%",
+                                                    padding: "2px 15px",
+                                                    borderRadius: "20px"
+                                                }}
+                                                onChange={(e)=>{
+                                                    setfromRemarks(e.target.value);
+                                                }}
+                                                    type="textarea" placeholder="Enter your drop off location" />
                                             </div>
                                         </div>
                                     </div>
@@ -537,6 +570,40 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        {transferDetails.type === 'HotelToHotel' &&
+                            <div className="booking-flight-arrival-departure-container">
+                                <div style={{display:"flex",justifyContent:"space-between",width:"100%"}}>
+                                    <div>
+                                        <h2 style={{ marginBottom: "5px",fontSize:"16px",color:"00081d" }}>Arrival Remarks</h2>
+                                        <input style={{
+                                            outline: "none",
+                                            border: "1px solid skyblue",
+                                            width: "100%",
+                                            padding: "2px 15px",
+                                            borderRadius: "20px"
+                                        }}
+                                        onChange={(e)=>{
+                                            setfromRemarks(e.target.value);
+                                        }}
+                                            type="textarea" placeholder="Enter your drop off location" />
+                                    </div>
+                                    <div>
+                                        <h2 style={{ marginBottom: "5px",fontSize:"16px",color:"00081d" }}> Departure Remarks</h2>
+                                        <input style={{
+                                            outline: "none",
+                                            border: "1px solid skyblue",
+                                            width: "100%",
+                                            padding: "2px 15px",
+                                            borderRadius: "20px"
+                                        }}
+                                        onChange={(e)=>{
+                                            settoRemarks(e.target.value);
+                                        }}
+                                            type="textarea" placeholder="Enter your drop off location" />
                                     </div>
                                 </div>
                             </div>

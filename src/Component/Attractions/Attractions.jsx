@@ -79,7 +79,7 @@ const Attractions = () => {
                     <h2 style={{ fontSize: "24px" }}>Best Attractions in Dubai</h2>
                 </div>
                 <div className="land-combos-container">
-                    {attraction.map((val, id) => {
+                    {attraction?.map((val, id) => {
                         return <>
                             <div className="landcombos-card" key={id} onClick={(e) => {
                                 clickedAttraction(val._id)
@@ -105,7 +105,7 @@ const Attractions = () => {
                                             <h4>Price Starting From</h4>
                                         </div>
                                         <div className="card-price">
-                                            <h4>AED <b>{val.cost[0].cost1.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+                                            <h4>AED <b>{val.price[0].adultPrice}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
                                         </div>
                                     </div>
                                 </div>

@@ -22,7 +22,8 @@ const AttractionDetails = () => {
     const [active, setActive] = useState(1);
     const [booking, setBooking] = useState(false);
     const [bookingAttractionId, setBookingAttractionId] = useState('');
-    const [atPrice, setatPrice] = useState()
+    const [adultPrice, setAdultPrice] = useState();
+    const [childPrice,setChildPrice]=useState();
 
     const handleBookingOn = (id) => {
         document.body.style.overflow = 'hidden';
@@ -43,7 +44,6 @@ const AttractionDetails = () => {
     const handleActiveClass = (index) => {
         setActive(index)
     }
-    const navigate = useNavigate();
 
     useEffect(() => {
             fetch(`${APIPath}/api/v1/attractions/?id=${packageId}`, {
@@ -55,7 +55,8 @@ const AttractionDetails = () => {
                 mode: 'cors',
             }).then((res) => res.json())
                 .then((data) => {
-                    setatPrice(data.data[0].cost[0].cost1.split(" ")[1])
+                    setAdultPrice(data.data[0].price[0].adultPrice);
+                    setChildPrice(data.data[0].price[0].childPrice)
                     setAttractiondata(data.data)
                     setLoading(false)
                 })
@@ -209,7 +210,7 @@ const AttractionDetails = () => {
                                     <p>Starting from</p>
                                 </div>
                                 <div className="package-price-value">
-                                    <p><b>AED {atPrice}</b> <sub>/ Per person</sub></p>
+                                    <p><b>AED {adultPrice}</b> <sub>/ Per person</sub></p>
                                 </div>
                             </div>
                             <div className="package-query-text-button">
@@ -228,7 +229,7 @@ const AttractionDetails = () => {
         )}
         {booking && <BookAttraction onClose={handleBookingOff}
             bookingPackageId={bookingAttractionId}
-            packagedata={attractiondata} price={atPrice} />}
+            packagedata={attractiondata} adultPrice={adultPrice} childPrice={childPrice} />}
     </>
 }
 export default AttractionDetails;

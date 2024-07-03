@@ -116,7 +116,7 @@ const handleLogout = () => {
               <>
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/cart">
-                    <img src='shoppingcart.svg' alt='cart'/>
+                    <img src='./shoppingcart.svg' alt='cart'/>
                     <sub style={{
                       background: "#595959", borderRadius: "50%", padding: "2px 6px 3px 6px", color: "#fff",
                       top: "-0.8rem", left: "-0.5rem"
@@ -128,7 +128,7 @@ const handleLogout = () => {
 
                 <li className="nav-item">
                   <NavLink className="nav-link user-login">
-                    <img src='user1.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
+                    <img src='./user1.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
                       onClick={() => {
                         setUserClick(!userClick)
                       }}
