@@ -70,30 +70,32 @@ const Transfers = () => {
     const handleTerminalChange = (selectedOption) => {
         const terminalId = selectedOption ? selectedOption.value : '';
         setSelectedTerminal(terminalId);
+        setPickupId(terminalId)
         setSelectedTerminalName(selectedOption.label)
     };
-    const [selectedTerminalTo, setSelectedTerminalTo] = useState('');
-    const [selectedTerminalToName, setSelectedTerminalToName] = useState('Airport Name')
-    const handleTerminalChangeTo = (selectedOption) => {
-        const terminalId = selectedOption ? selectedOption.value : '';
-        setSelectedTerminalTo(terminalId);
-        setSelectedTerminalToName(selectedOption.label)
-    };
+    // const [selectedTerminalTo, setSelectedTerminalTo] = useState('');
+    // const [selectedTerminalToName, setSelectedTerminalToName] = useState('Airport Name')
+    // const handleTerminalChangeTo = (selectedOption) => {
+    //     const terminalId = selectedOption ? selectedOption.value : '';
+    //     setSelectedTerminalTo(terminalId);
+    //     setSelectedTerminalToName(selectedOption.label)
+    // };
     // --------------------------------Hotel-changes------------------------------------------- 
     const [selectedHotel, setSelectedHotel] = useState('');
     const [selectedHotelName, setSelectedHotelName] = useState('Hotel Name')
     const handleHotelChange = (selectedOption) => {
         const hotelId = selectedOption ? selectedOption.value : '';
         setSelectedHotelName(selectedOption.label)
+        setPickupId(hotelId);
         setSelectedHotel(hotelId);
     }
-    const [selectedHotelTo, setSelectedHotelTo] = useState('');
-    const [selctedHotelNameTo, setSelectedHotelNameTo] = useState('Hotel Name');
-    const handleHotelChangeTo = (selectedOption) => {
-        const hotelId = selectedOption ? selectedOption.value : '';
-        setSelectedHotelTo(hotelId);
-        setSelectedHotelNameTo(selectedOption.label)
-    }
+    // const [selectedHotelTo, setSelectedHotelTo] = useState('');
+    // const [selctedHotelNameTo, setSelectedHotelNameTo] = useState('Hotel Name');
+    // const handleHotelChangeTo = (selectedOption) => {
+    //     const hotelId = selectedOption ? selectedOption.value : '';
+    //     setSelectedHotelTo(hotelId);
+    //     setSelectedHotelNameTo(selectedOption.label)
+    // }
     // ----------------------------------Terminal Or Hotel type--------------------------------    
     const TerminalHotel = [
         { value: "terminal", label: "Airport" },
@@ -132,10 +134,11 @@ const Transfers = () => {
     }
     const [travelTypeTo, setTravelTypeTo] = useState('terminal');
     const [travelTypeToType, setTravelTypeToType] = useState('Airport');
+    const [dropOffId,setDropOffId]=useState("")
     const TerminalOrStayTo = (e) => {
-        console.log(e.value);
-        console.log(e.label)
         setTravelTypeTo(e.value);
+        setDropOffId(e.value);
+        setTravelTypeTo(e.type);
         setTravelTypeToType(e.label)
     }
     // -------------------------------------Trip Type Ex-One-way or Two Way------------------------ 
@@ -239,25 +242,50 @@ const Transfers = () => {
     }, [cityId]);
     //----------------------------Zone List----------------------------------------------------
     const [zoneIdFrom, setZoneIdFrom] = useState("");
-    const [zoneIdTo, setZoneIdTo] = useState("");
+    // const [zoneIdTo, setZoneIdTo] = useState("");
     const [zone, setZone] = useState(null);
     useEffect(() => {
-        fetch(`${APIPath}/api/v1/agency/zone?city=${cityId}`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setZone(data.data);
+        if(cityId){
+            fetch(`${APIPath}/api/v1/agency/zone?city=${cityId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
             })
-            .catch((err) => {
-                alert(err)
-            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setZone(data.data);
+                })
+                .catch((err) => {
+                    alert(err)
+                })
+        }
     }, [cityId])
+    //---------------------------Get All drop Off Point---------
+    const [dropPoint,setDropPoint]=useState(null);
+    const [pickupId,setPickupId]=useState('')
+    useEffect(() => {
+        if(pickupId){
+            fetch(`${APIPath}/api/v1/agent/transfer/fetch/dropoff?pickupPoint=${pickupId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data.data);
+                    setDropPoint(data.data);
+                })
+                .catch((err) => {
+                    alert(err)
+                })
+        }
+    }, [pickupId])
     // --------------------------- Pessangers count------------------------------------------------------------------
     const [adultsPassengers, setAdultsPassengers] = useState(0);
     const [childPassengers, setChildPassengers] = useState(0);
@@ -295,9 +323,10 @@ const Transfers = () => {
                         : selectedHotel
             },
             destinationLocation: {
-                code: travelTypeTo === 'terminal' ? selectedTerminalTo
-                    : travelTypeTo === 'zone' ? zoneIdTo
-                        : selectedHotelTo
+                // code: travelTypeTo === 'terminal' ? selectedTerminalTo
+                //     : travelTypeTo === 'zone' ? zoneIdTo
+                //         : selectedHotelTo
+                code:dropOffId
             }
         }
     }
@@ -360,7 +389,7 @@ const Transfers = () => {
                         {/* -------------------------------Search Form After clicking on Search Button------------------ */}
                         <div className={searchHeight ? "search-container-shrink-height" : "hidden"}>
                             <div className="country">
-                                <p>Airport/Hotel</p>
+                                <p>Airport/Hotel/Zone</p>
                                 <Select
                                     options={TerminalHotel}
                                     onChange={TerminalOrStay}
@@ -450,6 +479,7 @@ const Transfers = () => {
                                             options={zone?.map((val, id) => ({ value: val._id, label: val.name }))}
                                             onChange={(e) => {
                                                 setZoneIdFrom(e.value);
+                                                setPickupId(e.value);
                                             }}
                                             placeholder="Select Zone"
                                             isSearchable
@@ -470,9 +500,9 @@ const Transfers = () => {
                                 </div>
                             )}
                             <div className="country">
-                                <p>Airport/Hotel</p>
+                                <p>Drop Off</p>
                                 <Select
-                                    options={TerminalHotel}
+                                    options={dropPoint?.map((val,id)=>({ value: val.dropoffId, type:val.type,label: val.name }))}
                                     onChange={TerminalOrStayTo}
                                     placeholder={travelTypeToType}
                                     isSearchable
@@ -492,7 +522,7 @@ const Transfers = () => {
                                     }}
                                 />
                             </div>
-                            {travelTypeTo === 'terminal' && (
+                            {/* {travelTypeTo === 'terminal' && (
                                 <div className="country">
                                     <p>To Terminal</p>
                                     <Select id="select"
@@ -549,7 +579,7 @@ const Transfers = () => {
                                     )}
                                 </div>
 
-                            )}
+                            )} */}
                             <div className="date-container" style={{ gap: "10px" }}>
                                 <div className="country"
                                     style={{ width: "100%" }}
@@ -671,7 +701,7 @@ const Transfers = () => {
                                             <div className="country">
                                                 <p>From Country</p>
                                                 <Select
-                                                    options={formCountry?.map((val, id) => ({ value: val._id, label: val.name }))}
+                                                    options={formCountry?.map((val) => ({ value: val._id, label: val.name }))}
                                                     onChange={handleSelectChange}
                                                     placeholder="Select Country"
                                                     isSearchable
@@ -795,6 +825,7 @@ const Transfers = () => {
                                                                 options={zone?.map((val, id) => ({ value: val._id, label: val.name }))}
                                                                 onChange={(e) => {
                                                                     setZoneIdFrom(e.value);
+                                                                    setPickupId(e.value);
                                                                     console.log(e.label)
                                                                 }}
                                                                 placeholder="Select Zone"
@@ -818,11 +849,11 @@ const Transfers = () => {
                                             </div>
                                             <div className="dropoff-container" style={{ display: "flex", gap: "2rem", width: "100%" }} >
                                                 <div className="country">
-                                                    <p>To Airport/Hotel/Zone</p>
+                                                    <p>Drop Off</p>
                                                     <Select
-                                                        options={TerminalHotel}
+                                                        options={dropPoint?.map((val,id)=>({ value: val.dropoffId,type:val.type, label: val.name }))}
                                                         onChange={TerminalOrStayTo}
-                                                        placeholder="Airport/Hotel/Zone"
+                                                        placeholder="Select Drop Off Location..."
                                                         isSearchable
                                                         styles={{
                                                             control: (provided) => ({
@@ -838,7 +869,7 @@ const Transfers = () => {
                                                         }}
                                                     />
                                                 </div>
-                                                {travelTypeTo === 'terminal' && (
+                                                {/* {travelTypeTo === 'terminal' && (
                                                     <div className="country">
                                                         <p>To Airport </p>
                                                         <Select id="select"
@@ -915,7 +946,7 @@ const Transfers = () => {
                                                             }}
                                                         />
                                                     </div>
-                                                )}
+                                                )} */}
 
                                             </div>
                                         </div>

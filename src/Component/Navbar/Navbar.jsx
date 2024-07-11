@@ -4,53 +4,51 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 import { useCart } from '../context/CartContext';
 
-const Navbar = ({ isLoggedIn, onLogout,setLoggedIn }) => {
-  const { cartLength ,setToken,setAgentName} = useCart();
+const Navbar = ({ isLoggedIn, onLogout, setLoggedIn }) => {
+  const { cartLength, setToken, token, setAgentName } = useCart();
   const [userClick, setUserClick] = useState(false)
   const location = useLocation();
-    
 
   const getCookie = (name) => {
     const decodedCookie = decodeURIComponent(document.cookie);
     const ca = decodedCookie.split(';');
     const nameEQ = `${name}=`;
     for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(nameEQ) === 0) {
-            return c.substring(nameEQ.length, c.length);
-        }
+      let c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
     }
     return null;
-};
+  };
 
-const getAgentInfoFromCookies = () => {
-    const token = getCookie('token');
+  const getAgentInfoFromCookies = () => {
+    const token1 = getCookie('token');
     const agentName = getCookie('agentName');
-    return { token, agentName };
-};
+    return { token1, agentName };
+  };
 
-useEffect(() => {
-  const { token, agentName } = getAgentInfoFromCookies();
-  if (token && agentName) {
-      setToken(token);
+  useEffect(() => {
+    const { token1, agentName } = getAgentInfoFromCookies();
+    if (token1 && agentName) {
+      setToken(token1);
       setAgentName(agentName);
       setLoggedIn(true);
-  }
-}, []);
+    }
+  }, []);
 
-const deleteCookie = (name) => {
-  document.cookie = `${name}=; path=/; max-age=0`;
-};
 
-// Function to handle logout and remove the cookies
-const handleLogout = () => {
-  deleteCookie('token');
-  deleteCookie('agentName');
-  // Additional logout logic (e.g., redirecting to login page)
-};
+  const deleteCookie = (name) => {
+    document.cookie = `${name}=; path=/; max-age=0`;
+  };
+
+  const handleLogout = () => {
+    deleteCookie('token');
+    deleteCookie('agentName');
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{ margin: "0", padding: "0" }}>
@@ -93,7 +91,7 @@ const handleLogout = () => {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink 
+              <NavLink
                 className={`nav-link ${location.pathname.includes('/attraction') ? 'active' : ''}`}
                 to="/attractions">
                 Attractions
@@ -112,11 +110,12 @@ const handleLogout = () => {
           </ul>
 
           <ul className="navbar-nav" id='navbarNav-mobile-tab'>
-            {isLoggedIn ? (
+            {(isLoggedIn) ? (
               <>
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/cart">
-                    <img src='./shoppingcart.svg' alt='cart'/>
+                    {/* <img src='./shoppingcart.svg' alt='cart' /> */}
+                    <img src='/shoppingcart.svg' alt='cart' />
                     <sub style={{
                       background: "#595959", borderRadius: "50%", padding: "2px 6px 3px 6px", color: "#fff",
                       top: "-0.8rem", left: "-0.5rem"
@@ -128,7 +127,7 @@ const handleLogout = () => {
 
                 <li className="nav-item">
                   <NavLink className="nav-link user-login">
-                    <img src='./user1.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
+                    <img src='/user1.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
                       onClick={() => {
                         setUserClick(!userClick)
                       }}
@@ -137,15 +136,15 @@ const handleLogout = () => {
                       <>
                         <ul className='user-log-out'>
                           <li>
-                            <NavLink to="/user"><p style={{ textAlign: "center", textTransform: "capitalize", fontWeight: "300" }} 
-                            onClick={()=>{
-                              setUserClick(!userClick)
-                            }}
+                            <NavLink to="/user"><p style={{ textAlign: "center", textTransform: "capitalize", fontWeight: "300" }}
+                              onClick={() => {
+                                setUserClick(!userClick)
+                              }}
                             >
                               Dashboard
-                              </p></NavLink>
+                            </p></NavLink>
                           </li>
-                          <li to="/" onClick={()=>{
+                          <li to="/" onClick={() => {
                             handleLogout();
                             onLogout();
                           }}>
@@ -159,10 +158,10 @@ const handleLogout = () => {
               </>
             ) : (
               <li className="nav-item nav-link-btn">
-                <NavLink className="nav-link" to="/login" 
-                onClick={()=>{
-                  setUserClick(false)
-                }}
+                <NavLink className="nav-link" to="/login"
+                  onClick={() => {
+                    setUserClick(false)
+                  }}
                 >
                   Agent Login
                 </NavLink>

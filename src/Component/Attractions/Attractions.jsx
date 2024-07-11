@@ -6,36 +6,38 @@ import { MdArrowOutward } from "react-icons/md";
 import { IoSearchSharp } from "react-icons/io5";
 import './Attraction.css';
 import Footer from "../Footer/Footer";
+import { useCart } from "../context/CartContext";
 
 const Attractions = () => {
     document.body.style.overflow = 'auto';
+    const {token} =useCart();
     const [attraction, setAttraction] = useState(null);
     const [originalAtt, setOriginalAtt] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        fetch(`${APIPath}/api/v1/attractions`, {
-            headers: {
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        }).then((res) => res.json())
-            .then((data) => {
-                console.log(data.data);
-                // setTimeout(() => {
-                setAttraction(data.data)
-                setOriginalAtt(data.data)
-                setLoading(false)
-                // }, 2000)
-            })
-            .catch((err) => {
-                alert(err)
-                setLoading(false)
-            })
-    }, [])
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/attraction`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    console.log(data.data);
+                    setAttraction(data.data)
+                    setOriginalAtt(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+    }, [token])
     const navigate = useNavigate()
     const clickedAttraction = (packageId) => {
         navigate(`/attractiondetails/${packageId}`);

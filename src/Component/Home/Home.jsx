@@ -14,7 +14,7 @@ import './Home.css';
 import '../LandCombos/LandCombos.css';
 
 const Home = () => {
-
+    const { token } = useCart();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -36,27 +36,29 @@ const Home = () => {
     const [attstate, setAttState] = useState(false);
 
     useEffect(() => {
-        fetch(`${APIPath}/api/v1/packages`, {
-            headers: {
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        }).then((res) => res.json())
-            .then((data) => {
-                // console.log(data.data);
-                // setTimeout(() => {
-                setPackageData(data.data)
-                setOriginalPackages(data.data)
-                setLoading(false)
-                // }, 2000)
-            })
-            .catch((err) => {
-                alert(err)
-                setLoading(false)
-            })
-    }, [])
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/package`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    setPackageData(data.data)
+                    setOriginalPackages(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+    }, [token]);
+
+
+
     const navigate = useNavigate();
     const clickedPackage = (packageId) => {
         navigate(`/packageDetails/${packageId}`);
@@ -81,6 +83,7 @@ const Home = () => {
     let filteredPackages;
     let filteredLnC;
     let filteredAtt;
+
     const handleSearch = () => {
         const searchTermLower = searchTerm.toLowerCase();
         if (searchTermLower == "") {
@@ -92,20 +95,29 @@ const Home = () => {
             setLnCState(false)
         }
         else {
-            filteredPackages = originalPackages.filter((packages) =>
-                packages.title.toLowerCase().includes(searchTermLower)
-            );
-            // filteredPackages = originalPackages.filter((packages) => {
-            //     const searchWords = searchTermLower.trim().split(" ");
-            //     return searchWords.some(word => packages.title.toLowerCase().includes(word));
-            // });
+            // filteredPackages = originalPackages.filter((packages) =>
+            //     packages.title.toLowerCase().includes(searchTermLower)
+            // );
+            filteredPackages = originalPackages.filter((packages) => {
+                const searchWords = searchTermLower.trim().split(" ");
+                return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            });
 
-            filteredLnC = originalLnC.filter((packages) =>
-                packages.title.toLowerCase().includes(searchTermLower)
-            );
-            filteredAtt = originalAtt.filter((packages) =>
-                packages.title.toLowerCase().includes(searchTermLower)
-            );
+            // filteredLnC = originalLnC.filter((packages) =>
+            //     packages.title.toLowerCase().includes(searchTermLower)
+            // );
+            filteredLnC = originalLnC.filter((packages) => {
+                const searchWords = searchTermLower.trim().split(" ");
+                return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            });
+
+            // filteredAtt = originalAtt.filter((packages) =>
+            //     packages.title.toLowerCase().includes(searchTermLower)
+            // );
+            filteredAtt = originalAtt.filter((packages) => {
+                const searchWords = searchTermLower.trim().split(" ");
+                return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            });
 
             if (filteredPackages?.length > 0) {
                 setPackageData(filteredPackages);
@@ -134,24 +146,26 @@ const Home = () => {
     // -------------------------------------Attraction List------------------------------
 
     useEffect(() => {
-        fetch(`${APIPath}/api/v1/attractions`, {
-            headers: {
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        }).then((res) => res.json())
-            .then((data) => {
-                setAttractionData(data.data)
-                setOriginalAtt(data.data)
-                setLoading(false)
-            })
-            .catch((err) => {
-                alert(err)
-                setLoading(false)
-            })
-    }, [])
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/attraction`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    setAttractionData(data.data)
+                    setOriginalAtt(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+    }, [token])
     const clickedAttraction = (packageId) => {
         navigate(`/attractiondetails/${packageId}`);
     }
@@ -175,9 +189,10 @@ const Home = () => {
 
     // --------------------------------LandCombos List--------------------------------------
     useEffect(() => {
+        
         fetch(`${APIPath}/api/v1/land_combos`, {
             headers: {
-                // 'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             },
             method: 'GET',
@@ -192,7 +207,7 @@ const Home = () => {
                 alert(err)
                 setLoading(false)
             })
-    }, [])
+    }, [token])
     const topThreeLandCombos = landCombosData?.slice(startIndexLnC, startIndexLnC + 3);
     const clickedLandCombos = (packageId) => {
         navigate(`/landcombosDetails/${packageId}`);
@@ -231,7 +246,7 @@ const Home = () => {
                             value={searchTerm}
                             onChange={(e) => {
                                 setSearchTerm(e.target.value);
-                                handleSearch();
+                                // handleSearch();
                             }}
                         />
                         <IoSearchSharp style={{ fontSize: "20px", cursor: "pointer" }} onClick={handleSearch} />

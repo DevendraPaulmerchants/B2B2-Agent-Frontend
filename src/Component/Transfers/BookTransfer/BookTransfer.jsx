@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDate, selectedDateTo }) => {
     document.body.style.overflow = 'hidden';
     const { token, setBookTransfer, transferDetails, setDescriptionPage } = useCart()
-    console.log(transferDetails.type)
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(adultsPassengers);
     const [childPassenger, setChildPassenger] = useState(childPassengers);
@@ -386,7 +385,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                 </div>
                                             </div>
                                             <div>
-                                                <h2 style={{ marginBottom: "5px" }}>Remarks</h2>
+                                                <h2 style={{ marginBottom: "5px" }}>Remarks/drop-off Location</h2>
                                                 <input style={{
                                                     outline: "none",
                                                     border: "1px solid skyblue",
@@ -395,7 +394,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     borderRadius: "20px"
                                                 }}
                                                 onChange={(e)=>{
-                                                    setfromRemarks(e.target.value);
+                                                    settoRemarks(e.target.value);
                                                 }}
                                                     type="textarea" placeholder="Enter your drop off location" />
                                             </div>
@@ -478,7 +477,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                 </div>
                                             </div>
                                             <div>
-                                                <h2 style={{ marginBottom: "5px" }}>Remarks</h2>
+                                                <h2 style={{ marginBottom: "5px" }}>Remarks/pickup Location</h2>
                                                 <input style={{
                                                     outline: "none",
                                                     border: "1px solid skyblue",

@@ -5,25 +5,48 @@ import Rating from '@mui/material/Rating';
 import { IoLocationOutline } from "react-icons/io5";
 import { MdArrowOutward } from "react-icons/md";
 import html2pdf from 'html2pdf.js';
-import { Navigate, useNavigate } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import BookAttraction from "./BookAttraction";
 import './Attraction.css';
 import { useParams } from "react-router-dom";
 
 const AttractionDetails = () => {
-    const { packageId} = useParams();
+    const {token}=useCart();
+    const { packageId } = useParams();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    const { token } = useCart();
     const [attractiondata, setAttractiondata] = useState(null);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(1);
     const [booking, setBooking] = useState(false);
     const [bookingAttractionId, setBookingAttractionId] = useState('');
     const [adultPrice, setAdultPrice] = useState();
-    const [childPrice,setChildPrice]=useState();
+    const [childPrice, setChildPrice] = useState();
+
+    useEffect(() => {
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/attraction?id=${packageId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    setAdultPrice(data.data[0].price[0].adultPrice);
+                    setChildPrice(data.data[0].price[0].childPrice)
+                    setAttractiondata(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+
+    },[token])
 
     const handleBookingOn = (id) => {
         document.body.style.overflow = 'hidden';
@@ -45,27 +68,7 @@ const AttractionDetails = () => {
         setActive(index)
     }
 
-    useEffect(() => {
-            fetch(`${APIPath}/api/v1/attractions/?id=${packageId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'GET',
-                mode: 'cors',
-            }).then((res) => res.json())
-                .then((data) => {
-                    setAdultPrice(data.data[0].price[0].adultPrice);
-                    setChildPrice(data.data[0].price[0].childPrice)
-                    setAttractiondata(data.data)
-                    setLoading(false)
-                })
-                .catch((err) => {
-                    alert(err)
-                    setLoading(false)
-                })
 
-    }, [packageId])
 
     const handleDownloadPDF = () => {
         const element = document.getElementById('package-details');
@@ -74,14 +77,14 @@ const AttractionDetails = () => {
     const [isScrolled, setIsScrolled] = useState(true);
     useEffect(() => {
         const handleScroll = () => {
-          const scrollY = window.scrollY;
-          setIsScrolled(scrollY < 120);
+            const scrollY = window.scrollY;
+            setIsScrolled(scrollY < 100);
         };
         window.addEventListener('scroll', handleScroll);
         return () => {
-          window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
-      }, []);  
+    }, []);
     const handleShare = () => {
         if (navigator.share) {
             const url = window.location.href;
@@ -102,7 +105,7 @@ const AttractionDetails = () => {
     return <>
         {loading ? (<div className="loader"></div>) : (
             <>
-                {attractiondata.map((val, id) => {
+                {attractiondata?.map((val, id) => {
                     return <>
                         <div className="package-banner-image">
                             <img src={val.bannerImage} />
@@ -159,7 +162,7 @@ const AttractionDetails = () => {
                                         <p>CN Tower, Moraine Lake, Suspension Bridge Park, National Park and 12+ places</p>
                                     </div>
 
-                                    <br /> <br/>
+                                    <br /> <br />
                                 </div>
                             )}
                             {(active === 2) && (
@@ -185,7 +188,7 @@ const AttractionDetails = () => {
                                             </>
                                         })}
                                     </div>
-                                    <br/> <br/> 
+                                    <br /> <br />
                                 </div>
                             )}
                             {(active === 5) && (<div className="attraction-cancellation-policy">
@@ -193,7 +196,7 @@ const AttractionDetails = () => {
                                 {val.cancellationRefundPolicy ? val.cancellationRefundPolicy.map((val, id) => {
                                     return <>
                                         <div className="attraction-cancellation" key={id}>
-                                            <p className={id===0 ? "green" : "red"}><GoDotFill /></p>
+                                            <p className={id === 0 ? "green" : "red"}><GoDotFill /></p>
                                             <p>{val}</p>
                                         </div>
 
@@ -201,10 +204,10 @@ const AttractionDetails = () => {
                                 }) : (<div>
                                     <h2 style={{ fontSize: "16px", color: "#00081d" }}>Please Send Booking Form to Know more about this</h2>
                                 </div>)}
-                                <br/> <br/>
+                                <br /> <br />
                             </div>)}
                         </div>
-                        <div className={isScrolled ? "footer-none":"package-footer"}>
+                        <div className={isScrolled ? "footer-none" : "package-footer"}>
                             <div className="package-price-text-value">
                                 <div className="package-price-text">
                                     <p>Starting from</p>

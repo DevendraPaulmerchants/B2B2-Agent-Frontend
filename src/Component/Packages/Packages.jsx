@@ -11,32 +11,34 @@ import './Packages.css';
 
 const Packages = () => {
     document.body.style.overflow = 'auto';
-    // const { packageId, setPackageId } = useCart();
+    const {token } = useCart();
     const [packages, setPackages] = useState(null);
     const [originalPackages, setOriginalPackages] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
    
     useEffect(() => {
-        fetch(`${APIPath}/api/v1/packages`, {
-            headers: {
-                // 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        }).then((res) => res.json())
-            .then((data) => {
-                console.log(data.data);
-                setPackages(data.data)
-                setOriginalPackages(data.data)
-                setLoading(false)
-            })
-            .catch((err) => {
-                alert(err)
-                setLoading(false)
-            })
-    }, [])
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/package`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    console.log(data.data);
+                    setPackages(data.data)
+                    setOriginalPackages(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+    }, [token])
     
     const navigate = useNavigate();
     const clickedPackage = (packageId) => {

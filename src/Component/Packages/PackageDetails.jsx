@@ -20,6 +20,27 @@ const PacKageDetails = () => {
     const [active, setActive] = useState(1);
     const [booking, setBooking] = useState(false);
     const [bookingPackageId, setBookingPackageId] = useState('');
+    
+    useEffect(() => {
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/package/?id=${packageId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    setPackagedata(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+    }, [token])
 
     const handleBookingOn = (id) => {
         document.body.style.overflow = 'hidden';
@@ -41,27 +62,6 @@ const PacKageDetails = () => {
         setActive(index)
     }
 
-    useEffect(() => {
-            fetch(`${APIPath}/api/v1/packages/?id=${packageId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'GET',
-                mode: 'cors',
-            }).then((res) => res.json())
-                .then((data) => {
-                    console.log(data.data);
-                    // setTimeout(() => {
-                    setPackagedata(data.data)
-                    setLoading(false)
-                    // }, 2000)
-                })
-                .catch((err) => {
-                    alert(err)
-                    setLoading(false)
-                })
-    }, [])
 
     const handleDownloadPDF = () => {
         const input = document.getElementById('package-details');
@@ -77,7 +77,7 @@ const PacKageDetails = () => {
     useEffect(() => {
         const handleScroll = () => {
           const scrollY = window.scrollY;
-          setIsScrolled(scrollY < 150);
+          setIsScrolled(scrollY < 100);
         };
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -106,7 +106,7 @@ const PacKageDetails = () => {
         <div id="package-details">
             {loading ? (<div className="loader"></div>) : (
                 <>
-                    {packagedata.map((val, id) => {
+                    {packagedata?.map((val, id) => {
                         return <>
                             <div className="package-banner-image" >
                                 <img src={val.bannerImage} alt="Banner"/>

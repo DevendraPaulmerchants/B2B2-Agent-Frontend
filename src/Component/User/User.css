@@ -121,3 +121,17 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+.download-voucher {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    padding: 2rem;
+}
+.download-voucher button {
+    background:none;
+    border: 1.5px solid skyblue;
+    outline: none;
+    padding: 5px 15px;
+    border-radius: 20px;
+    color: #2e6991;
+}

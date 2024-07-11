@@ -2,8 +2,7 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
@@ -33,6 +32,7 @@ const BookLandCombos = ({ onClose, type,
     const [toDate, setToDate] = useState(lncEndDate);
 
     const priceperPerson=price/(adults + child);
+
     const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
                                priceperPerson * (childPassenger - child))
 
@@ -74,7 +74,6 @@ const BookLandCombos = ({ onClose, type,
             }
         }
     }
-    const navigate = useNavigate();
     const bookThisPackage = () => {
         if (name.length <= 0) {
             alert("please fill lead passenger details")

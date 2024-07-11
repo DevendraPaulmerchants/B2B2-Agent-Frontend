@@ -66,7 +66,8 @@ const TransferDescription=({onClose,descriptionPageData})=>{
                        <div><MdInfo style={{fontSize:"24px"}}/></div>
                        <div><h4>General Information</h4></div>
                     </div>
-                    <p>Remember to bring a printed copy of this voucher and valid photo ID with You.</p>
+                    <p>Remember to bring a printed copy of the voucher and valid photo 
+                      ID with You after booking completion.</p>
                 </div>
                 <hr/>
                 <div className="transfer-description-btn">

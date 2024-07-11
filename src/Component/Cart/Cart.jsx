@@ -34,7 +34,7 @@ const Cart = () => {
   const [editAtt, setEditAtt] = useState(false);
   const [attId, setAttId] = useState('');
   const [attDate, setAttDate] = useState();
-  const [priceAtt,setPriceAtt]=useState()
+  const [priceAtt,setPriceAtt]=useState();
   const [editLnC, setEditLnC] = useState(false);
   const [lncId, setLnCId] = useState('');
   const [lncStartDate, setlncStartDate] = useState();
@@ -67,7 +67,6 @@ const Cart = () => {
         setAttractions(data.data[0]?.attractions);
         setLandcombos(data.data[0]?.landCombos);
         setTransfer(data.data[0]?.transfers)
-        console.log(data.data[0]?.transfers)
         setCustomer(data.data[0]?.customerDetails)
         setCartLength(
           (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0].attractions.length) +

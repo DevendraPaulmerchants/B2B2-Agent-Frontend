@@ -368,7 +368,7 @@ hr {
     width: 100%;
 }
 .package-from-date-to-date {
-    width: 60%;
+    /* width: 60%; */
     display: flex;
     gap: 2rem;
     padding-right:2rem;

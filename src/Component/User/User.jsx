@@ -16,24 +16,26 @@ const User = () => {
     const itemsPerPage = 15;
 
     useEffect(() => {
-        fetch(`${APIPath}/api/v1/agent/booking`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        }).then((res) => res.json())
-            .then((data) => {
-                console.log(data.data)
-                setBookingData(data.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                alert(err);
-                setLoading(false);
-            });
-    }, []);
+        if(token){
+            fetch(`${APIPath}/api/v1/agent/booking`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    console.log(data.data)
+                    setBookingData(data.data);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    alert(err);
+                    setLoading(false);
+                });
+        }
+    }, [token]);
 
     const seeDetails = (id) => {
         setBookingDetails(true);

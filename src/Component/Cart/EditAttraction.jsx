@@ -18,7 +18,9 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(attDate);
+
     const priceperPerson=price/(adults + child);
+    
     const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
                                priceperPerson * (childPassenger - child))
 

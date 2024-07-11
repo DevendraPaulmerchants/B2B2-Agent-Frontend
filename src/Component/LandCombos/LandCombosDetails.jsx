@@ -17,7 +17,31 @@ const LandCombosDetails = () => {
     const [booking, setBooking] = useState(false);
     const [bookingPackageId, setBookingPackageId] = useState('');
     const [adultPrice,setAdultPrice] = useState();
-    const [childPrice,setChildPrice]=useState()
+    const [childPrice,setChildPrice]=useState();
+
+    useEffect(() => {
+        if(token){
+            fetch(`${APIPath}/api/v1/land_combos?id=${packageId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    setAdultPrice(data.data[0].price[0].adultPrice);
+                    setChildPrice(data.data[0].price[0].childPrice)
+                    setLandCombosDetails(data.data);
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
+}, [token])
+
 
     const handleBookingOn = (id) => {
         document.body.style.overflow = 'hidden';
@@ -39,27 +63,6 @@ const LandCombosDetails = () => {
         setActive(index)
     }
 
-    useEffect(() => {
-            fetch(`${APIPath}/api/v1/land_combos?id=${packageId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'GET',
-                mode: 'cors',
-            }).then((res) => res.json())
-                .then((data) => {
-                    setAdultPrice(data.data[0].price[0].adultPrice);
-                    setChildPrice(data.data[0].price[0].childPrice)
-                    setLandCombosDetails(data.data);
-                    setLoading(false)
-                })
-                .catch((err) => {
-                    alert(err)
-                    setLoading(false)
-                })
-    }, [packageId])
-    
     const handleDownloadPDF = () => {
         const element = document.getElementById('package-details');
         html2pdf().from(element).save();
@@ -68,7 +71,7 @@ const LandCombosDetails = () => {
     useEffect(() => {
         const handleScroll = () => {
           const scrollY = window.scrollY;
-          setIsScrolled(scrollY < 120);
+          setIsScrolled(scrollY < 100);
         };
         window.addEventListener('scroll', handleScroll);
         return () => {

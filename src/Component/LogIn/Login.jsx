@@ -58,7 +58,6 @@ const handleLogin = () => {
     });
 };
 
-
   const forgotClose=()=>{
     setForgot(false);
   }
