@@ -72,7 +72,7 @@ const Registration = () => {
                     setLoading(false);
                     if (data.message === 'agent registered successfully!!') {
                         alert("Account created Succesfully");
-                        navigate('/login')
+                        navigate('/')
                     } else {
                         alert(data.message)
                         navigate('/registration')
@@ -220,7 +220,7 @@ const Registration = () => {
                     </form>
                     {/* --------------------------- Do not have account------------- */}
                     <div className="login-not-have-account">
-                        <p>You have an account? <Link to="/login"> Sign In</Link></p>
+                        <p>You have an account? <Link to="/"> Sign In</Link></p>
                     </div>
                 </div>
             </div>

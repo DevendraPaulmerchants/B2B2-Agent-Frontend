@@ -9,10 +9,8 @@ import BookPackage from "./EditPackage";
 import BookLandCombos from "./EditLandCombo";
 import BookTransfer from "./EditTransfer";
 
-const Cart = () => {
-  const navigate = useNavigate();
-  const { token, cartItem, setCartItem, cartLength, setCartLength } = useCart();
-
+const Cart = ({token}) => {
+  const {cartLength, setCartLength } = useCart();
   document.body.style.overflow = 'auto';
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -33,6 +31,7 @@ const Cart = () => {
   const [pricePackage,setPricePackage]=useState();
   const [editAtt, setEditAtt] = useState(false);
   const [attId, setAttId] = useState('');
+  const [subAttractionId,setSubAttractionId]=useState('')
   const [attDate, setAttDate] = useState();
   const [priceAtt,setPriceAtt]=useState();
   const [editLnC, setEditLnC] = useState(false);
@@ -51,6 +50,8 @@ const Cart = () => {
   const [departureFlightCode, setdepartureFlightCode] = useState();
   const [departurePickupTime, setdeparturePickupTime] = useState();
   const [selectedDateTo, setselectedDateTo] = useState();
+  const [maxPassengers,setMaxPassengers]=useState();
+ 
 
   const LoadCartItem = () => {
     fetch(`${APIPath}/api/v1/agent/new-cart`, {
@@ -69,10 +70,10 @@ const Cart = () => {
         setTransfer(data.data[0]?.transfers)
         setCustomer(data.data[0]?.customerDetails)
         setCartLength(
-          (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0].attractions.length) +
-          (isNaN(data.data[0]?.landCombos?.length) ? 0 : data.data[0].landCombos.length) +
-          (isNaN(data.data[0]?.packages?.length) ? 0 : data.data[0].packages.length) +
-          (isNaN(data.data[0]?.transfers?.length) ? 0 : data.data[0].transfers.length)
+          (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0]?.attractions.length) +
+          (isNaN(data.data[0]?.landCombos?.length) ? 0 : data.data[0]?.landCombos.length) +
+          (isNaN(data.data[0]?.packages?.length) ? 0 : data.data[0]?.packages.length) +
+          (isNaN(data.data[0]?.transfers?.length) ? 0 : data.data[0]?.transfers.length)
         )
       })
       .catch((err) => {
@@ -305,6 +306,7 @@ const Cart = () => {
                             setAttId(val.attractionId)
                             setAttDate(val.startDate.split("T")[0])
                             setPriceAtt(val.cost);
+                            setSubAttractionId(val.subAttractionId)
                             if (type === 3) {
                               setEditAtt(true)
                             }
@@ -336,6 +338,9 @@ const Cart = () => {
                       <div className="card1-item-price">
                         <h2>AED {val.cost}</h2>
                       </div>
+                    </div>
+                    <div style={{paddingLeft:"3rem"}}>
+                      <p style={{color:"#A3A8B8"}}>({val?.subTitle ? val?.subTitle : "Attraction Sub title"})</p>
                     </div>
                   </>
                 })}
@@ -458,8 +463,9 @@ const Cart = () => {
                     </div>
                     <div className="cart-edit-delete-button">
                       <button onClick={() => {
-                        console.log("trnasfer edit click")
+                        // console.log("trnasfer edit click")
                         alert("we are working on it")
+                           return;
                         // setType(1);
                         // setPkgId(val._id);
                         // setTransferId(val?.InOut[0].transferId);
@@ -472,20 +478,21 @@ const Cart = () => {
                         // setselectedDateTo(val?.InOut[1]?.pickupTimeForDeparture);
                         // setdepartureFlightCode(val?.InOut[1]?.departureFlightCode);
                         // setdeparturePickupTime(val?.InOut[1]?.departurePickupTime);
-                        // if (type === 1) {
-                        //   setEditTransfer(true)
-                        // }
+                        // setMaxPassengers(val.InOut[0].vehicle?.maxPassenger)
+                        if (type === 1) {
+                          // setEditTransfer(true)
+                        }
                       }}>
                         <img src="/editicon.svg" alt="edit" />&nbsp;
                         Edit
                       </button>
                       <button
-                        onMouseEnter={() => {
-                          setType(1);
-                          setPkgId(val._id);
-                        }}
                         onClick={() => {
-                          DeleteOneItem();
+                          setType(1);
+                          setPkgId(val._id)
+                          if(type === 1){
+                            DeleteOneItem();
+                          }
                         }}
                       >
                         <img src="/deleteicon.svg" />&nbsp;
@@ -498,7 +505,7 @@ const Cart = () => {
                       <img src="transfericon.svg" />
                       <h2>{val._id.slice(-8)}</h2>
                       <p>{val?.selectedTripType}</p>
-                      <p>{val?.InOut[0].vehicle?.name}</p>
+                      <p>{val?.InOut[0]?.vehicle?.name}</p>
                     </div>
                     <div className="card1-item-price">
                       <h2>AED {val.finalCost}</h2>
@@ -507,11 +514,11 @@ const Cart = () => {
                   <div className="card1-item-passenger-details">
                     <div className="card1-item-passenger-name" style={{ marginBottom: "1rem" }}>
                       <h4>Pick Up</h4>
-                      <h2>{val?.InOut[0].from}</h2>
+                      <h2>{val?.InOut[0]?.from}</h2>
                     </div>
                     <div className="card1-item-passenger-name" style={{ maxWidth: "140px" }}>
                       <h4>Drop off</h4>
-                      <h2>{val?.InOut[0].to}</h2>
+                      <h2>{val?.InOut[0]?.to}</h2>
                     </div>
                     <div className="card1-item-passenger-name">
                       <h4>Pick up dates & time</h4>
@@ -522,7 +529,7 @@ const Cart = () => {
                       )} */}
                       {/* {transfers?.[0]?.selectedTripType === "ROUND_TRIP" && ( */}
                         <div className="cart-item-arrival">
-                          <h2><b>Arrival: </b>{val?.InOut[0].pickupTimeForArrival} ({val?.InOut[0].arrivalPickupTime})</h2>
+                          <h2><b>Arrival: </b>{val?.InOut[0]?.pickupTimeForArrival} ({val?.InOut[0]?.arrivalPickupTime})</h2>
                           {val?.selectedTripType === "ROUND_TRIP" && (
                           <h2><b>Departure: </b>{val?.InOut[1]?.pickupTimeForDeparture} ({val?.InOut[1]?.departurePickupTime})</h2>
                           )}
@@ -615,6 +622,7 @@ const Cart = () => {
       type={type}
       cartId={cartId}
       attractionId={attId}
+      subAttractionId={subAttractionId}
       pkgId={pkgId}
       packagedata={attractions}
       onClose={onClose}
@@ -670,6 +678,7 @@ const Cart = () => {
       transferId={trnasferId}
       adultsPassengers={transfers?.[0].numberOfAdults}
       childPassengers={transfers?.[0].numberOfChildrens}
+      maxPassengers={maxPassengers}
       selectedDate={selectedDate}
       selectedDateTo={selectedDateTo}
       Pname={customer?.name}

@@ -197,7 +197,7 @@
     color: #3870fc;
 }
 .transfer-card-price .select-transfer-btn {
-  background-color: #05307a;
+  background-color: #52CCFC;
   border-radius: 20px;
   width: fit-content;
   display: flex;
@@ -207,8 +207,8 @@
     border: none;
     outline: none;
     background: none;
-    color: #fff;
-    padding: 5px 15px;
+    color: #00081D;
+    padding: 6px 25px;
     font-weight: 500;
     
 }

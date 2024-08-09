@@ -7,7 +7,7 @@ import { IoSearchSharp } from "react-icons/io5";
 import { useCart } from "../context/CartContext";
 
 const LandCombos = () => {
-    const {token } = useCart();
+    const { token } = useCart();
     document.body.style.overflow = 'auto';
     const [landCombosData, setLandCombosData] = useState(null);
     const [originalLnC, setOriginalLnC] = useState(null);
@@ -15,25 +15,26 @@ const LandCombos = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-       if(token){
-           fetch(`${APIPath}/api/v1/land_combos`, {
-               headers: {
-                   'Content-Type': 'application/json'
-               },
-               method: 'GET',
-               mode: 'cors',
-           }).then((res) => res.json())
-               .then((data) => {
-                   console.log(data.data);
-                   setLandCombosData(data.data)
-                   setOriginalLnC(data.data)
-                   setLoading(false)
-               })
-               .catch((err) => {
-                   alert(err)
-                   setLoading(false)
-               })
-       }
+        if (token) {
+            fetch(`${APIPath}/api/v1/agent/landCombo/`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'GET',
+                mode: 'cors',
+            }).then((res) => res.json())
+                .then((data) => {
+                    console.log(data.data);
+                    setLandCombosData(data.data)
+                    setOriginalLnC(data.data)
+                    setLoading(false)
+                })
+                .catch((err) => {
+                    alert(err)
+                    setLoading(false)
+                })
+        }
     }, [token])
     const navigate = useNavigate()
     const clickedLandCombos = (packageId) => {
@@ -88,13 +89,13 @@ const LandCombos = () => {
                                 </div>
                                 <div className="landcombos-card-details">
                                     <h2>{val.title}</h2>
-                                    <hr style={{marginTop:"10px"}} />
+                                    <hr style={{ marginTop: "10px" }} />
                                     <div className="package-card-price">
                                         <div className="card-price-text">
                                             <h4>Price Starting From</h4>
                                         </div>
                                         <div className="card-price">
-                                            <h4>AED <b>{val.cost.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+                                            <h4>AED <b>{val.price?.[0].adultPrice}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
                                         </div>
                                     </div>
                                 </div>

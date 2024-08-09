@@ -2,12 +2,12 @@ import React from "react";
 import { IoMdClose } from "react-icons/io";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
-const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
+const BookAttraction = ({ onClose, packagedata }) => {
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
     const pkgId = packagedata[0]?._id;
@@ -17,10 +17,20 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState('');
     const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
+    // const [toDate, setToDate] = useState('');
     const [loading, setLoading] = useState(false);
+    const [priceIndex, setPriceIndex] = useState(0);
+    // const [subAttractionId,setSubAttractionId]=useState("");
+    // const [subTitle,setSubTitle]=useState("")
 
-    const pkgPrice = adultPrice * (adultPassenger) + childPrice * (childPassenger)
+    // console.log(packagedata[0].price)
+    const handleCheckboxChange = (id) => {
+        setPriceIndex(id);
+    };
+    // const pkgPrice=200;
+    const pkgPrice = packagedata[0]?.price[priceIndex].adultPrice * (adultPassenger) +
+        packagedata[0]?.price[priceIndex].childPrice * (childPassenger);
+
     const handleNameChange = (e) => {
         const name = e.target.value;
         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
@@ -32,12 +42,14 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
     const getCurrentDate = () => {
         const now = new Date();
         const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const month = String(now.getMonth() + 1).padStart(2, '0')
         const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
     const BookingPackageData = {
         attractionId: pkgId,
+        subAttractionId: packagedata[0]?.price[priceIndex]._id,
+        subTitle: packagedata[0]?.price[priceIndex].description,
         numberOfAdults: adultPassenger,
         numberOfChildrens: childPassenger,
         price: pkgPrice,
@@ -47,7 +59,7 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
             phone: mobile
         },
         startDate: fromDate,
-        // endDate:toDate
+        endDate: fromDate
     }
     const navigate = useNavigate();
     const bookThisPackage = () => {
@@ -99,11 +111,13 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
         attractions: [
             {
                 attractionId: pkgId,
+                subAttractionId: packagedata[0]?.price[priceIndex]._id,
+                subTitle: packagedata[0]?.price[priceIndex].description,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
-                endDate: toDate
+                endDate: fromDate
             }
         ],
         customerDetails: {
@@ -160,6 +174,7 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
         }
     }
 
+
     return <>
         <div className="booking-package-container">
             <div className="booking-package-page">
@@ -172,6 +187,22 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                 }}>
+                    <div className="sub-attraction">
+                        {packagedata[0]?.price?.map((val, id) => {
+                            return <div className="sub-attraction1">
+                                <input type="checkbox"
+                                    checked={priceIndex === id}
+                                    onChange={() => {
+                                        // setSubAttractionId();
+                                        // setSubTitle()
+                                        handleCheckboxChange(id)
+                                    }}
+                                />
+                                <h4>{val.description}</h4>
+                            </div>
+                        })}
+
+                    </div>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
                             <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
@@ -200,7 +231,6 @@ const BookAttraction = ({ onClose, packagedata, adultPrice,childPrice }) => {
                         </div>
                     </div>
                     <div style={{ display: "flex", gap: "2rem" }}>
-
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
                                 <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>

@@ -42,18 +42,16 @@ const BookingDetails = ({ onClose, bookingId }) => {
     const generatePDF = () => {
         const doc = new jsPDF();
         let y = 10;
-        // Load the image and get its dimensions
         const imageUrl = 'https://res.cloudinary.com/ddxawuqwy/image/upload/v1708420873/packages/mvlogo_mc4ai4.png';
-        const imageWidth = 50; // Adjust according to your image's actual width
-        const imageHeight = 30; // Adjust according to your image's actual height
+        const imageWidth = 50; 
+        const imageHeight = 30; 
         const pdfWidth = doc.internal.pageSize.getWidth();
 
-        // Calculate the x position to center the image
         const x = (pdfWidth - imageWidth) / 2;
 
-        // Add the image at the calculated position
+        
         doc.addImage(imageUrl, 'PNG', x, y, imageWidth, imageHeight);
-        y += imageHeight + 10; // Update y position after adding the image
+        y += imageHeight + 10; 
 
         doc.text("Customer Details", 10, y);
         y += 4;
@@ -176,7 +174,6 @@ const BookingDetails = ({ onClose, bookingId }) => {
         doc.save(`Booking_Details_${bookingId}.pdf`);
     };
 
-
     return <>
         <div className="booking-package-container">
             <div className="booking-package-page" style={{ height: "600px", overflow: "auto", width: "70%" }}>
@@ -286,6 +283,7 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                                 <div>
                                                     <h4>Title </h4>
                                                     <p>{val?.title}</p>
+                                                    <p><b>({val.subTitle})</b></p>
                                                 </div>
                                                 <div style={{ textAlign: "center" }}>
                                                     <h4>Adults </h4>
@@ -356,6 +354,7 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                 </div>
                             </>
                         )}
+                        <hr />
                         <div className="booking-main-container" style={{ paddingTop: "10px" }}>
                             <h2>Booking Details</h2>
                             <div className="agent-booking-passenger-details">
@@ -379,9 +378,9 @@ const BookingDetails = ({ onClose, bookingId }) => {
                         </div>
                         <hr />
                         {/* {bookingDetail[0].bookingStatus === "complete" && ( */}
-                        <div className="download-voucher">
+                        {/* <div className="download-voucher">
                             <button onClick={generatePDF}>Download voucher</button>
-                        </div>
+                        </div> */}
                         {/* )}  */}
                         <div className="agent-booking-reason">
                             <h4>Reason </h4>

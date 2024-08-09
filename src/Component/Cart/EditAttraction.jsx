@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
-const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
-    adults,child,type,cartId,attractionId,pkgId,attDate,LoadCartItem }) => {
+const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, Pmobile, Pemail,
+    adults, child, type, cartId, attractionId, pkgId, attDate, LoadCartItem }) => {
 
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
@@ -19,10 +19,13 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(attDate);
 
-    const priceperPerson=price/(adults + child);
-    
-    const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
-                               priceperPerson * (childPassenger - child))
+    // const priceperPerson = price / (adults + child);
+    const priceDescription = packagedata[0].price.filter((val, id) => val._id === subAttractionId)
+    // const priceIndex = priceDescription[0].adultPrice;
+    // console.log(priceIndex);
+
+    const pkgPrice = price + (priceDescription[0].adultPrice * (adultPassenger - adults) +
+        priceDescription[0].childPrice * (childPassenger - child))
 
     const handleNameChange = (e) => {
         const name = e.target.value;
@@ -41,12 +44,14 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
     }
 
     const addToCartAttraction = {
-        type:type,
-        cartId:cartId,
-        attractionId:pkgId,
+        type: type,
+        cartId: cartId,
+        attractionId: pkgId,
         attractions: [
             {
                 attractionId: attractionId,
+                subAttractionId: packagedata[0]?.subAttractionId,
+                subTitle: packagedata[0]?.subTitle,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
                 price: pkgPrice,
@@ -76,11 +81,11 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
             alert("please fill passenge email:");
             return;
         }
-        if (adultPassenger <= 0 ) {
+        if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult")
             return
         }
-        if (fromDate.length < 2 ) {
+        if (fromDate.length < 2) {
             alert("please select date : ")
             return;
         }
@@ -107,113 +112,115 @@ const BookAttraction = ({ onClose,packagedata, price,Pname,Pmobile,Pemail,
                 })
         }
     }
-   
+
 
     return <div className="booking-package-container">
-            <div className="booking-package-page">
-                <div className="booking-package-header">
-                    <h2 style={{ fontSize: "14px", color: "#25867D" }}>You are booking:
-                        <p style={{ fontSize: "20px", color: "#25867D" }}>{packagedata[0].title}</p>
-                    </h2>
-                    <h2 onClick={onClose} style={{ cursor: "pointer" }}><IoMdClose /></h2>
-                </div>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                }}>
-                    <div className="lead-passenger-parent-container">
-                        <div className="lead-passenger-name">
-                            <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
-                            <input type="text" placeholder="Enter Name.. " required
-                                minLength={3} maxLength={30}
-                                value={name}
-                                onChange={(e) => { handleNameChange(e) }}
-                            />
-                        </div>
-                        <div className="lead-passenger-name" style={{ width: "100%" }}>
-                            <label htmlFor="Lead-Passenger-Mobile">Mobile No.</label>
-                            <PhoneInput
-                                international
-                                country={'in'}
-                                value={mobile}
-                                className="PhoneInput--readOnly"
-                            />
-                            
-                        </div>
-                        <div className="lead-passenger-name">
-                            <label htmlFor="Lead-Passenger-Email">Email</label>
-                            <input type="email" placeholder="EnterEmail.. " required maxLength={40}
-                                value={email}
-                                contentEditable={false}
-                                className="PhoneInput--readOnly"
-                            />
-                        </div>
-                    </div>
-                    <div style={{ display: "flex", gap: "2rem" }}>
-                        <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
-                            <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Adults</span> (&lt; 12 years)</p>
-                                <div className="passenger-count">
-                                    <button id="count-minus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (adultPassenger > 0) {
-                                                setAdultPassenger(adultPassenger - 1)
-                                            }
-                                        }}
-                                    >-</button>
-                                    <button id="count">{adultPassenger}</button>
-                                    <button id="count-plus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setAdultPassenger(adultPassenger + 1)
-                                        }}
-                                    >+</button>
-                                </div>
-                            </div>
-                            <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Children</span> (&lt; 12 years)</p>
-                                <div className="passenger-count">
-                                    <button id="count-minus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (childPassenger > 0) {
-                                                setChildPassenger(childPassenger - 1)
-                                            }
-                                        }}
-                                    >-</button>
-                                    <button id="count">{childPassenger}</button>
-                                    <button id="count-plus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setChildPassenger(childPassenger + 1)
-                                        }}
-                                    >+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="package-from-date-to-date">
-                            <div className="lead-passenger-name">
-                                <p style={{ marginBottom: "5px" }}> Select date</p>
-                                <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
-                                    value={fromDate} 
-                                    required
-                                    onChange={(e) => setFromDate(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="booking-package-price">
-                        <div className="booking-price-text-value">
-                            <p>Total Price: AED&nbsp;<b>{pkgPrice}</b>&nbsp;<sub>+VAT(5%)</sub></p>
-                        </div>
-                        <div className="package-price-btn">
-                            <button onClick={() => {
-                                EditAttraction();
-                            }}>Submit</button>
-                        </div>
-                    </div>
-                </form>
+        <div className="booking-package-page">
+            <div className="booking-package-header">
+                <h2 style={{ fontSize: "14px", color: "#25867D" }}>You are booking:
+                    <p style={{ fontSize: "20px", color: "#25867D" }}>{packagedata[0].title}
+                        <p style={{ fontSize: "16px", color: "#25867D" }}>({packagedata[0].subTitle})</p>
+                    </p>
+                </h2>
+                <h2 onClick={onClose} style={{ cursor: "pointer" }}><IoMdClose /></h2>
             </div>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+            }}>
+                <div className="lead-passenger-parent-container">
+                    <div className="lead-passenger-name">
+                        <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
+                        <input type="text" placeholder="Enter Name.. " required
+                            minLength={3} maxLength={30}
+                            value={name}
+                            onChange={(e) => { handleNameChange(e) }}
+                        />
+                    </div>
+                    <div className="lead-passenger-name" style={{ width: "100%" }}>
+                        <label htmlFor="Lead-Passenger-Mobile">Mobile No.</label>
+                        <PhoneInput
+                            international
+                            country={'in'}
+                            value={mobile}
+                            className="PhoneInput--readOnly"
+                        />
+
+                    </div>
+                    <div className="lead-passenger-name">
+                        <label htmlFor="Lead-Passenger-Email">Email</label>
+                        <input type="email" placeholder="EnterEmail.. " required maxLength={40}
+                            value={email}
+                            contentEditable={false}
+                            className="PhoneInput--readOnly"
+                        />
+                    </div>
+                </div>
+                <div style={{ display: "flex", gap: "2rem" }}>
+                    <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "14px" }}>Adults</span> (&lt; 12 years)</p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (adultPassenger > 0) {
+                                            setAdultPassenger(adultPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{adultPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setAdultPassenger(adultPassenger + 1)
+                                    }}
+                                >+</button>
+                            </div>
+                        </div>
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (childPassenger > 0) {
+                                            setChildPassenger(childPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{childPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setChildPassenger(childPassenger + 1)
+                                    }}
+                                >+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="package-from-date-to-date">
+                        <div className="lead-passenger-name">
+                            <p style={{ marginBottom: "5px" }}> Select date</p>
+                            <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
+                                value={fromDate}
+                                required
+                                onChange={(e) => setFromDate(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="booking-package-price">
+                    <div className="booking-price-text-value">
+                        <p>Total Price: AED&nbsp;<b>{pkgPrice}</b>&nbsp;<sub>+VAT(5%)</sub></p>
+                    </div>
+                    <div className="package-price-btn">
+                        <button onClick={() => {
+                            EditAttraction();
+                        }}>Submit</button>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
 }
 export default BookAttraction;

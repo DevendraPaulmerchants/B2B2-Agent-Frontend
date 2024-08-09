@@ -90,7 +90,8 @@ const User = () => {
                                                         (val.bookingStatus === "On Hold" && "on-hold") ||
                                                         (val.bookingStatus === "Awaiting Payment" && "Awaiting_Payment") ||
                                                         (val.bookingStatus === "Confirmed" && "confirm") ||
-                                                        (val.bookingStatus === "Rejected" && "rejected")}>
+                                                        (val.bookingStatus === "Rejected" && "rejected") ||
+                                                        (val.bookingStatus === "Cancelled" && "rejected") }>
                                                         {val.bookingStatus}
                                                     </p>
                                                 </td>

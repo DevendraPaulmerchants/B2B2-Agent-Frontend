@@ -6,7 +6,7 @@ import 'react-phone-input-2/lib/style.css';
 import { APIPath } from "../../Config";
 import { useNavigate } from "react-router-dom";
 
-const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers, childPassengers, selectedDate, 
+const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, adultsPassengers, childPassengers, selectedDate, 
     selectedDateTo,arrivalFlightCode ,arrivalPickupTime1,departureFlightCode,departurePickupTime1,
     cartId,transferId,pkgId,Pname,Pmobile,Pemail,price,LoadCartItem}) => {
     document.body.style.overflow = 'hidden';
@@ -44,12 +44,12 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
         {
             type:1,
             cartId:cartId,
-            transferId:transferId,
+            transferId:pkgId,
             transfers: [
                 {
                     selectedTripType:tripType ,
                     selectedTransferType: selectedTransferType,
-                    transferId: pkgId,
+                    transferId: transferId,
                     pickupTimeForArrival: flightArrivalTime,
                     arrivalPickupTime: arrivalPickupTime,
                     arrivalFlightCode: flightArrivalCode,
@@ -58,7 +58,7 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                     pickupTimeForDeparture: flightDepartureTime,
                     departurePickupTime: departurePickupTime,
                     departureFlightCode: flightDepartureCode,
-                    vehicle: "Car",
+                    // vehicle: "Car",
                     remarks: "FINDING YOUR DRIVER.",
                     cost:price
                 }
@@ -68,7 +68,7 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                 email: email,
                 phone: mobile,
                 address: {
-                    city: "Chandigarh",
+                    city: " ",
                 }
             }
         }
@@ -81,6 +81,10 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
         if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult")
             return
+        }
+        if ((adultPassenger + childPassenger) > maxPassengers) {
+            alert(`This Vehicle can not allow more than ${maxPassengers} passengers`)
+            return;
         }
         else {
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
@@ -95,7 +99,6 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType, adultsPassengers
                 .then((data) => {
                     alert(data.message)
                     LoadCartItem();
-                    // navigate('/cart')
                 })
                 .catch((err) => {
                     alert(err)

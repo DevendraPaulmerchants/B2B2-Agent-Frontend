@@ -10,19 +10,19 @@ import './Packages.css';
 import { useParams } from "react-router-dom";
 
 const PacKageDetails = () => {
-    const { packageId} = useParams();
+    const { packageId } = useParams();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
-    const {token } = useCart();
+    const { token } = useCart();
     const [packagedata, setPackagedata] = useState(null);
     const [loading, setLoading] = useState(true);
     const [active, setActive] = useState(1);
     const [booking, setBooking] = useState(false);
     const [bookingPackageId, setBookingPackageId] = useState('');
-    
+
     useEffect(() => {
-        if(token){
+        if (token) {
             fetch(`${APIPath}/api/v1/agent/package/?id=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -62,29 +62,34 @@ const PacKageDetails = () => {
         setActive(index)
     }
 
-
-    const handleDownloadPDF = () => {
-        const input = document.getElementById('package-details');
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.save('package-details.pdf');
-        });
-    };
+    // const handleDownloadPDF = () => {
+    //     const input = document.getElementById('package-details');
+    //     html2canvas(input).then((canvas) => {
+    //         const imgData = canvas.toDataURL('image/png');
+    //         const pdf = new jsPDF();
+    //         pdf.addImage(imgData, 'PNG', 0, 0);
+    //         pdf.save('package-details.pdf');
+    //     });
+    // };
 
     const [isScrolled, setIsScrolled] = useState(true);
     useEffect(() => {
+        if (window.innerHeight > 740) {
+            console.log("screen height---",window.innerHeight)
+            setIsScrolled(false);
+            return;
+        }
         const handleScroll = () => {
-          const scrollY = window.scrollY;
-          setIsScrolled(scrollY < 100);
+            const scrollY = window.scrollY;
+            setIsScrolled(scrollY < 100);
         };
+
         window.addEventListener('scroll', handleScroll);
         return () => {
-          window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
-      }, []);  
-  
+    }, []);
+
 
     const handleShare = () => {
         if (navigator.share) {
@@ -109,7 +114,7 @@ const PacKageDetails = () => {
                     {packagedata?.map((val, id) => {
                         return <>
                             <div className="package-banner-image" >
-                                <img src={val.bannerImage} alt="Banner"/>
+                                <img src={val.bannerImage} alt="Banner" />
                             </div>
                             <div className="package-details">
                                 <div className="package-title-and-download-button">
@@ -122,17 +127,16 @@ const PacKageDetails = () => {
                                         </p>
                                     </div>
                                     <div className="download-button">
-                                        <button
+                                        {/* <button
                                             onClick={handleDownloadPDF}
-                                        >
-                                            {/* <MdDownload /> */}
-                                            <img src="/download.svg" alt="download" />&nbsp; Download
-                                        </button>
+                                        > <img src="/download.svg" alt="download" />&nbsp;
+                                            Download
+                                        </button> */}
                                         <button
                                             onClick={handleShare}
                                         >
                                             {/* <MdShare />  */}
-                                            <img src="/shareB.svg" alt="Share"/>&nbsp; Share
+                                            <img src="/shareB.svg" alt="Share" />&nbsp; Share
                                         </button>
                                         {/* <button onClick={handleShare}><MdEmail /></button> */}
 
@@ -211,16 +215,16 @@ const PacKageDetails = () => {
                                         </div>
                                     </div>
                                 )}
-                                
+
                                 {(active === 3) && (
                                     <div className="package-daywise-plan">
                                         {val.dayWisePlan.map((plan, id) => {
                                             return <>
                                                 <div key={id} className="daywise-plan">
                                                     <div className="daywise-image">
-                                                        {(id === 0) && <img src="/dayl.png" alt="Day1"/>}
-                                                        {(id === (val.dayWisePlan.length - 1)) && <img src="/dayS.png" alt="DayM"/>}
-                                                        {(id !== 0 && id !== (val.dayWisePlan.length - 1)) && <img src="/daym.png" alt="Day Last"/>}
+                                                        {(id === 0) && <img src="/dayl.png" alt="Day1" />}
+                                                        {(id === (val.dayWisePlan.length - 1)) && <img src="/dayS.png" alt="DayM" />}
+                                                        {(id !== 0 && id !== (val.dayWisePlan.length - 1)) && <img src="/daym.png" alt="Day Last" />}
                                                     </div>
                                                     <div>
                                                         <h4>{plan.title}</h4>
@@ -233,7 +237,7 @@ const PacKageDetails = () => {
                                     </div>
                                 )}
                                 {(active === 4) && (<div className="package-overview-details">
-                                    
+
                                     {val.bookingProcedure.map((val, id) => {
                                         return <>
                                             <ul>
@@ -242,9 +246,9 @@ const PacKageDetails = () => {
                                         </>
                                     })}
                                 </div>)}
-                                
+
                                 {(active === 5) && (<div className="package-overview-details">
-                                    
+
                                     {val.cancellationRefundPolicy.map((val, id) => {
                                         return <>
                                             <p>{val}</p>
@@ -273,8 +277,8 @@ const PacKageDetails = () => {
                                     </div>
                                 )}
                             </div>
-                            <br/>
-                            <div className={isScrolled ? "footer-none":"package-footer"}>
+                            <br />
+                            <div className={isScrolled ? "footer-none" : "package-footer"}>
                                 <div className="package-price-text-value">
                                     <div className="package-price-text">
                                         <p>Starting from</p>

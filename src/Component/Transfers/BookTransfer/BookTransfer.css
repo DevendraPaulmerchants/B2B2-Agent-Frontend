@@ -191,14 +191,21 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     align-items: center;
 }
 .booking-transfer-btn button {
-    background: #05307a;
+    background: #52CCFC;
     padding: 5px 15px;
     border-radius: 20px;
     border: none;
     outline: none;
-    color: #fff;
+    color: #00081d;
     font-weight: 500;
     height: fit-content;
+}
+.booking-transfer-btn button:first-child {
+    border: 2px solid #52CCFC;
+    background: none;
+    outline: none;
+    color: #3498db;
+    font-weight: 500;
 }
 .booking-transfer-btn #cancel{
     background: none;

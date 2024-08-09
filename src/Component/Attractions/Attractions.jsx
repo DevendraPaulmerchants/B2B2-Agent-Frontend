@@ -27,7 +27,6 @@ const Attractions = () => {
                 mode: 'cors',
             }).then((res) => res.json())
                 .then((data) => {
-                    console.log(data.data);
                     setAttraction(data.data)
                     setOriginalAtt(data.data)
                     setLoading(false)

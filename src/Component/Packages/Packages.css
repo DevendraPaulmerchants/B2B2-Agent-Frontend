@@ -282,7 +282,7 @@ hr {
     width: 2px; 
     height: 100%; 
     background-color: rgb(138, 161, 224);
-    left: 2%; 
+    left: 25px; 
     top:75%;
     transform: translateX(-50%);
     z-index: -1; 
@@ -309,6 +309,7 @@ hr {
 .package-price-text-value {
     display: flex;
     gap: 1rem;
+    align-items: center;
 }
 .package-price-text p {
     color: #fff;
@@ -392,7 +393,6 @@ hr {
      color: #001E6D;
      font-weight: 600;
 }
-
 .package-price-btn button{
     background: #52CCFC;
     color: #00081D;
@@ -402,4 +402,10 @@ hr {
     font-weight: 600;
     border-radius: 20px;
     padding: 8px 20px;
+}
+.package-price-btn button:first-child {
+    background: none;
+    border: 2px solid #3498db;
+    padding: 6px 18px;
+    color: #3498db;
 }

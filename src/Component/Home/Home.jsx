@@ -36,7 +36,7 @@ const Home = () => {
     const [attstate, setAttState] = useState(false);
 
     useEffect(() => {
-        if(token){
+        if (token) {
             fetch(`${APIPath}/api/v1/agent/package`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -79,74 +79,10 @@ const Home = () => {
             setStartIndexP(lastIndex > 0 ? lastIndex : 0);
         }
     };
-    // --------------------------------------Search function---------------------------------------------
-    let filteredPackages;
-    let filteredLnC;
-    let filteredAtt;
-
-    const handleSearch = () => {
-        const searchTermLower = searchTerm.toLowerCase();
-        if (searchTermLower == "") {
-            setPackageData(originalPackages);
-            setLandCombosData(originalLnC);
-            setAttractionData(originalAtt)
-            setAttState(false)
-            setPkgState(false)
-            setLnCState(false)
-        }
-        else {
-            // filteredPackages = originalPackages.filter((packages) =>
-            //     packages.title.toLowerCase().includes(searchTermLower)
-            // );
-            filteredPackages = originalPackages.filter((packages) => {
-                const searchWords = searchTermLower.trim().split(" ");
-                return searchWords.some(word => packages.title.toLowerCase().includes(word));
-            });
-
-            // filteredLnC = originalLnC.filter((packages) =>
-            //     packages.title.toLowerCase().includes(searchTermLower)
-            // );
-            filteredLnC = originalLnC.filter((packages) => {
-                const searchWords = searchTermLower.trim().split(" ");
-                return searchWords.some(word => packages.title.toLowerCase().includes(word));
-            });
-
-            // filteredAtt = originalAtt.filter((packages) =>
-            //     packages.title.toLowerCase().includes(searchTermLower)
-            // );
-            filteredAtt = originalAtt.filter((packages) => {
-                const searchWords = searchTermLower.trim().split(" ");
-                return searchWords.some(word => packages.title.toLowerCase().includes(word));
-            });
-
-            if (filteredPackages?.length > 0) {
-                setPackageData(filteredPackages);
-                setPkgState(true);
-                setLnCState(false);
-                setAttState(false)
-            }
-            if (filteredLnC?.length > 0) {
-                setLandCombosData(filteredLnC)
-                setLnCState(true);
-                setAttState(false)
-                setPkgState(false);
-            }
-            if (filteredAtt?.length > 0) {
-                setAttractionData(filteredAtt)
-                setAttState(true)
-                setLnCState(false);
-                setPkgState(false);
-            }
-            else {
-
-            }
-        }
-    }
-
     // -------------------------------------Attraction List------------------------------
 
     useEffect(() => {
-        if(token){
+        if (token) {
             fetch(`${APIPath}/api/v1/agent/attraction`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -189,7 +125,7 @@ const Home = () => {
 
     // --------------------------------LandCombos List--------------------------------------
     useEffect(() => {
-        
+
         fetch(`${APIPath}/api/v1/land_combos`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -228,6 +164,69 @@ const Home = () => {
             setStartIndexLnC(lastIndex > 0 ? lastIndex : 0);
         }
     };
+    // --------------------------------------Search function---------------------------------------------
+    let filteredPackages;
+    let filteredLnC;
+    let filteredAtt;
+
+    const handleSearch = () => {
+        const searchTermLower = searchTerm.toLowerCase();
+        if (searchTermLower === "") {
+            setPackageData(originalPackages);
+            setLandCombosData(originalLnC);
+            setAttractionData(originalAtt)
+            setPkgState(false)
+            setLnCState(false)
+            setAttState(false)
+        }
+        else {
+            filteredPackages = originalPackages.filter((packages) =>
+                packages.title.toLowerCase().includes(searchTermLower.replace(/ /g, '  ')));
+
+            // filteredPackages = originalPackages.filter((packages) => {
+            //     const searchWords = searchTermLower.trim().split("  ");
+            //     return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            // });
+
+            filteredLnC = originalLnC.filter((packages) =>
+                packages.title.toLowerCase().includes(searchTermLower)
+            );
+            // filteredLnC = originalLnC.filter((packages) => {
+            //     const searchWords = searchTermLower.trim().split(" ");
+            //     return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            // });
+
+            filteredAtt = originalAtt.filter((packages) =>
+                packages.title.toLowerCase().includes(searchTermLower)
+            );
+            // filteredAtt = originalAtt.filter((packages) => {
+            //     const searchWords = searchTermLower.trim().split(" ");
+            //     return searchWords.some(word => packages.title.toLowerCase().includes(word));
+            // });
+
+            if (filteredPackages?.length > 0) {
+                setPackageData(filteredPackages);
+                setPkgState(true);
+                setLnCState(false);
+                setAttState(false)
+            }
+            if (filteredLnC?.length > 0) {
+                setLandCombosData(filteredLnC)
+                setLnCState(true);
+                setAttState(false)
+                setPkgState(false);
+            }
+            if (filteredAtt?.length > 0) {
+                setAttractionData(filteredAtt)
+                setAttState(true)
+                setLnCState(false);
+                setPkgState(false);
+            }
+            else {
+                setPkgState(true);
+            }
+        }
+    }
     // ---------------------------------------------Transfers list-----------------------------
     const getTransferPage = () => {
         navigate('/transfers')
@@ -453,94 +452,96 @@ const Home = () => {
             </>
         )}
         {loading ? (<div className="loader"></div>) : (
-            <> {!LnCstate && (
-                <>
-                    <div className="package-topbar">
-                        <h2>Top Land Combos in Dubai</h2>
-                        <h2>
-                            <button onClick={handlePrevLnC} className="supersell-btn"> <IoIosArrowBack /> </button>
-                            <button onClick={handleNextLnC} className="supersell-btn"> <IoIosArrowForward /> </button>
-                        </h2>
-                    </div>
-                    <div className="land-combos-container" style={{ paddingTop: "1rem" }}>
-                        {topThreeLandCombos?.map((val, id) => {
-                            return <>
-                                <div className="landcombos-card" style={{ width: "32.4%" }}
-                                    key={id} onClick={(e) => {
-                                        clickedLandCombos(val._id)
-                                    }}>
-                                    <div className="landcombos-card-image">
-                                        <img src={val.thumbnailImage} />
-                                    </div>
-                                    <div className="landcombos-card-details">
-                                        <h2>{val.title}</h2>
-                                        <hr style={{ marginTop: "10px" }} />
-                                        <div className="package-card-price">
-                                            <div className="card-price-text">
-                                                <h4>Price Starting From</h4>
-                                            </div>
-                                            <div className="card-price">
-                                                <h4>AED <b>{val.cost.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+            <>
+                {!LnCstate && (
+                    <>
+                        <div className="package-topbar">
+                            <h2>Top Land Combos in Dubai</h2>
+                            <h2>
+                                <button onClick={handlePrevLnC} className="supersell-btn"> <IoIosArrowBack /> </button>
+                                <button onClick={handleNextLnC} className="supersell-btn"> <IoIosArrowForward /> </button>
+                            </h2>
+                        </div>
+                        <div className="land-combos-container" style={{ paddingTop: "1rem" }}>
+                            {topThreeLandCombos?.map((val, id) => {
+                                return <>
+                                    <div className="landcombos-card" style={{ width: "32.4%" }}
+                                        key={id} onClick={(e) => {
+                                            clickedLandCombos(val._id)
+                                        }}>
+                                        <div className="landcombos-card-image">
+                                            <img src={val.thumbnailImage} />
+                                        </div>
+                                        <div className="landcombos-card-details">
+                                            <h2>{val.title}</h2>
+                                            <hr style={{ marginTop: "10px" }} />
+                                            <div className="package-card-price">
+                                                <div className="card-price-text">
+                                                    <h4>Price Starting From</h4>
+                                                </div>
+                                                <div className="card-price">
+                                                    <h4>AED <b>{val.cost.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </div>
-                            </>
-                        })}
-                    </div>
-                </>
-            )}
+                                    </div>
+                                </>
+                            })}
+                        </div>
+                    </>
+                )}
             </>
         )}
         {loading ? (<div className="loader"></div>) : (
-            <> {!attstate && (
-                <>
-                    <div className="package-topbar">
-                        <h2>Top Attractions in Dubai</h2>
-                        <h2>
-                            <button onClick={handlePrevAtt} className="supersell-btn"> <IoIosArrowBack /> </button>
-                            <button onClick={handleNextAtt} className="supersell-btn"> <IoIosArrowForward /> </button>
-                        </h2>
-                    </div>
-                    <div className="land-combos-container" style={{ paddingTop: "1rem" }}>
-                        {topThreeAttraction?.map((val, id) => {
-                            return <>
-                                <div className="landcombos-card" style={{ width: "32.4%" }}
-                                    key={id} onClick={(e) => {
-                                        clickedAttraction(val._id)
-                                    }}>
-                                    <div className="landcombos-card-image">
-                                        <img src={val.thumbnailImage} />
-                                    </div>
-                                    <div className="attraction-card-details">
-                                        <h2>{val.title}</h2>
-                                        <div className="view-details-rating">
-                                            <div className="view-details">
-                                                <p>View Details <MdArrowOutward /></p>
+            <>
+                {!attstate && (
+                    <>
+                        <div className="package-topbar">
+                            <h2>Top Attractions in Dubai</h2>
+                            <h2>
+                                <button onClick={handlePrevAtt} className="supersell-btn"> <IoIosArrowBack /> </button>
+                                <button onClick={handleNextAtt} className="supersell-btn"> <IoIosArrowForward /> </button>
+                            </h2>
+                        </div>
+                        <div className="land-combos-container" style={{ paddingTop: "1rem" }}>
+                            {topThreeAttraction?.map((val, id) => {
+                                return <>
+                                    <div className="landcombos-card" style={{ width: "32.4%" }}
+                                        key={id} onClick={(e) => {
+                                            clickedAttraction(val._id)
+                                        }}>
+                                        <div className="landcombos-card-image">
+                                            <img src={val.thumbnailImage} />
+                                        </div>
+                                        <div className="attraction-card-details">
+                                            <h2>{val.title}</h2>
+                                            <div className="view-details-rating">
+                                                <div className="view-details">
+                                                    <p>View Details <MdArrowOutward /></p>
+                                                </div>
+                                                <div className="attraction-rating">
+                                                    <p>Rating:&nbsp;</p>
+                                                    <Rating defaultValue={4.5} precision={0.5} readOnly
+                                                        sx={{ fontSize: '18px' }} />
+                                                </div>
                                             </div>
-                                            <div className="attraction-rating">
-                                                <p>Rating:&nbsp;</p>
-                                                <Rating defaultValue={4.5} precision={0.5} readOnly
-                                                    sx={{ fontSize: '18px' }} />
+                                            <hr />
+                                            <div className="package-card-price">
+                                                <div className="card-price-text">
+                                                    <h4>Price Starting From</h4>
+                                                </div>
+                                                <div className="card-price">
+                                                    <h4>AED <b>{val.price[0].adultPrice}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+                                                </div>
                                             </div>
                                         </div>
-                                        <hr />
-                                        <div className="package-card-price">
-                                            <div className="card-price-text">
-                                                <h4>Price Starting From</h4>
-                                            </div>
-                                            <div className="card-price">
-                                                <h4>AED <b>{val.price[0].adultPrice}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
-                                            </div>
-                                        </div>
                                     </div>
-                                </div>
-                            </>
-                        })}
-                    </div>
-                </>
-            )}
+                                </>
+                            })}
+                        </div>
+                    </>
+                )}
             </>
         )}
         <div className="home-page-transfer">
@@ -554,3 +555,5 @@ const Home = () => {
     </>
 }
 export default Home
+
+

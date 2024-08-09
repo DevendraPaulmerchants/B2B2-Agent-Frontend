@@ -90,21 +90,23 @@
     justify-content: space-between;
 }
 .transfer-description-btn #cancel {
-    color: #0da8f0;
+    color: #3498db;
     font-size: 16px;
     font-weight: 600;
-    border: none;
+    border: 2px solid #52CCFC;
+    padding: 2px 15px;
+    border-radius: 20px;
     outline: none;
     background: none;
     margin-right: 2rem;
 }
 .transfer-description-btn #select {
-    color: #fff;
+    color: #00081D;
     font-size: 16px;
     font-weight: 500;
     border: none;
     outline: none;
-    background: #05307a;
+    background: #52CCFC;
     padding: 5px 15px;
     border-radius: 20px;
 }

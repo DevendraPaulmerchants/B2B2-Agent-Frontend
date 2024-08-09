@@ -1,59 +1,72 @@
 .video-container {
     position: relative;
 }
+
 .myvideo {
     width: 100%;
     height: 400px;
     object-fit: cover;
 }
+
 .home-search-text-input {
     position: absolute;
     top: 15%;
-    left: 30%; 
+    left: 30%;
     padding: 2rem;
     text-align: center;
 }
+
 .banner-title {
     text-align: center;
     margin: auto;
 }
+
 .banner-title h2 {
     color: #fff;
     font-family: "Playball", "cursive";
     font-size: 6rem;
     text-shadow: 0 0 15px #000;
 }
+
 .banner-title p {
     color: #fff;
     font-family: "Montserrat";
     font-size: 1.5rem;
     text-shadow: 0 0 10px #000;
 }
+
 .input-and-search-icon {
-   border: 2px solid #fff;
-   background: #0006;
-   color: #fff;
-   border-radius: 20px;
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   width: 100%;
-   padding: 5px 10px;
-   margin: auto;
-   margin-top: 1rem;
+    border: 2px solid #fff;
+    background: #0006;
+    color: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 5px 10px;
+    margin: auto;
+    margin-top: 1rem;
 }
+
 .input-and-search-icon input {
     border: none;
     outline: none;
     background: none;
     color: #fff;
 }
+
 .input-and-search-icon input::placeholder {
     font-size: 16px;
     color: #fff;
 }
 
 /* ------------------------------------Packages Cards-------------------- */
+/* .card {
+    flex: 1 1 calc(33.333% - 10.66px);
+    max-width: calc(33.333% - 10.66px);
+} */
+
 .package-topbar {
     display: flex;
     justify-content: space-between;
@@ -78,10 +91,12 @@
     background-color: #e2e0e0;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 5px -1px, rgba(0, 0, 0, 0.14) 0px 6px 10px 0px, rgba(0, 0, 0, 0.12) 0px 1px 18px 0px;
 }
+
 /* -----------------------------------Transfers -------------------------- */
 .home-page-transfer {
     padding: 1rem 4rem 2rem 4rem;
 }
+
 .home-page-transfer-card {
     background: url('/public/transfer.SVG');
     background-position: center;
@@ -91,15 +106,18 @@
     border-radius: 20px;
     padding: 35px;
 }
+
 .home-page-transfer-card h4 {
     color: #fff;
     font-size: 20px;
 }
-.home-page-transfer-card p{
+
+.home-page-transfer-card p {
     color: #fff;
     font-size: 14px;
     margin-bottom: 2rem;
 }
+
 .home-page-transfer-card button {
     background: #52ccfc;
     padding: 10px 20px;

@@ -3,25 +3,26 @@ import './LandCombos.css';
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 import { IoLocationOutline } from "react-icons/io5";
+import { GoDotFill } from "react-icons/go";
 import { MdArrowOutward } from "react-icons/md";
 import html2pdf from 'html2pdf.js';
 import BookLandCombos from "./BookLandCombos";
 import { useParams } from "react-router-dom";
 
 const LandCombosDetails = () => {
-    const { packageId} = useParams();
+    const { packageId } = useParams();
     const { token } = useCart()
     const [landCombosDeatils, setLandCombosDetails] = useState(null);
     const [active, setActive] = useState(1);
     const [loading, setLoading] = useState(true);
     const [booking, setBooking] = useState(false);
     const [bookingPackageId, setBookingPackageId] = useState('');
-    const [adultPrice,setAdultPrice] = useState();
-    const [childPrice,setChildPrice]=useState();
+    const [adultPrice, setAdultPrice] = useState();
+    const [childPrice, setChildPrice] = useState();
 
     useEffect(() => {
-        if(token){
-            fetch(`${APIPath}/api/v1/land_combos?id=${packageId}`, {
+        if (token) {
+            fetch(`${APIPath}/api/v1/agent/landCombo/?id=${packageId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -40,7 +41,7 @@ const LandCombosDetails = () => {
                     setLoading(false)
                 })
         }
-}, [token])
+    }, [token])
 
 
     const handleBookingOn = (id) => {
@@ -63,21 +64,27 @@ const LandCombosDetails = () => {
         setActive(index)
     }
 
-    const handleDownloadPDF = () => {
-        const element = document.getElementById('package-details');
-        html2pdf().from(element).save();
-    }
+    // const handleDownloadPDF = () => {
+    //     const element = document.getElementById('package-details');
+    //     html2pdf().from(element).save();
+    // }
     const [isScrolled, setIsScrolled] = useState(true);
     useEffect(() => {
+        if (window.innerHeight > 740) {
+            console.log("screen height---", window.innerHeight)
+            setIsScrolled(false);
+            return;
+        }
         const handleScroll = () => {
-          const scrollY = window.scrollY;
-          setIsScrolled(scrollY < 100);
+            const scrollY = window.scrollY;
+            setIsScrolled(scrollY < 100);
         };
+
         window.addEventListener('scroll', handleScroll);
         return () => {
-          window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('scroll', handleScroll);
         };
-      }, []);  
+    }, []);
 
     const handleShare = () => {
         if (navigator.share) {
@@ -95,29 +102,36 @@ const LandCombosDetails = () => {
             console.log("Web Share API not supported");
         }
     }
+    const expectations = [
+        {
+            location: "Meeting Point",
+            description: "Gather at the main entrance",
+            time: "10:00 AM",
+        }
+    ]
     return <>
         {loading ? (<div className="loader"></div>) : (
             <>
-                {landCombosDeatils.map((val, id) => {
+                {landCombosDeatils?.map((val, id) => {
                     return <>
                         <div className="package-banner-image">
                             <img src={val.bannerImage} />
                         </div>
                         <div className="package-details">
-                        <div className="package-title-and-download-button">
-                            <div className="package-title" style={{width:"60%"}}>
-                                <h2>{val.title}</h2>
-                            </div>
-                            <div className="download-button">
-                                <button
+                            <div className="package-title-and-download-button">
+                                <div className="package-title" style={{ width: "60%" }}>
+                                    <h2>{val.title}</h2>
+                                </div>
+                                <div className="download-button">
+                                    {/* <button
                                     onClick={handleDownloadPDF}
                                 ><img src="/download.svg" />&nbsp; Download
-                                </button>
-                                <button
-                                    onClick={handleShare}
-                                ><img src="/shareB.svg"/>&nbsp; Share
-                                </button>
-                            </div>
+                                </button> */}
+                                    <button
+                                        onClick={handleShare}
+                                    ><img src="/shareB.svg" />&nbsp; Share
+                                    </button>
+                                </div>
                             </div>
                             <div className="package-description">
                                 <div className={active === 1 ? "package-overview active" : "package-overview"}
@@ -129,6 +143,16 @@ const LandCombosDetails = () => {
                                     onClick={() => handleActiveClass(2)}
                                 >
                                     <h4>Inclusions/Exclusion</h4>
+                                </div>
+                                <div className={active === 3 ? "package-overview active" : "package-overview"}
+                                    onClick={() => handleActiveClass(3)}
+                                >
+                                    <h4>Meeting Point</h4>
+                                </div>
+                                <div className={active === 4 ? "package-overview active" : "package-overview"}
+                                    onClick={() => handleActiveClass(4)}
+                                >
+                                    <h4>Cancellation Policy</h4>
                                 </div>
                             </div>
                             {(active === 1) && (
@@ -174,10 +198,36 @@ const LandCombosDetails = () => {
                                     <br></br>
                                     <br></br>
                                 </div>
-                                
+
                             )}
+                            {(active === 3) && (
+                                <div className="package-overview-details">
+                                    <br />
+                                    {val.expectations?.map((val, id) => {
+                                        return <>
+                                            <p><b>Location:</b> {val.location}</p>
+                                            <p><b>Description:</b> {val.description}</p>
+                                            <p><b>Time:</b> {val.time}</p>
+                                        </>
+                                    })}
+                                </div>
+                            )}
+                            {(active === 4) && (
+                                <div className="package-overview-details">
+                                    <br />
+                                    {val.cancellationRefundPolicy?.map((val, id) => {
+                                        return <>
+                                            <div className="attraction-cancellation" key={id}>
+                                                <p className={(id % 2 === 0) ? "red" : "green"} style={{ width: 'fit-content' }}><GoDotFill /></p>
+                                                <p>{val}</p>
+                                            </div>
+                                        </>
+                                    })}
+                                </div>
+                            )}
+                            <br />
                         </div>
-                        <div className={isScrolled ? "footer-none":"package-footer"}>
+                        <div className={isScrolled ? "footer-none" : "package-footer"}>
                             <div className="package-price-text-value">
                                 <div className="package-price-text">
                                     <p>Starting from</p>

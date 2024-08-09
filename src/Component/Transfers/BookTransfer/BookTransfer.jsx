@@ -42,8 +42,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
-    const [fromRemarks,setfromRemarks]=useState("");
-    const [toRemarks,settoRemarks]=useState("");
+    const [fromRemarks, setfromRemarks] = useState("");
+    const [toRemarks, settoRemarks] = useState("");
     const bookingTransferDetails = {
         transfers: [
             {
@@ -60,8 +60,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 remarks: transferDetails.additionalDetails,
                 pickupTimeForArrival: arrivalPickupTime,
                 pickupTimeForDeparture: departurePickupTime,
-                fromRemarks:fromRemarks,
-                toRemarks:toRemarks
+                fromRemarks: fromRemarks,
+                toRemarks: toRemarks
             }
         ],
         customerDetails: {
@@ -128,7 +128,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 alert("You`r transfer booking request sent to Admin successfully, Waiting to approval.")
                 setBookTransfer(false)
                 setDescriptionPage(false)
-                navigate('/')
+                navigate('/transfers')
             })
             .catch((err) => (
                 alert(err)
@@ -152,8 +152,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 departurePickupTime: departurePickupTime,
                 departureFlightCode: flightDepartureCode,
                 vehicle: transferDetails.vehicle.type,
-                fromRemarks:fromRemarks,
-                toRemarks:toRemarks,
+                fromRemarks: fromRemarks,
+                toRemarks: toRemarks,
                 remarks: "FINDING YOUR DRIVER."
             }
         ],
@@ -320,7 +320,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             <div className="booking-flight-code">
                                                 <label htmlFor="Flight-Code">Flight No.</label>
                                                 <input type="text" placeholder="Eg-4567" required
-                                                    minLength={7} maxLength={7}
+                                                    minLength={4} maxLength={7}
                                                     value={flightArrivalCode}
                                                     onChange={(e) => setFlightArrivalCode(e.target.value)}
                                                 />
@@ -356,7 +356,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     <div className="booking-flight-code">
                                                         <label htmlFor="Flight-Code">Flight No.</label>
                                                         <input type="text" placeholder="Eg-4567" required
-                                                            minLength={7} maxLength={7}
+                                                            minLength={4} maxLength={7}
                                                             value={flightDepartureCode}
                                                             onChange={(e) => setFlightDepartureCode(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -393,9 +393,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     padding: "2px 15px",
                                                     borderRadius: "20px"
                                                 }}
-                                                onChange={(e)=>{
-                                                    settoRemarks(e.target.value);
-                                                }}
+                                                    onChange={(e) => {
+                                                        settoRemarks(e.target.value);
+                                                    }}
                                                     type="textarea" placeholder="Enter your drop off location" />
                                             </div>
                                         </div>
@@ -412,7 +412,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             <div className="booking-flight-code">
                                                 <label htmlFor="Flight-Code">Flight No.</label>
                                                 <input type="text" placeholder="Eg-4567" required
-                                                    minLength={7} maxLength={7}
+                                                    minLength={4} maxLength={7}
                                                     value={flightArrivalCode}
                                                     onChange={(e) => setFlightArrivalCode(e.target.value)}
                                                 />
@@ -448,7 +448,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     <div className="booking-flight-code">
                                                         <label htmlFor="Flight-Code">Flight No.</label>
                                                         <input type="text" placeholder="Eg-4567" required
-                                                            minLength={7} maxLength={7}
+                                                            minLength={4} maxLength={7}
                                                             value={flightDepartureCode}
                                                             onChange={(e) => setFlightDepartureCode(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -485,9 +485,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     padding: "2px 15px",
                                                     borderRadius: "20px"
                                                 }}
-                                                onChange={(e)=>{
-                                                    setfromRemarks(e.target.value);
-                                                }}
+                                                    onChange={(e) => {
+                                                        setfromRemarks(e.target.value);
+                                                    }}
                                                     type="textarea" placeholder="Enter your drop off location" />
                                             </div>
                                         </div>
@@ -504,7 +504,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             <div className="booking-flight-code">
                                                 <label htmlFor="Flight-Code">Flight No.</label>
                                                 <input type="text" placeholder="Eg-4567" required
-                                                    minLength={7} maxLength={7}
+                                                    minLength={4} maxLength={7}
                                                     value={flightArrivalCode}
                                                     onChange={(e) => setFlightArrivalCode(e.target.value)}
                                                 />
@@ -540,7 +540,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     <div className="booking-flight-code">
                                                         <label htmlFor="Flight-Code">Flight No.</label>
                                                         <input type="text" placeholder="Eg-4567" required
-                                                            minLength={7} maxLength={7}
+                                                            minLength={4} maxLength={7}
                                                             value={flightDepartureCode}
                                                             onChange={(e) => setFlightDepartureCode(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -575,9 +575,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                         }
                         {transferDetails.type === 'HotelToHotel' &&
                             <div className="booking-flight-arrival-departure-container">
-                                <div style={{display:"flex",justifyContent:"space-between",width:"100%"}}>
+                                <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                     <div>
-                                        <h2 style={{ marginBottom: "5px",fontSize:"16px",color:"00081d" }}>Arrival Remarks</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}>Arrival Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",
@@ -585,13 +585,13 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             padding: "2px 15px",
                                             borderRadius: "20px"
                                         }}
-                                        onChange={(e)=>{
-                                            setfromRemarks(e.target.value);
-                                        }}
+                                            onChange={(e) => {
+                                                setfromRemarks(e.target.value);
+                                            }}
                                             type="textarea" placeholder="Enter your drop off location" />
                                     </div>
                                     <div>
-                                        <h2 style={{ marginBottom: "5px",fontSize:"16px",color:"00081d" }}> Departure Remarks</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}> Departure Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",
@@ -599,9 +599,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             padding: "2px 15px",
                                             borderRadius: "20px"
                                         }}
-                                        onChange={(e)=>{
-                                            settoRemarks(e.target.value);
-                                        }}
+                                            onChange={(e) => {
+                                                settoRemarks(e.target.value);
+                                            }}
                                             type="textarea" placeholder="Enter your drop off location" />
                                     </div>
                                 </div>

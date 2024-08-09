@@ -30,3 +30,43 @@
 .attraction-cancellation .green {
     color: green;
 }
+/* --------------Sub Attractions---------- */
+.sub-attraction {
+    padding: 0rem 2rem 1rem;
+    display: flex;
+    gap: 2rem;
+}
+.sub-attraction1 {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: #25867d;
+}
+.sub-attraction1 h4 {
+    margin-bottom: 0;
+    font-size: 18px;
+    color: #25867d;
+}
+.price-table {
+    background-color: #eaeaea;
+    bottom: 3.2rem;
+    box-shadow: 0 0 10px #3d3939;
+    left: 20%;
+    margin-top: 1rem;
+    position: absolute;
+}
+.more-price-btn {
+    background: none;
+    outline: none;
+    border: none;
+    color: yellow;
+    font-size: 24px;
+}
+.att-price-table {
+    padding: 5px 20px;
+    color:#1713e8;
+    border: 1.5px solid #26db26;
+}
+.none {
+    display: none;
+}
