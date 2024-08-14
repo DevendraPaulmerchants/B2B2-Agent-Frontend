@@ -126,7 +126,7 @@ const Home = () => {
     // --------------------------------LandCombos List--------------------------------------
     useEffect(() => {
 
-        fetch(`${APIPath}/api/v1/land_combos`, {
+        fetch(`${APIPath}/api/v1/agent/landCombo`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -332,7 +332,7 @@ const Home = () => {
                                                 <h4>Price Starting From</h4>
                                             </div>
                                             <div className="card-price">
-                                                <h4>AED <b>{val.cost.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+                                                <h4>AED <b>{val.price[0]?.adultPrice}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
                                             </div>
                                         </div>
                                     </div>
@@ -480,7 +480,7 @@ const Home = () => {
                                                     <h4>Price Starting From</h4>
                                                 </div>
                                                 <div className="card-price">
-                                                    <h4>AED <b>{val.cost.split(" ")[1]}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
+                                                    <h4>AED <b>{val.price[0]?.adultPrice}</b> <span style={{ color: "#312D65", fontSize: "14px" }}>/person</span></h4>
                                                 </div>
                                             </div>
                                         </div>

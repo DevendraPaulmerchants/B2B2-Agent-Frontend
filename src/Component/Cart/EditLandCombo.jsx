@@ -8,7 +8,7 @@ import { useCart } from "../context/CartContext";
 
 const BookLandCombos = ({ onClose, type,
     cartId,
-    pkgId, 
+    pkgId,
     landComboId,
     landCombosData,
     price,
@@ -20,7 +20,7 @@ const BookLandCombos = ({ onClose, type,
     lncEndDate,
     child,
     LoadCartItem }) => {
-        
+
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
     const [name, setName] = useState(Pname);
@@ -31,10 +31,12 @@ const BookLandCombos = ({ onClose, type,
     const [fromDate, setFromDate] = useState(lncStartDate);
     const [toDate, setToDate] = useState(lncEndDate);
 
-    const priceperPerson=price/(adults + child);
+    console.log("package data---", landCombosData,price);
+    // const priceperPerson = price / (adults + child);
 
-    const pkgPrice = price + ( priceperPerson * (adultPassenger - adults) + 
-                               priceperPerson * (childPassenger - child))
+    const pkgPrice = price +
+    (landCombosData?.price[0].adultPrice * (adultPassenger - adults) +
+        landCombosData?.price[0].childPrice * (childPassenger - child))
 
     const handleNameChange = (e) => {
         const name = e.target.value;
@@ -53,8 +55,8 @@ const BookLandCombos = ({ onClose, type,
     }
     const addToCartLandcombo = {
         type: type,
-        cartId:cartId,
-        landComboId:pkgId,
+        cartId: cartId,
+        landComboId: pkgId,
         landCombos: [
             {
                 landComboId: landComboId,
@@ -87,15 +89,15 @@ const BookLandCombos = ({ onClose, type,
             alert("please fill passenge email:");
             return;
         }
-        if (adultPassenger <= 0 ) {
+        if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult")
             return
         }
-        if (fromDate.length < 2 ) {
+        if (fromDate.length < 2) {
             alert("please select from date: ")
             return;
         }
-        if(toDate.length < 2) {
+        if (toDate.length < 2) {
             alert("please select to date : ")
             return;
         }
@@ -121,19 +123,19 @@ const BookLandCombos = ({ onClose, type,
 
         }
     }
-   
+
     return <>
         <div className="booking-package-container">
             <div className="booking-package-page">
                 <div className="booking-package-header">
                     <h2 style={{ fontSize: "14px", color: "#25867D" }}>You are booking:
-                        <p style={{ fontSize: "20px", color: "#25867D" }}>{landCombosData[0].title}</p>
+                        <p style={{ fontSize: "20px", color: "#25867D" }}>{landCombosData.title}</p>
                     </h2>
                     <h2 onClick={onClose} style={{ cursor: "pointer" }}><IoMdClose /></h2>
                 </div>
-                <form onSubmit={(e) => { 
-                    e.preventDefault(); 
-                    }}>
+                <form onSubmit={(e) => {
+                    e.preventDefault();
+                }}>
                     <div className="lead-passenger-parent-container">
                         <div className="lead-passenger-name">
                             <label htmlFor="Lead-Passenger-Name">Lead Passenger Name</label>
@@ -165,7 +167,7 @@ const BookLandCombos = ({ onClose, type,
 
                         <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Adults</span> (&gt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -185,7 +187,7 @@ const BookLandCombos = ({ onClose, type,
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p><span style={{fontSize:"14px"}}>Children</span> (&lt; 12 years)</p>
+                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {

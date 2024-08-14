@@ -213,19 +213,18 @@ const LandCombosDetails = () => {
                                 </div>
                             )}
                             {(active === 4) && (
-                                <div className="package-overview-details">
-                                    <br />
-                                    {val.cancellationRefundPolicy?.map((val, id) => {
-                                        return <>
-                                            <div className="attraction-cancellation" key={id}>
-                                                <p className={(id % 2 === 0) ? "red" : "green"} style={{ width: 'fit-content' }}><GoDotFill /></p>
-                                                <p>{val}</p>
-                                            </div>
-                                        </>
-                                    })}
+                                <div className="note">
+                                    {val.cancellationRefundPolicy.map((val, id) => {
+                                    return <>
+                                        {/* <p>{val}</p> */}
+                                        <ul key={id}>
+                                            <li>{val}</li>
+                                        </ul>
+                                    </>
+                                })}
                                 </div>
                             )}
-                            <br />
+                            <br/><br/>
                         </div>
                         <div className={isScrolled ? "footer-none" : "package-footer"}>
                             <div className="package-price-text-value">

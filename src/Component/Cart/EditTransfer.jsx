@@ -6,9 +6,9 @@ import 'react-phone-input-2/lib/style.css';
 import { APIPath } from "../../Config";
 import { useNavigate } from "react-router-dom";
 
-const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, adultsPassengers, childPassengers, selectedDate, 
-    selectedDateTo,arrivalFlightCode ,arrivalPickupTime1,departureFlightCode,departurePickupTime1,
-    cartId,transferId,pkgId,Pname,Pmobile,Pemail,price,LoadCartItem}) => {
+const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,vehicle,from,to, adultsPassengers, childPassengers, selectedDate,
+    selectedDateTo, arrivalFlightCode, arrivalPickupTime1, departureFlightCode, departurePickupTime1,
+    cartId, transferId, pkgId, Pname, Pmobile, Pemail, price, LoadCartItem }) => {
     document.body.style.overflow = 'hidden';
     const { token } = useCart();
     const [name, setName] = useState(Pname);
@@ -39,41 +39,61 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, ad
         const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
-   
     const addtransfertoCart =
-        {
-            type:1,
-            cartId:cartId,
-            transferId:pkgId,
-            transfers: [
-                {
-                    selectedTripType:tripType ,
-                    selectedTransferType: selectedTransferType,
-                    transferId: transferId,
-                    pickupTimeForArrival: flightArrivalTime,
-                    arrivalPickupTime: arrivalPickupTime,
-                    arrivalFlightCode: flightArrivalCode,
-                    numberOfAdults: adultPassenger,
-                    numberOfChildrens: childPassenger,
-                    pickupTimeForDeparture: flightDepartureTime,
-                    departurePickupTime: departurePickupTime,
-                    departureFlightCode: flightDepartureCode,
-                    // vehicle: "Car",
-                    remarks: "FINDING YOUR DRIVER.",
-                    cost:price
-                }
-            ],
-            customerDetails: {
-                name: name,
-                email: email,
-                phone: mobile,
-                address: {
-                    city: " ",
-                }
+    {
+        type: 1,
+        cartId: cartId,
+        transferId: pkgId,
+        transfers: [
+            {
+                selectedTripType: tripType,
+                selectedTransferType: selectedTransferType,
+                transferId: transferId,
+                // pickupTimeForArrival: flightArrivalTime,
+                // arrivalPickupTime: arrivalPickupTime,
+                // arrivalFlightCode: flightArrivalCode,
+                numberOfAdults: adultPassenger,
+                numberOfChildrens: childPassenger,
+                // pickupTimeForDeparture: flightDepartureTime,
+                // departurePickupTime: departurePickupTime,
+                // departureFlightCode: flightDepartureCode,
+                finalCost: price,
+                InOut: [
+                    {
+                        transferId: transferId,
+                        pickupTimeForArrival: flightArrivalTime,
+                        arrivalPickupTime:arrivalPickupTime,
+                        arrivalFlightCode: flightArrivalCode,
+                        from: from,
+                        to: to,
+                        cost: price,
+                        vehicle:vehicle,
+                    },
+                    (tripType === 'ROUND_TRIP' && {
+                        transferId: transferId,
+                        pickupTimeForDeparture: flightDepartureTime,
+                        departurePickupTime: departurePickupTime,
+                        departureFlightCode: flightDepartureCode,
+                        from: to,
+                        to: from,
+                        cost: price,
+                        vehicle:vehicle,
+                    })
+                ]
             }
+        ],
+        customerDetails: {
+            name: name,
+            email: email,
+            phone: mobile,
+            // address: {
+            //     city: " ",
+            // }
         }
-    
+    }
+
     const bookThisPackage = () => {
+        // console.log(addtransfertoCart)
         if (name.length <= 0) {
             alert("please fill lead passenger details")
             return
@@ -97,12 +117,13 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, ad
                 body: JSON.stringify(addtransfertoCart)
             }).then((res) => res.json())
                 .then((data) => {
-                    alert(data.message)
+                    alert(data.message);
+                    onClose();
                     LoadCartItem();
                 })
                 .catch((err) => {
                     alert(err)
-                    return
+                    return;
                 })
         }
     }
@@ -117,9 +138,9 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, ad
                     /></h2>
                 </div>
                 <div className="booking-passenger-details">
-                    <form onSubmit={(e) => { 
-                        e.preventDefault(); 
-                        }}>
+                    <form onSubmit={(e) => {
+                        e.preventDefault();
+                    }}>
                         <br />
                         {/* -------------------------------Passenger Deatils------------------------- */}
                         <div className="lead-passenger-parent-container">
@@ -144,7 +165,7 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, ad
                             <div className="lead-passenger-name">
                                 <label htmlFor="Lead-Passenger-Email">Email</label>
                                 <input type="email" placeholder="EnterEmail.. " required
-                                maxLength={40}
+                                    maxLength={40}
                                     value={email}
                                     className="PhoneInput--readOnly"
                                 />
@@ -435,7 +456,7 @@ const BookTransfer = ({ onClose, tripType,selectedTransferType,maxPassengers, ad
                                 <h4><b>&nbsp;AED {price}</b><sub>+Taxes</sub></h4>
                             </div>
                             <div className="booking-transfer-btn">
-                                <button onClick={()=>{bookThisPackage()}}>Submit</button>
+                                <button onClick={() => { bookThisPackage() }}>Submit</button>
                             </div>
                         </div>
                     </form>

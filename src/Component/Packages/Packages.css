@@ -237,6 +237,7 @@ hr {
     background: #ffe8e8 url(https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png) 100% 100% no-repeat;;
 }
 .note {
+   margin: 10px;
    padding: 1rem;
    background:#ffe8e8 url(https://res.cloudinary.com/ddxawuqwy/image/upload/v1710241157/inc_exc_bg_raxhhz.png) 100% 100% no-repeat;
 }
@@ -367,6 +368,9 @@ hr {
 }
 #form-control .react-tel-input .form-control {
     width: 100%;
+}
+.lead-passenger-name span {
+    display: inline-block;
 }
 .package-from-date-to-date {
     /* width: 60%; */

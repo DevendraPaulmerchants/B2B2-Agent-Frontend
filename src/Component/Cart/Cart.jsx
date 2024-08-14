@@ -24,6 +24,7 @@ const Cart = ({token}) => {
   const [transfers, setTransfer] = useState(null);
   const [type, setType] = useState();
   const [pkgId, setPkgId] = useState('');
+  const [packageData,setPackageData]=useState(null);
   const [editPkg, setEditPkg] = useState(false);
   const [editPkgId, setEditPkgId] = useState(false);
   const [pkgStartDate, setPkgStartDate] = useState();
@@ -31,11 +32,13 @@ const Cart = ({token}) => {
   const [pricePackage,setPricePackage]=useState();
   const [editAtt, setEditAtt] = useState(false);
   const [attId, setAttId] = useState('');
+  const [attractionData,setAttractionData]=useState(null)
   const [subAttractionId,setSubAttractionId]=useState('')
   const [attDate, setAttDate] = useState();
   const [priceAtt,setPriceAtt]=useState();
   const [editLnC, setEditLnC] = useState(false);
   const [lncId, setLnCId] = useState('');
+  const [landcombosData,setLandcombosData]=useState(null);
   const [lncStartDate, setlncStartDate] = useState();
   const [lncEndDate, setlncEndDate] = useState();
   const [priceLnc,setPriceLnc]=useState();
@@ -51,6 +54,9 @@ const Cart = ({token}) => {
   const [departurePickupTime, setdeparturePickupTime] = useState();
   const [selectedDateTo, setselectedDateTo] = useState();
   const [maxPassengers,setMaxPassengers]=useState();
+  const [vehicle,setVehicle]=useState(null);
+  const [from,setFrom]=useState("");
+  const [to,setTo]=useState("");
  
 
   const LoadCartItem = () => {
@@ -212,21 +218,20 @@ const Cart = ({token}) => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#Id_{val.packageId?.slice(-4)}</h4>
+                        {/* <h4>#Id_{val.packageId?.slice(-4)}</h4> */}
                       </div>
                       <div className="cart-edit-delete-button">
                         <button
                           onClick={() => {
                             setType(2);
                             setPkgId(val._id);
-                            setEditPkgId(val.packageId)
-                            setPkgStartDate(val.startDate);
+                            setEditPkgId(val.packageId);
+                            setPackageData(val)
+                            setPkgStartDate(val.startDate.split("T")[0]);
                             setPkgEndDate(val.endDate);
                             setPricePackage(val.cost)
                             if (type === 2) {
                               setEditPkg(true);
-                              console.log("start date----",val.startDate,
-                                "end date---",val.endDate)
                             }
                           }}
                         >
@@ -256,9 +261,34 @@ const Cart = ({token}) => {
                         <h2>AED {val.cost}</h2>
                       </div>
                     </div>
+                    <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>Lead passenger name</h4>
+                    <h2>{customer?.name}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Phone Number</h4>
+                    <h2>+{customer?.phone}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Email</h4>
+                    <h2>{customer?.email}</h2>
+                  </div>
+                </div>
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of Adults</h4>
+                    <h2>{val.numberOfAdults}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of children</h4>
+                    <h2>{val.numberOfChildrens}</h2>
+                  </div>
+                </div>
                   </>
                 })}
-                <div className="card1-item-passenger-details">
+                
+                {/* <div className="card1-item-passenger-details">
                   <div className="card1-item-passenger-name">
                     <h4>Lead passenger name</h4>
                     <h2>{customer?.name}</h2>
@@ -281,7 +311,7 @@ const Cart = ({token}) => {
                     <h4>No. of children</h4>
                     <h2>{packages?.[0].numberOfChildrens}</h2>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <hr />
@@ -296,14 +326,15 @@ const Cart = ({token}) => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#Id_{val.attractionId.slice(-4)}</h4>
+                        {/* <h4>#Id_{val.attractionId.slice(-4)}</h4> */}
                       </div>
                       <div className="cart-edit-delete-button">
                         <button
                           onClick={() => {
                             setType(3);
                             setPkgId(val._id);
-                            setAttId(val.attractionId)
+                            setAttId(val.attractionId);
+                            setAttractionData(val);
                             setAttDate(val.startDate.split("T")[0])
                             setPriceAtt(val.cost);
                             setSubAttractionId(val.subAttractionId)
@@ -330,7 +361,7 @@ const Cart = ({token}) => {
                         </button>
                       </div>
                     </div>
-                    <div className="card1-item-title-price">
+                    <div className="card1-item-title-price" style={{marginBottom:"0"}}>
                       <div className="card1-item-title">
                         <img src="packageicon.svg" />
                         <h2>{val?.title ? val?.title : "Attraction Title"}</h2>
@@ -342,9 +373,33 @@ const Cart = ({token}) => {
                     <div style={{paddingLeft:"3rem"}}>
                       <p style={{color:"#A3A8B8"}}>({val?.subTitle ? val?.subTitle : "Attraction Sub title"})</p>
                     </div>
+                    <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>Lead passenger name</h4>
+                    <h2>{customer?.name}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Phone Number</h4>
+                    <h2>+{customer?.phone}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Email</h4>
+                    <h2>{customer?.email}</h2>
+                  </div>
+                </div>
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of Adults</h4>
+                    <h2>{val.numberOfAdults}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of children</h4>
+                    <h2>{val.numberOfChildrens}</h2>
+                  </div>
+                </div>
                   </>
                 })}
-                <div className="card1-item-passenger-details">
+                {/* <div className="card1-item-passenger-details">
                   <div className="card1-item-passenger-name">
                     <h4>Lead passenger name</h4>
                     <h2>{customer?.name}</h2>
@@ -367,7 +422,7 @@ const Cart = ({token}) => {
                     <h4>No. of children</h4>
                     <h2>{attractions?.[0].numberOfChildrens}</h2>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <hr />
@@ -381,13 +436,14 @@ const Cart = ({token}) => {
                   return <>
                     <div className="card1-item-container-header">
                       <div className="card1-itemid">
-                        <h4>#Id_{val.landComboId.slice(-4)}</h4>
+                        {/* <h4>#Id_{val.landComboId.slice(-4)}</h4> */}
                       </div>
                       <div className="cart-edit-delete-button">
                         <button onClick={() => {
                           setType(4);
                           setPkgId(val._id);
                           setLnCId(val.landComboId);
+                          setLandcombosData(val);
                           setlncStartDate(val.startDate.split("T")[0]);
                           setlncEndDate(val.endDate.split("T")[0]);
                           setPriceLnc(val.cost)
@@ -421,9 +477,33 @@ const Cart = ({token}) => {
                         <h2>AED {val.cost}</h2>
                       </div>
                     </div>
+                    <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>Lead passenger name</h4>
+                    <h2>{customer?.name}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Phone Number</h4>
+                    <h2>+{customer?.phone}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>Email</h4>
+                    <h2>{customer?.email}</h2>
+                  </div>
+                </div>
+                <div className="card1-item-passenger-details">
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of Adults</h4>
+                    <h2>{val.numberOfAdults}</h2>
+                  </div>
+                  <div className="card1-item-passenger-name">
+                    <h4>No. of children</h4>
+                    <h2>{val.numberOfChildrens}</h2>
+                  </div>
+                </div>
                   </>
                 })}
-                <div className="card1-item-passenger-details">
+                {/* <div className="card1-item-passenger-details">
                   <div className="card1-item-passenger-name">
                     <h4>Lead passenger name</h4>
                     <h2>{customer?.name}</h2>
@@ -446,7 +526,7 @@ const Cart = ({token}) => {
                     <h4>No. of children</h4>
                     <h2>{landcombos?.[0].numberOfChildrens}</h2>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <hr />
@@ -464,23 +544,26 @@ const Cart = ({token}) => {
                     <div className="cart-edit-delete-button">
                       <button onClick={() => {
                         // console.log("trnasfer edit click")
-                        alert("we are working on it")
-                           return;
-                        // setType(1);
-                        // setPkgId(val._id);
-                        // setTransferId(val?.InOut[0].transferId);
-                        // setTripType(val?.selectedTripType);
-                        // setselectedTransferType(val?.selectedTransferType)
-                        // settotalCost(val?.finalCost);
-                        // setselectedDate(val?.InOut[0].pickupTimeForArrival);
-                        // setarrivalFlightCode(val?.InOut[0].arrivalFlightCode);
-                        // setarrivalPickupTime(val?.InOut[0].arrivalPickupTime);
-                        // setselectedDateTo(val?.InOut[1]?.pickupTimeForDeparture);
-                        // setdepartureFlightCode(val?.InOut[1]?.departureFlightCode);
-                        // setdeparturePickupTime(val?.InOut[1]?.departurePickupTime);
-                        // setMaxPassengers(val.InOut[0].vehicle?.maxPassenger)
+                        // alert("we are working on it")
+                          //  return;
+                        setType(1);
+                        setPkgId(val._id);
+                        setTransferId(val?.InOut[0].transferId);
+                        setTripType(val?.selectedTripType);
+                        setselectedTransferType(val?.selectedTransferType)
+                        settotalCost(val?.finalCost);
+                        setselectedDate(val?.InOut[0].pickupTimeForArrival);
+                        setarrivalFlightCode(val?.InOut[0].arrivalFlightCode);
+                        setarrivalPickupTime(val?.InOut[0].arrivalPickupTime);
+                        setselectedDateTo(val?.InOut[1]?.pickupTimeForDeparture);
+                        setdepartureFlightCode(val?.InOut[1]?.departureFlightCode);
+                        setdeparturePickupTime(val?.InOut[1]?.departurePickupTime);
+                        setMaxPassengers(val.InOut[0].vehicle?.maxPassenger);
+                        setVehicle(val?.InOut[0].vehicle);
+                        setFrom(val.InOut[0].from);
+                        setTo(val.InOut[0].to)
                         if (type === 1) {
-                          // setEditTransfer(true)
+                          setEditTransfer(true)
                         }
                       }}>
                         <img src="/editicon.svg" alt="edit" />&nbsp;
@@ -503,7 +586,7 @@ const Cart = ({token}) => {
                   <div className="card1-item-title-price">
                     <div className="card1-item-title">
                       <img src="transfericon.svg" />
-                      <h2>{val._id.slice(-8)}</h2>
+                      {/* <h2>{val._id.slice(-8)}</h2> */}
                       <p>{val?.selectedTripType}</p>
                       <p>{val?.InOut[0]?.vehicle?.name}</p>
                     </div>
@@ -536,12 +619,36 @@ const Cart = ({token}) => {
                         </div>
                       {/* )} */}
                      
-
                     </div>
                   </div>
+                  <div className="card1-item-passenger-details">
+                <div className="card1-item-passenger-name">
+                  <h4>Lead passenger name</h4>
+                  <h2>{customer?.name}</h2>
+                </div>
+                <div className="card1-item-passenger-name">
+                  <h4>Phone Number</h4>
+                  <h2>+{customer?.phone}</h2>
+                </div>
+                <div className="card1-item-passenger-name">
+                  <h4>Email</h4>
+                  <h2>{customer?.email}</h2>
+                </div>
+
+              </div>
+              <div className="card1-item-passenger-details" style={{ paddingBottom: "2rem" }}>
+                <div className="card1-item-passenger-name">
+                  <h4>No. of Adults</h4>
+                  <h2>{val.numberOfAdults}</h2>
+                </div>
+                <div className="card1-item-passenger-name">
+                  <h4>No. of children</h4>
+                  <h2>{val.numberOfChildrens}</h2>
+                </div>
+              </div>
                 </>
               })}
-              <div className="card1-item-passenger-details">
+              {/* <div className="card1-item-passenger-details">
                 <div className="card1-item-passenger-name">
                   <h4>Lead passenger name</h4>
                   <h2>{customer?.name}</h2>
@@ -565,7 +672,7 @@ const Cart = ({token}) => {
                   <h4>No. of children</h4>
                   <h2>{transfers?.[0].numberOfChildrens}</h2>
                 </div>
-              </div>
+              </div> */}
             </div>
             <hr />
           </>
@@ -623,15 +730,16 @@ const Cart = ({token}) => {
       cartId={cartId}
       attractionId={attId}
       subAttractionId={subAttractionId}
+      // attractionTitle={attractionTitle}
       pkgId={pkgId}
-      packagedata={attractions}
+      packagedata={attractionData}
       onClose={onClose}
       price={priceAtt}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}
-      adults={attractions?.[0].numberOfAdults}
-      child={attractions?.[0].numberOfChildrens}
+      adults={attractionData.numberOfAdults}
+      child={attractionData.numberOfChildrens}
       attDate={attDate}
       LoadCartItem={LoadCartItem}
     />}
@@ -640,15 +748,16 @@ const Cart = ({token}) => {
       cartId={cartId}
       pkgId={pkgId}
       landComboId={lncId}
-      landCombosData={landcombos}
+      // landcombosTitle={landcombosTitle}
+      landCombosData={landcombosData}
       price={priceLnc}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}
-      adults={landcombos?.[0].numberOfAdults}
+      adults={landcombosData.numberOfAdults}
       lncStartDate={lncStartDate}
       lncEndDate={lncEndDate}
-      child={landcombos?.[0].numberOfChildrens}
+      child={landcombosData.numberOfChildrens}
       LoadCartItem={LoadCartItem}
     />}
     {editPkg && <BookPackage onClose={onClose}
@@ -656,16 +765,17 @@ const Cart = ({token}) => {
       cartId={cartId}
       pkgId={pkgId}
       packageId={editPkgId}
-      packagedata={packages}
+      // packageTitle={packageTitle}
+      packagedata={packageData}
       // price={packageprice}
       price={pricePackage}
       Pname={customer?.name}
       Pmobile={customer?.phone}
       Pemail={customer?.email}
-      adults={packages?.[0].numberOfAdults}
+      adults={packageData.numberOfAdults}
       pkgStartDate={pkgStartDate}
       pkgEndDate={pkgEndDate}
-      child={packages?.[0].numberOfChildrens}
+      child={packageData.numberOfChildrens}
       LoadCartItem={LoadCartItem}
     />
     }
@@ -679,6 +789,9 @@ const Cart = ({token}) => {
       adultsPassengers={transfers?.[0].numberOfAdults}
       childPassengers={transfers?.[0].numberOfChildrens}
       maxPassengers={maxPassengers}
+      vehicle={vehicle}
+      from={from}
+      to={to}
       selectedDate={selectedDate}
       selectedDateTo={selectedDateTo}
       Pname={customer?.name}

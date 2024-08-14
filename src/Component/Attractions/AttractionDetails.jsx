@@ -232,25 +232,24 @@ const AttractionDetails = () => {
                                 <br />
                                 {val.expectations?.map((val, id) => {
                                     return <>
-                                       <p><b>Location:</b> {val.location}</p>
-                                       <p><b>Description:</b> {val.description}</p>
-                                       {/* <p><b>Time:</b> {val.time}</p> */}
+                                        <p><b>Location:</b> {val.location}</p>
+                                        <p><b>Description:</b> {val.description}</p>
+                                        {/* <p><b>Time:</b> {val.time}</p> */}
                                     </>
                                 })}
                             </div>)}
-                            <br/>
-                            {(active === 5) && (<div className="attraction-cancellation-policy">
-                                <br></br>
+                            <br />
+                            {(active === 5) && (<div className="note">
                                 {val.cancellationRefundPolicy.map((val, id) => {
                                     return <>
-                                        <div className="attraction-cancellation" key={id}>
-                                            <p className={(id % 2 === 0) ? "green" : "red"}><GoDotFill /></p>
-                                            <p>{val}</p>
-                                        </div>
+                                        {/* <p>{val}</p> */}
+                                        <ul key={id}>
+                                            <li>{val}</li>
+                                        </ul>
                                     </>
                                 })}
-                                <br /> <br />
                             </div>)}
+                            <br/><br/>
                         </div>
                         <div className={isScrolled ? "footer-none" : "package-footer"}>
                             <div className="package-price-text-value">

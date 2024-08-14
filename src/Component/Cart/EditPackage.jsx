@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { APIPath } from "../../Config";
 
-const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
+const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
     adults, child, type, cartId, packageId, pkgId, pkgStartDate, pkgEndDate, LoadCartItem }) => {
     const { token } = useCart()
     document.body.style.overflow = 'hidden';
+    console.log("package data---",packagedata);
     const [name, setName] = useState(Pname);
     const [adultPassenger, setAdultPassenger] = useState(adults);
     const [childPassenger, setChildPassenger] = useState(child);
@@ -18,10 +19,10 @@ const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
     const [fromDate, setFromDate] = useState(pkgStartDate);
     const [toDate, setToDate] = useState(pkgEndDate);
 
-    const pkgPrice =price + (packagedata[0].price?.[0].price * (adultPassenger - adults) +
-        packagedata[0].price?.[1].price * (childPassenger - child));
+    const pkgPrice =price + (packagedata.price?.[0].price * (adultPassenger - adults) +
+        packagedata.price?.[1].price * (childPassenger - child));
 
-    const DayOrNight = parseInt(packagedata[0]?.duration?.split("/")[1].split(" ")[1]);
+    const DayOrNight = parseInt(packagedata.duration?.split("/")[1].split(" ")[1]);
     
     useEffect(() => {
         if (fromDate) {
@@ -127,7 +128,7 @@ const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
             <div className="booking-package-page">
                 <div className="booking-package-header">
                     <h2 style={{ fontSize: "14px", color: "#25867D" }}>You are booking:
-                        <p style={{ fontSize: "20px", color: "#25867D" }}>{packagedata[0].title}</p>
+                        <p style={{ fontSize: "20px", color: "#25867D" }}>{packagedata.title}</p>
                     </h2>
                     <h2 onClick={onClose} style={{ cursor: "pointer" }}><IoMdClose /></h2>
                 </div>

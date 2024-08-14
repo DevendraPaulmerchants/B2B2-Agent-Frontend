@@ -55,6 +55,9 @@ const BookPackage = ({ onClose, packagedata }) => {
             setEmail(email);
         }
     }
+    const handleMobileChange=(value)=>{
+        setMobile(value)
+      }
     const getCurrentDate = () => {
         const now = new Date();
         const year = now.getFullYear();
@@ -210,12 +213,20 @@ const BookPackage = ({ onClose, packagedata }) => {
                         </div>
                         <div className="lead-passenger-name" style={{ width: "100%" }}>
                             <label htmlFor="Lead-Passenger-Mobile">Mobile No.</label>
-                            <PhoneInput id="form-control"
-                                placeholder="Enter phone number"
+                            {/* <PhoneInput id="form-control"
                                 international
                                 country={'in'}
                                 value={mobile}
                                 onChange={setMobile}
+                            /> */}
+                            <PhoneInput id="form-control"
+                                country={'in'}
+                                value={mobile}
+                                onChange={(value) => handleMobileChange(value)}
+                                inputProps={{
+                                    name: 'mobile',
+                                    required: true,
+                                }}
                             />
                         </div>
                         <div className="lead-passenger-name">

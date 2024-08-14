@@ -75,7 +75,7 @@ const PacKageDetails = () => {
     const [isScrolled, setIsScrolled] = useState(true);
     useEffect(() => {
         if (window.innerHeight > 740) {
-            console.log("screen height---",window.innerHeight)
+            console.log("screen height---", window.innerHeight)
             setIsScrolled(false);
             return;
         }
@@ -247,14 +247,17 @@ const PacKageDetails = () => {
                                     })}
                                 </div>)}
 
-                                {(active === 5) && (<div className="package-overview-details">
+                                {(active === 5) && (<div className="note">
 
                                     {val.cancellationRefundPolicy.map((val, id) => {
                                         return <>
-                                            <p>{val}</p>
+                                            {/* <p>{val}</p> */}
+                                            <ul key={id}>
+                                                <li>{val}</li>
+                                            </ul>
                                         </>
                                     })}
-                                    <div className="note">
+                                    {/* <div className="note">
                                         <h4>Notes</h4>
                                         {val.policyNote.map((note, id) => {
                                             return <>
@@ -263,8 +266,9 @@ const PacKageDetails = () => {
                                                 </ul>
                                             </>
                                         })}
-                                    </div>
+                                    </div> */}
                                 </div>)}
+                                <br/>
                                 {(active === 6) && (
                                     <div className="package-overview-details">
                                         <ol key={id}>

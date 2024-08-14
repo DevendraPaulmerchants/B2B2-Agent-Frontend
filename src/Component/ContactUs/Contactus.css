@@ -42,6 +42,9 @@
   padding-left: 5px;
   height: 3rem;
 }
+.container1-form span {
+  display: inline-block;
+}
 .address i {
     margin-right: 0.5rem;
 }

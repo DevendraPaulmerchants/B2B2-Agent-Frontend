@@ -12,6 +12,7 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
 
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
+    console.log("attraction data",packagedata)
     const [name, setName] = useState(Pname);
     const [adultPassenger, setAdultPassenger] = useState(adults);
     const [childPassenger, setChildPassenger] = useState(child);
@@ -20,7 +21,8 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
     const [fromDate, setFromDate] = useState(attDate);
 
     // const priceperPerson = price / (adults + child);
-    const priceDescription = packagedata[0].price.filter((val, id) => val._id === subAttractionId)
+    const priceDescription = packagedata.price.filter((val, id) => val._id === subAttractionId);
+    console.log("price description---",priceDescription);
     // const priceIndex = priceDescription[0].adultPrice;
     // console.log(priceIndex);
 
@@ -50,8 +52,8 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
         attractions: [
             {
                 attractionId: attractionId,
-                subAttractionId: packagedata[0]?.subAttractionId,
-                subTitle: packagedata[0]?.subTitle,
+                subAttractionId: packagedata.subAttractionId,
+                subTitle: packagedata.subTitle,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
                 price: pkgPrice,
@@ -118,8 +120,8 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
         <div className="booking-package-page">
             <div className="booking-package-header">
                 <h2 style={{ fontSize: "14px", color: "#25867D" }}>You are booking:
-                    <p style={{ fontSize: "20px", color: "#25867D" }}>{packagedata[0].title}
-                        <p style={{ fontSize: "16px", color: "#25867D" }}>({packagedata[0].subTitle})</p>
+                    <p style={{ fontSize: "20px", color: "#25867D" }}>{packagedata.title}
+                        <p style={{ fontSize: "16px", color: "#25867D" }}>({packagedata.subTitle})</p>
                     </p>
                 </h2>
                 <h2 onClick={onClose} style={{ cursor: "pointer" }}><IoMdClose /></h2>
