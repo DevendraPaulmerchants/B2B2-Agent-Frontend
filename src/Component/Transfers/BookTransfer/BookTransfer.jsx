@@ -21,6 +21,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     const [flightDepartureTime, setFlightDepartureTime] = useState(selectedDateTo)
     const [arrivalPickupTime, setArrivalPickupTime] = useState('');
     const [departurePickupTime, setDeparturePickupTime] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const bookingCloseBtn = () => {
@@ -75,42 +76,52 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     }
     const validTypes = ["AirportToHotel", "AirportToAirport", "HotelToAirport"];
     const bookThisTransfer = () => {
+        setLoading(true)
         if (name.length <= 0) {
             alert("please fill lead passenger details")
+            setLoading(false)
             return
         }
         if (mobile.toString().length < 8) {
             alert("Please check mobile number");
+            setLoading(false)
             return;
         }
         if (email.length <= 10) {
             alert("please fill passenger email:");
+            setLoading(false)
             return;
         }
         if (adultPassenger <= 0) {
-            alert("please Add at least 1 Adult")
+            alert("please Add at least 1 Adult");
+            setLoading(false);
             return
         }
         if ((adultPassenger + childPassenger) > transferDetails.vehicle.maxPassenger) {
-            alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers`)
+            alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers`);
+            setLoading(false);
             return;
         }
         if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 4) {
             alert("please fill arrival flight code...");
+            setLoading(false);
             return;
         }
 
         if (validTypes.includes(transferDetails.type) && arrivalPickupTime.length < 5) {
-            alert("please fill pickup time from airport...")
+            alert("please fill pickup time from airport...");
+            setLoading(false);
             return
         }
         if (tripType === 'ROUND_TRIP') {
             if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 4) {
                 alert("please fill departure flight Code...");
+                setLoading(false);
                 return
             }
             if (validTypes.includes(transferDetails.type) && departurePickupTime.length < 5) {
                 alert("please fill departure time to airport...");
+                setLoading(false);
                 return
             }
         }
@@ -125,13 +136,15 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         })
             .then((res) => res.json())
             .then((data) => {
-                alert("You`r transfer booking request sent to Admin successfully, Waiting to approval.")
                 setBookTransfer(false)
                 setDescriptionPage(false)
+                setLoading(false)
+                alert("You`r transfer booking request sent to Admin successfully, Waiting to approval.")
                 navigate('/transfers')
             })
             .catch((err) => (
-                alert(err)
+                alert(err),
+                setLoading(false)
             ))
     }
 
@@ -615,8 +628,11 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                             </div>
                             {/* -------------------------Close and Book Transfer button------------------ */}
                             <div className="booking-transfer-btn">
-                                <button onClick={() => addToCart()}>Add To cart</button>
-                                <button onClick={() => { bookThisTransfer() }}>Book Now</button>
+                                {loading ? <div className="loader">
+                                </div> : <>
+                                    <button onClick={() => addToCart()}>Add To cart</button>
+                                    <button onClick={() => { bookThisTransfer() }}>Book Now</button>
+                                </>}
                             </div>
                         </div>
                     </form>

@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 import './Cart.css';
-import { useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import BookAttraction from "./EditAttraction";
 import BookPackage from "./EditPackage";
 import BookLandCombos from "./EditLandCombo";
 import BookTransfer from "./EditTransfer";
 
-const Cart = ({token}) => {
-  const {cartLength, setCartLength } = useCart();
+const Cart = ({tokenH}) => {
+  const {cartLength, setCartLength,token } = useCart();
   document.body.style.overflow = 'auto';
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -58,11 +57,13 @@ const Cart = ({token}) => {
   const [from,setFrom]=useState("");
   const [to,setTo]=useState("");
  
+  const ftoken = tokenH || token  ;
+  // console.log(tokenH ? `"home", ${ftoken}` : `"context",${ftoken}`);
 
   const LoadCartItem = () => {
     fetch(`${APIPath}/api/v1/agent/new-cart`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${ftoken}`,
         'Content-Type': 'application/json'
       },
       method: "GET",
@@ -89,7 +90,7 @@ const Cart = ({token}) => {
 
   useEffect(() => {
     LoadCartItem();
-  }, []);
+  }, [token]);
 
   let packageprice = 0;
   packages?.forEach((val, id) => {

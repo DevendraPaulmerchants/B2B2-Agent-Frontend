@@ -67,8 +67,8 @@
     gap: 2rem;
 }
 .general-information {
-    padding:2rem 2rem 0 2rem;
-    margin-bottom: 1rem;
+    padding:0 2rem;
+    /* margin-bottom: 1rem; */
 }
 .general-information p {
     color: #00081d;

@@ -71,7 +71,7 @@ function App() {
                 <Route path="/attractions" element={<Attractions />} />
                 <Route path="/attractiondetails/:packageId" element={<AttractionDetails />} />
                 <Route path="/transfers" element={<Transfers />} />
-                <Route path="/cart" element={<Cart token={token} />} />
+                <Route path="/cart" element={<Cart tokenH={token} />} />
                 <Route path="/reset" element={<PasswordReset />} />
                 <Route path="/contactus" element={<ContactUs />} />
                 <Route path="/privacy_policy" element={<Privacy />} />
