@@ -201,10 +201,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     height: fit-content;
 }
 .booking-transfer-btn button:first-child {
-    border: 2px solid #52CCFC;
+    border: 2px solid #103083;
     background: none;
     outline: none;
-    color: #3498db;
+    color: #103083;
+    padding: 3px 15px;
     font-weight: 500;
 }
 .booking-transfer-btn #cancel{

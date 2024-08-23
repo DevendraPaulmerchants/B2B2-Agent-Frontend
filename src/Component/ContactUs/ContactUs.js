@@ -29,7 +29,8 @@ const ContactUs = () => {
     const name = e.target.value;
     const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
     if (isAlphabetic || name === "") {
-      setName(name)
+        const sanitizedValue = name.replace(/^\s+|\s+(?=\s)/g, '');
+        setName(sanitizedValue)
     }
   };
   const handleEmailChange = (e) => {

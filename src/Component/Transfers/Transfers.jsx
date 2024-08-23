@@ -11,7 +11,7 @@ import BookTransfer from "./BookTransfer/BookTransfer";
 import './Transfers.css';
 import Footer from "../Footer/Footer";
 
-const Transfers = () => {
+const Transfers = ({tokenH}) => {
     const { bookTransfer, setBookTransfer, setTransferDetails,
         descriptionPage, setDescriptionPage } = useCart()
     document.body.style.overflow = 'auto';
@@ -19,6 +19,7 @@ const Transfers = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+    const ftoken = tokenH || token  ;
     const [descriptionPageData, setDescriptionPageData] = useState('');
 
     const handeDescriptionPage = (id, Data) => {
@@ -158,7 +159,7 @@ const Transfers = () => {
         if (Id) {
             fetch(`${APIPath}/api/v1/agent/country?continent=${Id}`, {
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${ftoken}`,
                     'Content-Type': 'application/json'
                 },
                 method: 'GET',

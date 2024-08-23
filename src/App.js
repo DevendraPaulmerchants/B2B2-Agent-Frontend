@@ -70,7 +70,7 @@ function App() {
                 <Route path="/landcombosDetails/:packageId" element={<LandCombosDetails />} />
                 <Route path="/attractions" element={<Attractions />} />
                 <Route path="/attractiondetails/:packageId" element={<AttractionDetails />} />
-                <Route path="/transfers" element={<Transfers />} />
+                <Route path="/transfers" element={<Transfers tokenH={token} />} />
                 <Route path="/cart" element={<Cart tokenH={token} />} />
                 <Route path="/reset" element={<PasswordReset />} />
                 <Route path="/contactus" element={<ContactUs />} />
