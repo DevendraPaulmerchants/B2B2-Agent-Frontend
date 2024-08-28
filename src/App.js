@@ -61,6 +61,7 @@ function App() {
           <Routes>
             <Route path="/" element={isLoggedIn ? <Home token={token} setLoggedIn={setLoggedIn} /> : <Login setLoggedIn={setLoggedIn} />} />
             <Route path="/registration" element={<Registration />} />
+            <Route path="/reset" element={<PasswordReset />} />
             {isLoggedIn && (
               <>
                 <Route path="/user" element={<User />} />
@@ -72,7 +73,7 @@ function App() {
                 <Route path="/attractiondetails/:packageId" element={<AttractionDetails />} />
                 <Route path="/transfers" element={<Transfers tokenH={token} />} />
                 <Route path="/cart" element={<Cart tokenH={token} />} />
-                <Route path="/reset" element={<PasswordReset />} />
+                {/* <Route path="/reset" element={<PasswordReset />} /> */}
                 <Route path="/contactus" element={<ContactUs />} />
                 <Route path="/privacy_policy" element={<Privacy />} />
                 <Route path="/term&condition" element={<Condition />} />

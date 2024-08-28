@@ -13,6 +13,11 @@ const ForgotPassword = ({ onClose }) => {
         setEmail(e.target.value)
     }
     const navigate = useNavigate();
+    const linkSend =()=>{
+        return <div>
+            <h3>Reset Password Link send to your Email.</h3>
+        </div>
+    }
     const sendLink = async () => {
         setLoading(true)
         try {
@@ -31,7 +36,6 @@ const ForgotPassword = ({ onClose }) => {
             alert(data.message)
             setLoading(false)
             onClose();
-            navigate('/login');
         } catch (error) {
             alert(error.message);
             setLoading(false)

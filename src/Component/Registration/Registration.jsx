@@ -68,7 +68,6 @@ const Registration = () => {
                 body: JSON.stringify(formData)
             }).then((res) => res.json())
                 .then((data) => {
-                    // console.log(data)
                     setLoading(false);
                     if (data.message === 'agent registered successfully!!') {
                         alert("Account created Succesfully");
@@ -183,7 +182,7 @@ const Registration = () => {
                             </div>
                             <div className="registration-agent">
                                 <input type="text" placeholder="UserId" name="userId"
-                                    value={userId} minLength={3} maxLength={30}
+                                    value={userId} minLength={3} maxLength={10}
                                     onChange={(e) => {
                                         const userid = e.target.value;
                                         const sanitizedValue = userid.replace(/^\s+|\s+(?=\s)/g, '');
