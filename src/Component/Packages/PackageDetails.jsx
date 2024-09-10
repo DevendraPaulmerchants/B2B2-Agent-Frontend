@@ -4,7 +4,7 @@ import { APIPath } from "../../Config";
 import Rating from '@mui/material/Rating';
 import { MdArrowOutward } from "react-icons/md";
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 import BookPackage from "./BookPackage";
 import './Packages.css';
 import { useParams } from "react-router-dom";
@@ -62,16 +62,6 @@ const PacKageDetails = () => {
         setActive(index)
     }
 
-    // const handleDownloadPDF = () => {
-    //     const input = document.getElementById('package-details');
-    //     html2canvas(input).then((canvas) => {
-    //         const imgData = canvas.toDataURL('image/png');
-    //         const pdf = new jsPDF();
-    //         pdf.addImage(imgData, 'PNG', 0, 0);
-    //         pdf.save('package-details.pdf');
-    //     });
-    // };
-
     const [isScrolled, setIsScrolled] = useState(true);
     useEffect(() => {
         if (window.innerHeight > 740) {
@@ -107,6 +97,184 @@ const PacKageDetails = () => {
             console.log("Web Share API not supported");
         }
     }
+
+    const sharePdf = () => {
+        const doc = new jsPDF();
+        const pdfWidth = doc.internal.pageSize.getWidth();
+        const pdfHeight = doc.internal.pageSize.getHeight();
+
+        const imageWidth = pdfWidth;
+        const imageHeight = 100;
+
+        let y = 10;
+        const x = 0;
+        const maxWidth = pdfWidth - 20; // Maximum width for text
+
+        // Function to check if a new page is needed
+        const checkPageOverflow = (additionalHeight = 0) => {
+            if (y + additionalHeight > pdfHeight - 10) { // 10 for bottom margin
+                doc.addPage();
+                y = 10; // Reset y for the new page
+            }
+        };
+
+        // Banner Image
+        doc.addImage(packagedata[0].bannerImage, 'PNG', x, y, imageWidth, imageHeight);
+        y += imageHeight + 10;
+
+        // Title
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        doc.text(packagedata[0].title, 10, y);
+        y += 7;
+
+        // Package Overview ------------------------------------------------------
+        doc.setFontSize(12);
+        doc.setTextColor(71, 92, 108);
+        const overviewLines = doc.splitTextToSize(packagedata[0].packageOverview, maxWidth);
+
+        overviewLines.forEach(line => {
+            checkPageOverflow(5); // Check if the next line would cause an overflow
+            doc.text(line, 10, y);
+            y += 5;
+        });
+        y += 10;
+
+        // Package Routing ------------------------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        checkPageOverflow(7);
+        doc.text('Routing', 10, y);
+        y += 7;
+
+        // Trip Duration --------------------------------------------------------
+        doc.setFontSize(12);
+        doc.setTextColor(71, 92, 108);
+        checkPageOverflow(10);
+        doc.text(`Trip Duration: ${packagedata[0].duration}`, 10, y);
+        y += 10;
+
+        // Package Inclusion --------------------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        checkPageOverflow(7);
+        doc.text("Inclusion", 10, y);
+        y += 7;
+
+        doc.setFontSize(12);
+        doc.setTextColor(71, 92, 108);
+        packagedata[0].includedServices.forEach((service, index) => {
+            const inclusionLines = doc.splitTextToSize(`${index + 1}. ${service}`, maxWidth);
+            inclusionLines.forEach(line => {
+                checkPageOverflow(8);
+                doc.text(line, 10, y);
+                y += 7;
+            });
+            // y += 5;
+        });
+        y += 10
+        // Package Exclusion ---------------------------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        checkPageOverflow(7);
+        doc.text("Exclusion", 10, y);
+        y += 7;
+
+        doc.setFontSize(12);
+        doc.setTextColor(71, 92, 108);
+        packagedata[0].excludedServices.forEach((val, id) => {
+            const exclusionLines = doc.splitTextToSize(`${id + 1}. ${val}`, maxWidth);
+            exclusionLines.forEach(line => {
+                checkPageOverflow(8);
+                doc.text(line, 10, y);
+                y += 7;
+            });
+            // y += 5;
+        });
+        y += 10;
+        // Package Day Wise Itinerary ---------------------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        checkPageOverflow(7);
+        doc.text("Day Wise Itinerary", 10, y);
+        y += 7;
+
+        // doc.setFontSize(12);
+        // doc.setTextColor(71, 92, 108);
+        packagedata[0].dayWisePlan.forEach((val, id) => {
+            const dayTitleLines = doc.splitTextToSize(`${val.title}`, maxWidth);
+            const dayDescLines = doc.splitTextToSize(`${val.description}`, maxWidth);
+
+            dayTitleLines.forEach(line => {
+                checkPageOverflow(5);
+                doc.setFontSize(14);
+                doc.setTextColor(53, 56, 57)
+                doc.text(line, 10, y);
+                y += 5;
+            });
+
+            dayDescLines.forEach(line => {
+                checkPageOverflow(8);
+                doc.setFontSize(12);
+                doc.setTextColor(71, 92, 108)
+                doc.text(line, 10, y);
+                y += 5;
+            });
+            y += 5;
+        });
+        y += 10;
+        // Package Booking procedure   -----------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        checkPageOverflow(7);
+        doc.text("Booking Procedure", 10, y);
+        y += 7;
+        doc.setFontSize(12);
+        doc.setTextColor(71, 92, 108);
+        packagedata[0].bookingProcedure.forEach((val, id) => {
+            const bookingLines = doc.splitTextToSize(`${id + 1}. ${val}`, maxWidth);
+            bookingLines.forEach((line, id) => {
+                doc.text(line, 10, y);
+                y += 5;
+            })
+        })
+        y += 10;
+        // Package Must Carry   -------------------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        doc.text("Must Carry", 10, y);
+        y += 7;
+        packagedata[0].mustCarry.forEach((val, id) => {
+            doc.setFontSize(12);
+            doc.setTextColor(71, 92, 108);
+            doc.text(`${id + 1}. ${val}`, 10, y);
+            y += 5;
+        })
+        y += 10;
+        // Package Price table  ------------------------------------------------
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        doc.text("Price Table", 10, y);
+        y += 7;
+        const tableBody = [
+            `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'adult')?.price}` || '',
+            `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'child')?.price}` || ''
+        ];
+    
+        doc.autoTable({
+            startY: y,
+            head: [['Adults', 'Child']],
+            body: [tableBody],
+        });
+    
+        // Save the PDF
+        doc.save(`Booking_Details_of_${packagedata[0].title}.pdf`);
+    };
+
+
+
+
+
     return <>
         <div id="package-details">
             {loading ? (<div className="loader"></div>) : (
@@ -133,7 +301,8 @@ const PacKageDetails = () => {
                                             Download
                                         </button> */}
                                         <button
-                                            onClick={handleShare}
+                                            // onClick={handleShare}
+                                            onClick={sharePdf}
                                         >
                                             {/* <MdShare />  */}
                                             <img src="/shareB.svg" alt="Share" />&nbsp; Share
@@ -268,7 +437,7 @@ const PacKageDetails = () => {
                                         })}
                                     </div> */}
                                 </div>)}
-                                <br/>
+                                <br />
                                 {(active === 6) && (
                                     <div className="package-overview-details">
                                         <ol key={id}>

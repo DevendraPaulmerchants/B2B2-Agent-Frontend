@@ -8,21 +8,22 @@ import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
 const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, Pmobile, Pemail,
-    adults, child, type, cartId, attractionId, pkgId, attDate, LoadCartItem }) => {
+    adults, child,infants, type, cartId, attractionId, pkgId, attDate, LoadCartItem }) => {
 
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
-    console.log("attraction data",packagedata)
+    console.log("attraction data", packagedata)
     const [name, setName] = useState(Pname);
     const [adultPassenger, setAdultPassenger] = useState(adults);
     const [childPassenger, setChildPassenger] = useState(child);
+    const [infentPassenger, setInfentPassenger] = useState(infants);
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(attDate);
 
     // const priceperPerson = price / (adults + child);
     const priceDescription = packagedata.price.filter((val, id) => val._id === subAttractionId);
-    console.log("price description---",priceDescription);
+    console.log("price description---", priceDescription);
     // const priceIndex = priceDescription[0].adultPrice;
     // console.log(priceIndex);
 
@@ -56,6 +57,7 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
                 subTitle: packagedata.subTitle,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
+                numberOfInfants:infentPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
                 // endDate: toDate
@@ -157,60 +159,80 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
                         />
                     </div>
                 </div>
-                <div style={{ display: "flex", gap: "2rem" }}>
-                    <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
-                        <div className="adults-passenger">
-                            <p><span style={{ fontSize: "14px" }}>Adults</span> (&lt; 12 years)</p>
-                            <div className="passenger-count">
-                                <button id="count-minus"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        if (adultPassenger > 0) {
-                                            setAdultPassenger(adultPassenger - 1)
-                                        }
-                                    }}
-                                >-</button>
-                                <button id="count">{adultPassenger}</button>
-                                <button id="count-plus"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setAdultPassenger(adultPassenger + 1)
-                                    }}
-                                >+</button>
-                            </div>
-                        </div>
-                        <div className="adults-passenger">
-                            <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
-                            <div className="passenger-count">
-                                <button id="count-minus"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        if (childPassenger > 0) {
-                                            setChildPassenger(childPassenger - 1)
-                                        }
-                                    }}
-                                >-</button>
-                                <button id="count">{childPassenger}</button>
-                                <button id="count-plus"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setChildPassenger(childPassenger + 1)
-                                    }}
-                                >+</button>
-                            </div>
+                {/* <div style={{ display: "flex", gap: "2rem" }}> */}
+                <div className="lead-passenger-parent-container passengers">
+                    <div className="adults-passenger">
+                        <p><span style={{ fontSize: "16px" }}>Adults (Age 13 & above)</span></p>
+                        <div className="passenger-count">
+                            <button id="count-minus"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (adultPassenger > 0) {
+                                        setAdultPassenger(adultPassenger - 1)
+                                    }
+                                }}
+                            >-</button>
+                            <button id="count">{adultPassenger}</button>
+                            <button id="count-plus"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setAdultPassenger(adultPassenger + 1)
+                                }}
+                            >+</button>
                         </div>
                     </div>
-                    <div className="package-from-date-to-date">
-                        <div className="lead-passenger-name">
-                            <p style={{ marginBottom: "5px" }}> Select date</p>
-                            <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
-                                value={fromDate}
-                                required
-                                onChange={(e) => setFromDate(e.target.value)}
-                            />
+                    <div className="adults-passenger">
+                        <p><span style={{ fontSize: "16px" }}>Children (Age 3 to 12)</span></p>
+                        <div className="passenger-count">
+                            <button id="count-minus"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (childPassenger > 0) {
+                                        setChildPassenger(childPassenger - 1)
+                                    }
+                                }}
+                            >-</button>
+                            <button id="count">{childPassenger}</button>
+                            <button id="count-plus"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setChildPassenger(childPassenger + 1)
+                                }}
+                            >+</button>
+                        </div>
+                    </div>
+                    <div className="adults-passenger">
+                        <p><span style={{ fontSize: "16px" }}>Infants (Age 0 to 3 )</span></p>
+                        <div className="passenger-count">
+                            <button id="count-minus"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    if (infentPassenger > 0) {
+                                        setInfentPassenger(infentPassenger - 1)
+                                    }
+                                }}
+                            >-</button>
+                            <button id="count">{infentPassenger}</button>
+                            <button id="count-plus"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    setInfentPassenger(infentPassenger + 1)
+                                }}
+                            >+</button>
                         </div>
                     </div>
                 </div>
+                <div className="package-from-date-to-date">
+                    <div className="lead-passenger-name">
+                        <p style={{ marginBottom: "5px" }}> Select date</p>
+                        <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
+                            value={fromDate}
+                            required
+                            onChange={(e) => setFromDate(e.target.value)}
+                        />
+                    </div>
+                </div>
+                {/* </div> */}
                 <div className="booking-package-price">
                     <div className="booking-price-text-value">
                         <p>Total Price: AED&nbsp;<b>{pkgPrice}</b>&nbsp;<sub>+VAT(5%)</sub></p>

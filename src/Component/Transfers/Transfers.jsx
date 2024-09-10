@@ -381,6 +381,12 @@ const Transfers = ({tokenH}) => {
     const [onetrip, setOneTrip] = useState(true);
     const [roundTrip, setRoundTrip] = useState(false);
     const [searchHeight, setSearchHeight] = useState(false);
+
+    const Uppercase = (str) => str.toUpperCase();
+    const capitalize = (str) => {
+        if (typeof str !== 'string') return '';
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+      };
     return <>
         <div className="transfers-container">
             {/* -----------------------------Terminal Accommodation Form--------------------- */}
@@ -418,7 +424,7 @@ const Transfers = ({tokenH}) => {
                                     <Select
                                         options={fromAirport
                                             .sort((a, b) => a.name.localeCompare(b.name))
-                                            .map((val, id) => ({ value: val._id, label: val.name }))}
+                                            .map((val, id) => ({ value: val._id, label: Uppercase(val.name) }))}
                                         onChange={handleTerminalChange}
                                         placeholder={selectedTerminalName}
                                         isSearchable
@@ -503,7 +509,7 @@ const Transfers = ({tokenH}) => {
                             <div className="country">
                                 <p>Drop Off</p>
                                 <Select
-                                    options={dropPoint?.map((val,id)=>({ value: val.dropoffId, type:val.type,label: val.name }))}
+                                    options={dropPoint?.map((val,id)=>({ value: val.dropoffId, type:val.type,label: capitalize(val.name) }))}
                                     onChange={TerminalOrStayTo}
                                     placeholder={travelTypeToType}
                                     isSearchable
@@ -702,7 +708,7 @@ const Transfers = ({tokenH}) => {
                                             <div className="country">
                                                 <p>From Country</p>
                                                 <Select
-                                                    options={formCountry?.map((val) => ({ value: val._id, label: val.name }))}
+                                                    options={formCountry?.map((val) => ({ value: val._id, label: Uppercase(val.name) }))}
                                                     onChange={handleSelectChange}
                                                     placeholder="Select Country"
                                                     isSearchable
@@ -723,7 +729,7 @@ const Transfers = ({tokenH}) => {
                                             <div className="country">
                                                 <p>From City</p>
                                                 <Select
-                                                    options={fromCity?.map((val, id) => ({ value: val._id, label: val.name }))}
+                                                    options={fromCity?.map((val, id) => ({ value: val._id, label: capitalize(val.name) }))}
                                                     onChange={handleCityChange}
                                                     placeholder="Select City"
                                                     isSearchable
@@ -769,7 +775,7 @@ const Transfers = ({tokenH}) => {
                                                     <div className="country">
                                                         <p>From Airport</p>
                                                         <Select
-                                                            options={fromAirport?.map((val, id) => ({ value: val._id, label: val.name }))}
+                                                            options={fromAirport?.map((val, id) => ({ value: val._id, label: Uppercase(val.name) }))}
                                                             onChange={handleTerminalChange}
                                                             placeholder="Select Airport"
                                                             isSearchable
@@ -852,7 +858,7 @@ const Transfers = ({tokenH}) => {
                                                 <div className="country">
                                                     <p>Drop Off</p>
                                                     <Select
-                                                        options={dropPoint?.map((val,id)=>({ value: val.dropoffId,type:val.type, label: val.name }))}
+                                                        options={dropPoint?.map((val,id)=>({ value: val.dropoffId,type:val.type, label: capitalize(val.name) }))}
                                                         onChange={TerminalOrStayTo}
                                                         placeholder="Select Drop Off Location..."
                                                         isSearchable
@@ -1081,6 +1087,7 @@ const Transfers = ({tokenH}) => {
                                 <div className="transfer-card-type">
                                     <div id="transfer-card-type">
                                         <div id="transfer-type">{val.transferType}</div>
+                                        <div style={{fontSize:'12px',color:'blue'}}>( {val.vehicle?.name} - or similar )</div>
                                     </div>
                                     <div className="min-max-pass-bag-allowed">
                                         <div className="min-max-pass">
@@ -1110,12 +1117,12 @@ const Transfers = ({tokenH}) => {
                                                 >&nbsp;/&nbsp;person</span></p>
                                             }
                                             {val.transferType === 'Private' &&
-                                                <p style={{ color: "blue" }}>{val.cost}</p>
+                                                <p style={{ color: "blue" }}>{parseInt(val.cost)}</p>
                                             }
                                         </h4>
                                         {(val.transferType === 'Shared' || val.transferType === 'Scheduled') &&
                                             tripType === 'ONE_WAY' && (
-                                                <p className="travler-price">One Way Price, for <b>&nbsp;one&nbsp;</b>travellers</p>
+                                                <p className="travler-price">One Way Price, for <b>&nbsp;one&nbsp;</b>traveller</p>
                                             )}
                                         {(val.transferType === 'Private') &&
                                             tripType === 'ONE_WAY' && (
@@ -1124,7 +1131,7 @@ const Transfers = ({tokenH}) => {
 
                                         {(val.transferType === 'Shared' || val.transferType === 'Scheduled') &&
                                             tripType === 'ROUND_TRIP' && (
-                                                <p className="travler-price">Roundtrip price, for <b>&nbsp;one&nbsp;</b>travellers</p>
+                                                <p className="travler-price">Roundtrip price, for <b>&nbsp;one&nbsp;</b>traveller</p>
                                             )}
                                         {(val.transferType === 'Private') &&
                                             tripType === 'ROUND_TRIP' && (

@@ -6,24 +6,25 @@ import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { APIPath } from "../../Config";
 
-const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
-    adults, child, type, cartId, packageId, pkgId, pkgStartDate, pkgEndDate, LoadCartItem }) => {
+const BookPackage = ({ onClose, packagedata, price, Pname, Pmobile, Pemail,
+    adults, child,infants, type, cartId, packageId, pkgId, pkgStartDate, pkgEndDate, LoadCartItem }) => {
     const { token } = useCart()
     document.body.style.overflow = 'hidden';
-    console.log("package data---",packagedata);
+    console.log("package data---", packagedata);
     const [name, setName] = useState(Pname);
     const [adultPassenger, setAdultPassenger] = useState(adults);
     const [childPassenger, setChildPassenger] = useState(child);
+    const [infentPassenger, setInfentPassenger] = useState(infants);
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(pkgStartDate);
     const [toDate, setToDate] = useState(pkgEndDate);
 
-    const pkgPrice =price + (packagedata.price?.[0].price * (adultPassenger - adults) +
+    const pkgPrice = price + (packagedata.price?.[0].price * (adultPassenger - adults) +
         packagedata.price?.[1].price * (childPassenger - child));
 
     const DayOrNight = parseInt(packagedata.duration?.split("/")[1].split(" ")[1]);
-    
+
     useEffect(() => {
         if (fromDate) {
             const resultDate = new Date(fromDate);
@@ -65,6 +66,7 @@ const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
                 packageId: packageId,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
+                numberOfInfants:infentPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
                 endDate: toDate
@@ -163,11 +165,9 @@ const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
                             />
                         </div>
                     </div>
-                    <div style={{ display: "flex", gap: "2rem" }}>
-
-                        <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
+                        <div className="lead-passenger-parent-container passengers">
                             <div className="adults-passenger">
-                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
+                                <p><span style={{ fontSize: "16px" }}>Adults (Age 13 & above)</span></p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -187,7 +187,7 @@ const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
+                                <p><span style={{ fontSize: "16px" }}>Children (Age 3 to 12)</span></p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -202,6 +202,26 @@ const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setChildPassenger(childPassenger + 1)
+                                        }}
+                                    >+</button>
+                                </div>
+                            </div>
+                            <div className="adults-passenger">
+                                <p><span style={{ fontSize: "16px" }}>Infants (Age 0 to 3 )</span></p>
+                                <div className="passenger-count">
+                                    <button id="count-minus"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (infentPassenger > 0) {
+                                                setInfentPassenger(infentPassenger - 1)
+                                            }
+                                        }}
+                                    >-</button>
+                                    <button id="count">{infentPassenger}</button>
+                                    <button id="count-plus"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setInfentPassenger(infentPassenger + 1)
                                         }}
                                     >+</button>
                                 </div>
@@ -225,7 +245,6 @@ const BookPackage = ({ onClose,packagedata, price, Pname, Pmobile, Pemail,
                                 />
                             </div>
                         </div>
-                    </div>
                     <div className="booking-package-price">
                         <div className="booking-price-text-value">
                             <p>Total Price: AED &nbsp;

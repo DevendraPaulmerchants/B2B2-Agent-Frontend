@@ -72,7 +72,7 @@ const PasswordReset = () => {
             }).then((res) => res.json())
                 .then((data) => {
                     setLoading(false)
-                    alert("Password reseted successfully...")
+                    alert("Password reset successfully")
                     navigate('/')
                 })
                 .catch((err) => {

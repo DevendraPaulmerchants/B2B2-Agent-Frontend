@@ -64,13 +64,16 @@
 .card1-item-title-price {
     display: flex;
     justify-content: space-between;
+    gap: 2rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    align-items: center;
 }
 
 .card1-item-title-price h2 {
     color: rgba(9, 36, 75, 1);
     font-size: 18px;
+    max-width: 320px;
 }
 
 .card1-item-title {
@@ -174,4 +177,22 @@
 .PhoneInput--readOnly {
     z-index: -1;
     cursor: not-allowed;
+}
+.cart-has-no-iteam {
+    text-align: center;
+    padding: 100px 0;
+}
+.cart-has-no-iteam h2 {
+    font-size: 24px;
+    color: #297CBB;
+}
+.card1-item-title h4 {
+    font-size: 14px;
+    margin: 0;
+    color: #777777;
+}
+.cart-item-title-date {
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
 }

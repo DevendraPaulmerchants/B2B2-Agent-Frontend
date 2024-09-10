@@ -16,9 +16,10 @@ const BookLandCombos = ({ onClose, type,
     Pmobile,
     Pemail,
     adults,
+    child,
+    infants,
     lncStartDate,
     lncEndDate,
-    child,
     LoadCartItem }) => {
 
     const { token } = useCart();
@@ -26,17 +27,33 @@ const BookLandCombos = ({ onClose, type,
     const [name, setName] = useState(Pname);
     const [adultPassenger, setAdultPassenger] = useState(adults);
     const [childPassenger, setChildPassenger] = useState(child);
+    const [infentPassenger, setInfentPassenger] = useState(infants);
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(lncStartDate);
     const [toDate, setToDate] = useState(lncEndDate);
-
-    console.log("package data---", landCombosData,price);
-    // const priceperPerson = price / (adults + child);
+    const [maxDate, setMaxDate] = useState(null)
 
     const pkgPrice = price +
-    (landCombosData?.price[0].adultPrice * (adultPassenger - adults) +
-        landCombosData?.price[0].childPrice * (childPassenger - child))
+        (landCombosData?.price[0].adultPrice * (adultPassenger - adults) +
+            landCombosData?.price[0].childPrice * (childPassenger - child));
+
+    const DayOrNight = 7;
+    React.useEffect(() => {
+        if (fromDate) {
+            const resultDate = new Date(fromDate);
+            resultDate.setDate(resultDate.getDate() + DayOrNight);
+            const formattedResult = formatDate(resultDate);
+            setMaxDate(formattedResult);
+        }
+    }, [fromDate]);
+
+    const formatDate = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    };
 
     const handleNameChange = (e) => {
         const name = e.target.value;
@@ -62,6 +79,7 @@ const BookLandCombos = ({ onClose, type,
                 landComboId: landComboId,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
+                numberOfInfants: infentPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
                 endDate: toDate
@@ -99,6 +117,10 @@ const BookLandCombos = ({ onClose, type,
         }
         if (toDate.length < 2) {
             alert("please select to date : ")
+            return;
+        }
+        if (fromDate > toDate) {
+            alert("From date should not be greater than To date");
             return;
         }
         else {
@@ -163,68 +185,91 @@ const BookLandCombos = ({ onClose, type,
                             />
                         </div>
                     </div>
-                    <div style={{ display: "flex", gap: "2rem" }}>
+                    {/* <div style={{ display: "flex", gap: "2rem" }}> */}
 
-                        <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
-                            <div className="adults-passenger">
-                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
-                                <div className="passenger-count">
-                                    <button id="count-minus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (adultPassenger > 0) {
-                                                setAdultPassenger(adultPassenger - 1)
-                                            }
-                                        }}
-                                    >-</button>
-                                    <button id="count">{adultPassenger}</button>
-                                    <button id="count-plus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setAdultPassenger(adultPassenger + 1)
-                                        }}
-                                    >+</button>
-                                </div>
-                            </div>
-                            <div className="adults-passenger">
-                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
-                                <div className="passenger-count">
-                                    <button id="count-minus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (childPassenger > 0) {
-                                                setChildPassenger(childPassenger - 1)
-                                            }
-                                        }}
-                                    >-</button>
-                                    <button id="count">{childPassenger}</button>
-                                    <button id="count-plus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setChildPassenger(childPassenger + 1)
-                                        }}
-                                    >+</button>
-                                </div>
+                    <div className="lead-passenger-parent-container passengers">
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "16px" }}>Adults (Age 13 & above)</span></p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (adultPassenger > 0) {
+                                            setAdultPassenger(adultPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{adultPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setAdultPassenger(adultPassenger + 1)
+                                    }}
+                                >+</button>
                             </div>
                         </div>
-                        <div className="package-from-date-to-date">
-                            <div className="lead-passenger-name">
-                                <p style={{ marginBottom: "5px" }}> From date</p>
-                                <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
-                                    value={fromDate} required
-                                    onChange={(e) => setFromDate(e.target.value)}
-                                />
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "16px" }}>Children (Age 3 to 12)</span></p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (childPassenger > 0) {
+                                            setChildPassenger(childPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{childPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setChildPassenger(childPassenger + 1)
+                                    }}
+                                >+</button>
                             </div>
-                            <div className="lead-passenger-name">
-                                <p style={{ marginBottom: "5px" }}> To date</p>
-                                <input type="date" style={{ width: "225px" }}
-                                    min={fromDate}
-                                    value={toDate} required
-                                    onChange={(e) => setToDate(e.target.value)}
-                                />
+                        </div>
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "16px" }}>Infants (Age 0 to 3 )</span></p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (infentPassenger > 0) {
+                                            setInfentPassenger(infentPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{infentPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setInfentPassenger(infentPassenger + 1)
+                                    }}
+                                >+</button>
                             </div>
                         </div>
                     </div>
+                    <div className="package-from-date-to-date">
+                        <div className="lead-passenger-name">
+                            <p style={{ marginBottom: "5px" }}> From date</p>
+                            <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
+                                value={fromDate} required
+                                onChange={(e) => setFromDate(e.target.value)}
+                            />
+                        </div>
+                        <div className="lead-passenger-name">
+                            <p style={{ marginBottom: "5px" }}> To date</p>
+                            <input type="date" style={{ width: "225px" }}
+                                min={fromDate}
+                                max={maxDate}
+                                value={toDate} required
+                                onChange={(e) => setToDate(e.target.value)}
+                                disabled={!fromDate}
+                                onKeyDown={(e) => e.preventDefault()}
+                            />
+                        </div>
+                    </div>
+                    {/* </div> */}
                     <div className="booking-package-price">
                         <div className="booking-price-text-value">
                             <p>Total Price: AED&nbsp;

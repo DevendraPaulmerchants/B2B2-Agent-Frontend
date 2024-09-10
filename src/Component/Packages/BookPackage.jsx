@@ -16,8 +16,10 @@ const BookPackage = ({ onClose, packagedata }) => {
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(0);
     const [childPassenger, setChildPassenger] = useState(0);
+    const [infentPassenger, setInfentPassenger] = useState(0);
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState('');
+    const [isPhoneValid, setPhoneValid] = useState(false);
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
     const [loading, setLoading] = useState(false);
@@ -39,13 +41,16 @@ const BookPackage = ({ onClose, packagedata }) => {
         const day = String(date.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     };
-
+    const capitalize = (str) => {
+        if (typeof str !== 'string') return '';
+        return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
+    };
     const handleNameChange = (e) => {
         const name = e.target.value;
         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
         if (isAlphabetic || name === "") {
             const sanitizedValue = name.replace(/^\s+|\s+(?=\s)/g, '');
-            setName(sanitizedValue)
+            setName(capitalize(sanitizedValue))
         }
     };
     const handleEmailChange = (e) => {
@@ -55,9 +60,9 @@ const BookPackage = ({ onClose, packagedata }) => {
             setEmail(email);
         }
     }
-    const handleMobileChange=(value)=>{
-        setMobile(value)
-      }
+    // const handleMobileChange = (value) => {
+    //     setMobile(value)
+    // }
     const getCurrentDate = () => {
         const now = new Date();
         const year = now.getFullYear();
@@ -69,6 +74,7 @@ const BookPackage = ({ onClose, packagedata }) => {
         packageId: pkgId,
         numberOfAdults: adultPassenger,
         numberOfChildrens: childPassenger,
+        numberOfInfants: infentPassenger,
         price: pkgPrice,
         customerDetails: {
             name: name,
@@ -80,12 +86,12 @@ const BookPackage = ({ onClose, packagedata }) => {
     }
     const navigate = useNavigate();
     const bookThisPackage = () => {
-        if (name.length <= 0) {
-            alert("please fill lead passenger details...")
+        if (name.length < 3) {
+            alert("Please fill lead passenger details")
             return
         }
-        if (mobile.toString().length < 8) {
-            alert("Please check mobile number...");
+        if (!isPhoneValid) {
+            alert("Please check Mobile Number");
             return;
         }
         if (email.length <= 10) {
@@ -96,6 +102,10 @@ const BookPackage = ({ onClose, packagedata }) => {
             alert("please Add at least 1 Adult...")
             return
         }
+        // if(infentPassenger > 2){
+        //     alert("More than 2 infants are not allowed... ");
+        //     return;
+        // }
         if (fromDate.length < 2) {
             alert("please select package start date...")
             return;
@@ -130,6 +140,7 @@ const BookPackage = ({ onClose, packagedata }) => {
                 packageId: pkgId,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
+                numberOfInfants: infentPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
                 endDate: toDate
@@ -144,14 +155,24 @@ const BookPackage = ({ onClose, packagedata }) => {
             }
         }
     }
+    const customPopUp=(msg,action)=>{
+        return <div className="custom-popup">
+             <h4>This is Custom Pop Up</h4>
+             <div>
+                <button>Yes</button>
+                <button>No</button>
+             </div>
+        </div>
+    }
     const addToCart = () => {
-        if (name.length <= 0) {
-            alert("please fill lead passenger details...")
+        if (name.length < 3) {
+            alert("Please fill lead passenger details")
+            setLoading(false)
             return
         }
-        if (mobile.toString().length < 8) {
-            alert("Please check your mobile number...");
-
+        if (!isPhoneValid) {
+            alert("Please check Mobile Number");
+            setLoading(false)
             return;
         }
         if (email.length <= 10) {
@@ -162,6 +183,10 @@ const BookPackage = ({ onClose, packagedata }) => {
             alert("please Add at least 1 Adult...")
             return
         }
+        // if(infentPassenger > 2){
+        //     alert("More than 2 infants are not allowed... ");
+        //     return;
+        // }
         if (fromDate.length < 2) {
             alert("please select package start date...")
             return;
@@ -177,16 +202,80 @@ const BookPackage = ({ onClose, packagedata }) => {
                 mode: 'cors',
                 body: JSON.stringify(addToCartPackage)
             }).then((res) => res.json())
-                .then((data) => {
-                    alert(data.message);
+            .then((data) => {
+                if (data.description === "PAX_CONFLICT") {
+                    const cartId=data.cartId;
+                    const confirmPAX = window.confirm("Passengers count mismatch with previous added item! \n Do you want to continue?");
+                    if (confirmPAX) {
+                        fetch(`${APIPath}/api/v1/agent/new-cart/confirmation`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            method: 'POST',
+                            mode: 'cors',
+                            body: JSON.stringify(
+                                {
+                                    cartId: cartId,
+                                    paxConfirmation: "YES"
+                                })
+                        })
+                        .then((res)=>res.json())
+                        .then((data)=>{
+                            if(data.message === "success"){
+                                fetch(`${APIPath}/api/v1/agent/new-cart`, {
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`,
+                                        'Content-Type': 'application/json'
+                                    },
+                                    method: 'POST',
+                                    mode: 'cors',
+                                    body: JSON.stringify(addToCartPackage)
+                                }).then((res) => res.json())
+                                .then((data)=>{
+                                    console.log(data);
+                                    setLoading(false);
+                                    navigate("/cart");
+                                    return;
+                                })
+                            }
+                            else {
+                                setLoading(false);
+                                return;
+                            }
+                        })
+                        .catch((err)=>{
+                            alert(err);
+                            setLoading(false);
+                        })
+                    }
+                    else {
+                        setLoading(false);
+                        return;
+                    }
+                }
+                else if (data.description === "DATE_CONFLICT") {
+                    // const confirmDate = window.confirm("Date is clashing with a previously added item! \n Do you want to continue?");
+                    // if (confirmDate) {
+                    //     setLoading(false);
+                    //     return
+                    // } else {
+                    //     setLoading(false);
+                    //     return;
+                    // }
+                    alert("Date is clashing with a previously added item!");
+                        setLoading(false);
+                        return
+                } 
+                else {
                     setLoading(false);
-                    navigate('/cart')
-                })
-                .catch((err) => {
-                    alert(err)
-                    setLoading(false);
-                    return
-                })
+                    navigate('/cart');
+                }
+            })
+            .catch((err) => {
+                alert(err);
+                setLoading(false);
+            });
         }
     }
     return <>
@@ -214,12 +303,6 @@ const BookPackage = ({ onClose, packagedata }) => {
                         <div className="lead-passenger-name" style={{ width: "100%" }}>
                             <label htmlFor="Lead-Passenger-Mobile">Mobile No.</label>
                             {/* <PhoneInput id="form-control"
-                                international
-                                country={'in'}
-                                value={mobile}
-                                onChange={setMobile}
-                            /> */}
-                            <PhoneInput id="form-control"
                                 country={'in'}
                                 value={mobile}
                                 onChange={(value) => handleMobileChange(value)}
@@ -227,7 +310,20 @@ const BookPackage = ({ onClose, packagedata }) => {
                                     name: 'mobile',
                                     required: true,
                                 }}
-                            />
+                            /> */}
+                            <PhoneInput inputClass="ant-input phoneInput" id="form-control"
+                                country={'in'} enableSearch value={mobile}
+                                onChange={(value, country, e, formattedValue) => {
+                                    const { format, dialCode } = country;
+                                    if (format?.length === formattedValue?.length &&
+                                        (value.startsWith(dialCode) || dialCode.startsWith(value))) {
+                                        setPhoneValid(true);
+                                        setMobile(value);
+                                    }
+                                    else {
+                                        setPhoneValid(false)
+                                    }
+                                }} />
                         </div>
                         <div className="lead-passenger-name">
                             <label htmlFor="Lead-Passenger-Email">Email</label>
@@ -238,69 +334,89 @@ const BookPackage = ({ onClose, packagedata }) => {
                             />
                         </div>
                     </div>
-                    <div style={{ display: "flex", gap: "2rem" }}>
+                    {/* <div style={{ display: "flex", gap: "2rem" }}> */}
 
-                        <div className="lead-passenger-parent-container" style={{ paddingRight: "0" }}>
-                            <div className="adults-passenger">
-                                <p><span style={{ fontSize: "14px" }}>Adults</span> (&gt; 12 years)</p>
-                                <div className="passenger-count">
-                                    <button id="count-minus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (adultPassenger > 0) {
-                                                setAdultPassenger(adultPassenger - 1)
-                                            }
-                                        }}
-                                    >-</button>
-                                    <button id="count">{adultPassenger}</button>
-                                    <button id="count-plus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setAdultPassenger(adultPassenger + 1)
-                                        }}
-                                    >+</button>
-                                </div>
-                            </div>
-                            <div className="adults-passenger">
-                                <p><span style={{ fontSize: "14px" }}>Children</span> (&lt; 12 years)</p>
-                                <div className="passenger-count">
-                                    <button id="count-minus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            if (childPassenger > 0) {
-                                                setChildPassenger(childPassenger - 1)
-                                            }
-                                        }}
-                                    >-</button>
-                                    <button id="count">{childPassenger}</button>
-                                    <button id="count-plus"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            setChildPassenger(childPassenger + 1)
-                                        }}
-                                    >+</button>
-                                </div>
+                    <div className="lead-passenger-parent-container passengers">
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "16px" }}>Adults (Age 13 & above)</span></p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (adultPassenger > 0) {
+                                            setAdultPassenger(adultPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{adultPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setAdultPassenger(adultPassenger + 1)
+                                    }}
+                                >+</button>
                             </div>
                         </div>
-                        <div className="package-from-date-to-date">
-                            <div className="lead-passenger-name">
-                                <p style={{ marginBottom: "5px" }}> From date</p>
-                                <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
-                                    value={fromDate} required
-                                    onChange={(e) => setFromDate(e.target.value)}
-                                />
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "16px" }}>Children (Age 3 to 12)</span></p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (childPassenger > 0) {
+                                            setChildPassenger(childPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{childPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setChildPassenger(childPassenger + 1)
+                                    }}
+                                >+</button>
                             </div>
-                            <div className="lead-passenger-name">
-                                <p style={{ marginBottom: "5px" }}> To date</p>
-                                <input type="date" style={{ width: "225px" }}
-                                    min={fromDate}
-                                    value={toDate} required
-                                    onChange={(e) => setToDate(e.target.value)}
-                                    readOnly={true}
-                                />
+                        </div>
+                        <div className="adults-passenger">
+                            <p><span style={{ fontSize: "16px" }}>Infants (Age 0 to 3 )</span></p>
+                            <div className="passenger-count">
+                                <button id="count-minus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        if (infentPassenger > 0) {
+                                            setInfentPassenger(infentPassenger - 1)
+                                        }
+                                    }}
+                                >-</button>
+                                <button id="count">{infentPassenger}</button>
+                                <button id="count-plus"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setInfentPassenger(infentPassenger + 1)
+                                    }}
+                                >+</button>
                             </div>
                         </div>
                     </div>
+                    <div className="package-from-date-to-date">
+                        <div className="lead-passenger-name">
+                            <p style={{ marginBottom: "5px" }}> From date</p>
+                            <input type="date" min={getCurrentDate()} style={{ width: "225px" }}
+                                value={fromDate} required
+                                onChange={(e) => setFromDate(e.target.value)}
+                            />
+                        </div>
+                        <div className="lead-passenger-name">
+                            <p style={{ marginBottom: "5px" }}> To date</p>
+                            <input type="date" style={{ width: "225px" }}
+                                min={fromDate}
+                                value={toDate} required
+                                onChange={(e) => setToDate(e.target.value)}
+                                readOnly={true}
+                            />
+                        </div>
+                    </div>
+                    {/* </div> */}
                     <div className="booking-package-price">
                         <div className="booking-price-text-value">
                             <p>Total Price: AED &nbsp;

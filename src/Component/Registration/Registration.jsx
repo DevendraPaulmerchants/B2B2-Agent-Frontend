@@ -22,7 +22,13 @@ const Registration = () => {
     const [userId, setUserId] = useState('');
     const [password, setPassword] = useState('');
     const [isValid, setIsValid] = useState(true);
+    const [isPhoneValid, setPhoneValid] = useState(false);
     const [loading, setLoading] = useState(false);
+
+    const capitalize = (str) => {
+        if (typeof str !== 'string') return '';
+        return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
+    };
 
     const handlePasswordChange = (e) => {
         e.preventDefault();
@@ -48,12 +54,11 @@ const Registration = () => {
     const navigate = useNavigate();
     const handleRegistration = (e) => {
         e.preventDefault();
-        if(!(directorPhoneNumber.toString().length >=5 && directorPhoneNumber.toString().length <= 15)){
-            alert("Please check mobile number")
+        if (!isPhoneValid) {
+            alert("Please Check Mobile Number");
             return;
         }
-        if(!isValid){
-            // alert("password not fulfill all criteria")
+        if (!isValid) {
             alert("Password criteria do not match");
             return;
         }
@@ -70,7 +75,7 @@ const Registration = () => {
                 .then((data) => {
                     setLoading(false);
                     if (data.message === 'agent registered successfully!!') {
-                        alert("Account created Succesfully");
+                        alert("Account created Successfully");
                         navigate('/')
                     } else {
                         alert(data.message)
@@ -100,7 +105,7 @@ const Registration = () => {
                                         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
                                         if (isAlphabetic || name === "") {
                                             const sanitizedValue = name.replace(/^\s+|\s+(?=\s)/g, '');
-                                            setAgentName(sanitizedValue)
+                                            setAgentName(capitalize(sanitizedValue));
                                         }
                                     }}
                                     required />
@@ -129,7 +134,7 @@ const Registration = () => {
                         {/* --------------------------------------- 2nd field-------------------------------           */}
                         <div className="registration-agent-vat-tax">
                             <div className="registration-agent">
-                                <PhoneInput
+                                {/* <PhoneInput
                                     country={'in'}
                                     placeholder="Enter  Agent Mobile number"
                                     value={directorPhoneNumber}
@@ -142,7 +147,21 @@ const Registration = () => {
                                         name: 'directorPhoneNumber',
                                         required: true,
                                     }}
-                                />
+                                /> */}
+                                <PhoneInput inputClass="ant-input phoneInput"
+                                    country={'in'} enableSearch
+                                    onChange={(value, country, e, formattedValue) => {
+                                        const { format, dialCode } = country;
+                                        if (format?.length === formattedValue?.length &&
+                                            (value.startsWith(dialCode) || dialCode.startsWith(value))) {
+                                            setPhoneValid(true);
+                                            setAgentPhoneNumber(value);
+                                            setDirectorPhoneNumber(value);
+                                        }
+                                        else {
+                                            setPhoneValid(false)
+                                        }
+                                    }} />
                             </div>
                             <div className="registration-agent">
                                 <input type="text" placeholder="Owner/Director Name" name="ownerName"
@@ -203,18 +222,18 @@ const Registration = () => {
                                         <MdRemoveRedEye style={{ color: "#297CBB" }} />}
                                     </span> &nbsp;&nbsp;&nbsp;
                                 </div>
-                                {!isValid && (<p style={{margin:"0",color:"red",fontSize:"12px",width:"fit-content"}}>
-                            <img src="/alert.svg"  alt="alert-logo" style={{color:"red"}}/>&nbsp;
-                            Must be at least one Uppercase, one lowercase, one special character and one numeric digit</p>)}
+                                {!isValid && (<p style={{ margin: "0", color: "red", fontSize: "12px", width: "fit-content" }}>
+                                    <img src="/alert.svg" alt="alert-logo" style={{ color: "red" }} />&nbsp;
+                                    Must be at least one Uppercase, one lowercase, one special character and one numeric digit</p>)}
                             </div>
                         </div>
-                        {isValid && <br/> }
+                        {isValid && <br />}
                         {/* -----------------------------Register button---------- */}
                         <div className="registration-btn">
-                        {loading ? <div className="loader"></div> :
-                            <>
-                                <button type="submit">REGISTER</button>
-                            </>}
+                            {loading ? <div className="loader"></div> :
+                                <>
+                                    <button type="submit">REGISTER</button>
+                                </>}
                         </div>
                     </form>
                     {/* --------------------------- Do not have account------------- */}

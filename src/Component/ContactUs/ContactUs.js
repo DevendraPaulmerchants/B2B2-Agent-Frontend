@@ -16,7 +16,9 @@ const ContactUs = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
-  const [message, setMessage] = useState("")
+  const [isPhoneValid, setPhoneValid] = useState(false);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const user = {
     name: name,
@@ -24,13 +26,16 @@ const ContactUs = () => {
     mobile: mobile,
     message: message
   }
-
+  const capitalize = (str) => {
+    if (typeof str !== 'string') return '';
+    return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
+  };
   const handleNameChange = (e) => {
     const name = e.target.value;
     const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
     if (isAlphabetic || name === "") {
-        const sanitizedValue = name.replace(/^\s+|\s+(?=\s)/g, '');
-        setName(sanitizedValue)
+      const sanitizedValue = name.replace(/^\s+|\s+(?=\s)/g, '');
+      setName(capitalize(sanitizedValue))
     }
   };
   const handleEmailChange = (e) => {
@@ -40,9 +45,9 @@ const ContactUs = () => {
     }
   };
 
-  const handleMobileChange = (value) => {
-    setMobile(value)
-  }
+  // const handleMobileChange = (value) => {
+  //   setMobile(value)
+  // }
   const handleMessageChane = (e) => {
     const message = e.target.value;
     const ismessageRegex = /^[a-zA-Z0-9,.'"\s]*$/.test(message)
@@ -51,8 +56,18 @@ const ContactUs = () => {
     }
   }
   const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (name.length < 3) {
+      alert("Please fill lead passenger details")
+      return
+    }
+    if (!isPhoneValid) {
+      alert("Please check Mobile Number");
+      return;
+    }
+    setLoading(true)
     fetch(`${APIPath}/api/v1/contactus`, {
       headers: {
         'Content-Type': 'application/json'
@@ -62,7 +77,8 @@ const ContactUs = () => {
       body: JSON.stringify(user)
     }).then((res) => res.json())
       .then((data) => {
-        alert(data.message)
+        alert("Thank you for contacting us! We will respond to you shortly.")
+        setLoading(true);
         setName("")
         setEmail("")
         setMobile("")
@@ -70,7 +86,8 @@ const ContactUs = () => {
         navigate('/')
       })
       .catch((err) => {
-        alert(err)
+        alert(err);
+        setLoading(true)
         return
       })
   };
@@ -87,11 +104,11 @@ const ContactUs = () => {
             <b><i class="fa fa-home"></i>Office no: </b>
             202 Rania Business Center Al Barsha first, Dubai, UAE
           </p>
-          <p style={{margin:0}}>
+          <p style={{ margin: 0 }}>
             <b><i class="fa fa-phone"></i></b>
             +971 444 52101
           </p>
-          <p style={{margin:0}}>
+          <p style={{ margin: 0 }}>
             <b><i class="fa fa-envelope-o"></i></b>
             <a href="mailto:info@magicalvacation.com">info@magicalvacation.com</a>
           </p>
@@ -123,7 +140,7 @@ const ContactUs = () => {
             />
 
             <label htmlFor="mobile">Mobile:</label>
-            <PhoneInput className="mobile-number-validation"
+            {/* <PhoneInput className="mobile-number-validation"
               country={'in'}
               value={mobile}
               onChange={(value) => handleMobileChange(value)}
@@ -131,7 +148,20 @@ const ContactUs = () => {
                 name: 'mobile',
                 required: true,
               }}
-            />
+            /> */}
+            <PhoneInput inputClass="ant-input phoneInput" className="mobile-number-validation"
+              country={'in'} enableSearch value={mobile}
+              onChange={(value, country, e, formattedValue) => {
+                const { format, dialCode } = country;
+                if (format?.length === formattedValue?.length &&
+                  (value.startsWith(dialCode) || dialCode.startsWith(value))) {
+                  setPhoneValid(true);
+                  setMobile(value);
+                }
+                else {
+                  setPhoneValid(false)
+                }
+              }} />
 
 
             <label htmlFor="message">Message:</label>
@@ -142,8 +172,9 @@ const ContactUs = () => {
               onChange={handleMessageChane}
               required
             ></textarea>
-
-            <input type="submit" value="Submit" />
+            {loading ? <div className="loader"></div> :
+              <input type="submit" value="Submit" />
+            }
           </form>
         </div>
       </div>

@@ -34,6 +34,7 @@
 .lead-passenger-parent-container {
     display: flex;
     gap: 2rem;
+    justify-content: space-between;
     margin-bottom: 1rem;
     padding: 0 2rem;
 }
@@ -118,7 +119,7 @@
     font-size: 18px;
     font-weight: 500;
     color:#1D3071;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
 }
 .flight-arrival-heading h2 {
     font-size: 18px;
@@ -129,7 +130,7 @@
 .booking-flight-arrival-input {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1.5rem; */
 }
 .booking-flight-code {
     width: 30%;
@@ -222,4 +223,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     padding: 0 2rem;
     display: flex;
     justify-content: space-between;
+}
+#remarks input::placeholder {
+    font-size: 12px;
 }

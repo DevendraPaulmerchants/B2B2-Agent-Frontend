@@ -85,16 +85,16 @@ const Navbar = ({ isLoggedIn, onLogout, setLoggedIn }) => {
             </li>
             <li className="nav-item">
               <NavLink
-                className={`nav-link ${location.pathname.includes('/landcombo') ? 'active' : ''}`}
-                to="/landcombos">
-                Land&nbsp;Combos
+                className={`nav-link ${location.pathname.includes('/attraction') ? 'active' : ''}`}
+                to="/attractions">
+                Attractions
               </NavLink>
             </li>
             <li className="nav-item">
               <NavLink
-                className={`nav-link ${location.pathname.includes('/attraction') ? 'active' : ''}`}
-                to="/attractions">
-                Attractions
+                className={`nav-link ${location.pathname.includes('/landcombo') ? 'active' : ''}`}
+                to="/landcombos">
+                Land&nbsp;Combos
               </NavLink>
             </li>
             <li className="nav-item">

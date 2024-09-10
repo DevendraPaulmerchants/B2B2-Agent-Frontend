@@ -207,7 +207,7 @@ const LandCombosDetails = () => {
                                         return <>
                                             <p><b>Location:</b> {val.location}</p>
                                             <p><b>Description:</b> {val.description}</p>
-                                            <p><b>Time:</b> {val.time}</p>
+                                            {/* <p><b>Time:</b> {val.time}</p> */}
                                         </>
                                     })}
                                 </div>

@@ -6,7 +6,7 @@ import 'react-phone-input-2/lib/style.css';
 import { APIPath } from "../../Config";
 import { useNavigate } from "react-router-dom";
 
-const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,vehicle,from,to, adultsPassengers, childPassengers, selectedDate,
+const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,vehicle,from,to, adultsPassengers, childPassengers,infants, selectedDate,
     selectedDateTo, arrivalFlightCode, arrivalPickupTime1, departureFlightCode, departurePickupTime1,
     cartId, transferId, pkgId, Pname, Pmobile, Pemail, price, LoadCartItem }) => {
     document.body.style.overflow = 'hidden';
@@ -14,6 +14,8 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
     const [name, setName] = useState(Pname);
     const [adultPassenger, setAdultPassenger] = useState(adultsPassengers);
     const [childPassenger, setChildPassenger] = useState(childPassengers);
+    // const [infentPassenger, setInfentPassenger] = useState(infants);
+    const [infentPassenger, setInfentPassenger] = useState(infants);
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [flightArrivalCode, setFlightArrivalCode] = useState(arrivalFlightCode);
@@ -54,6 +56,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                 // arrivalFlightCode: flightArrivalCode,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
+                numberOfInfants:infentPassenger,
                 // pickupTimeForDeparture: flightDepartureTime,
                 // departurePickupTime: departurePickupTime,
                 // departureFlightCode: flightDepartureCode,
@@ -173,7 +176,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                         </div>
                         <div className="lead-passenger-parent-container">
                             <div className="adults-passenger">
-                                <p>Adults &gt; 12 years</p>
+                                <p style={{ fontSize: "16px" }}>Adults (Age 13 & above)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -193,7 +196,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p>Children &lt; 12 years</p>
+                                <p style={{ fontSize: "16px" }}>Children (Age 3 to 12)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -208,6 +211,26 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setChildPassenger(childPassenger + 1)
+                                        }}
+                                    >+</button>
+                                </div>
+                            </div>
+                            <div className="adults-passenger">
+                                <p><span style={{ fontSize: "16px" }}>Infants (Age 0 to 3 )</span></p>
+                                <div className="passenger-count">
+                                    <button id="count-minus"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (infentPassenger > 0) {
+                                                setInfentPassenger(infentPassenger - 1)
+                                            }
+                                        }}
+                                    >-</button>
+                                    <button id="count">{infentPassenger}</button>
+                                    <button id="count-plus"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setInfentPassenger(infentPassenger + 1)
                                         }}
                                     >+</button>
                                 </div>

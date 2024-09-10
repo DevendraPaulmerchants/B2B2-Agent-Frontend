@@ -13,8 +13,10 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(adultsPassengers);
     const [childPassenger, setChildPassenger] = useState(childPassengers);
+    const [infentPassenger, setInfentPassenger] = useState(0);
     const [email, setEmail] = useState('');
     const [mobile, setMobile] = useState();
+    const [isPhoneValid, setPhoneValid] = useState(false);
     const [flightArrivalCode, setFlightArrivalCode] = useState('');
     const [flightArrivalTime, setFLightArrivalTime] = useState(selectedDate);
     const [flightDepartureCode, setFlightDepartureCode] = useState('');
@@ -22,6 +24,11 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     const [arrivalPickupTime, setArrivalPickupTime] = useState('');
     const [departurePickupTime, setDeparturePickupTime] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const capitalize = (str) => {
+        if (typeof str !== 'string') return '';
+        return str?.charAt(0).toUpperCase() + str?.slice(1).toLowerCase();
+    };
 
     const navigate = useNavigate();
     const bookingCloseBtn = () => {
@@ -33,7 +40,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         const isAlphabetic = /^[a-zA-Z\s]*$/.test(name);
         if (isAlphabetic || name === "") {
             const sanitizedValue = name.replace(/^\s+|\s+(?=\s)/g, '');
-            setName(sanitizedValue)
+            setName(capitalize(sanitizedValue))
         }
     };
     const getCurrentDateTime = () => {
@@ -57,6 +64,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 departureFlightCode: flightDepartureCode,
                 numberOfAdults: parseInt(adultPassenger),
                 numberOfChildrens: parseInt(childPassenger),
+                numberOfInfants: parseInt(infentPassenger),
                 vehicle: transferDetails.vehicle.type,
                 remarks: transferDetails.additionalDetails,
                 pickupTimeForArrival: arrivalPickupTime,
@@ -77,13 +85,13 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     const validTypes = ["AirportToHotel", "AirportToAirport", "HotelToAirport"];
     const bookThisTransfer = () => {
         setLoading(true)
-        if (name.length <= 0) {
-            alert("please fill lead passenger details")
+        if (name.length < 3) {
+            alert("Please fill lead passenger details")
             setLoading(false)
             return
         }
-        if (mobile.toString().length < 8) {
-            alert("Please check mobile number");
+        if (!isPhoneValid) {
+            alert("Please check Mobile Number");
             setLoading(false)
             return;
         }
@@ -97,6 +105,10 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             setLoading(false);
             return
         }
+        // if (infentPassenger > 2) {
+        //     alert("More than 2 infants are not allowed... ");
+        //     return;
+        // }
         if ((adultPassenger + childPassenger) > transferDetails.vehicle.maxPassenger) {
             alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers`);
             setLoading(false);
@@ -139,7 +151,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 setBookTransfer(false)
                 setDescriptionPage(false)
                 setLoading(false)
-                alert("You`r transfer booking request sent to Admin successfully, Waiting to approval.")
+                alert("your transfer booking request is sent to admin, waiting for approval")
                 navigate('/transfers')
             })
             .catch((err) => (
@@ -161,6 +173,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 arrivalFlightCode: flightArrivalCode,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
+                numberOfInfants: infentPassenger,
                 pickupTimeForDeparture: flightDepartureTime,
                 departurePickupTime: departurePickupTime,
                 departureFlightCode: flightDepartureCode,
@@ -181,12 +194,12 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
     }
 
     const addToCart = () => {
-        if (name.length <= 0) {
-            alert("please fill lead passenger name...")
+        if (name.length < 3) {
+            alert("Please fill lead passenger details")
             return
         }
-        if (mobile.toString().length < 8) {
-            alert("Please check mobile number...");
+        if (!isPhoneValid) {
+            alert("Please check Mobile Number");
             return;
         }
         if (email.length <= 10) {
@@ -196,6 +209,10 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
         if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult...")
             return
+        }
+        if (infentPassenger > 2) {
+            alert("More than 2 infants are not allowed... ");
+            return;
         }
         if ((adultPassenger + childPassenger) > transferDetails.vehicle.maxPassenger) {
             alert(`This Vehicle can not allow more then ${transferDetails.vehicle.maxPassenger} passengers`)
@@ -219,6 +236,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                 return
             }
         }
+        setLoading(true);
         fetch(`${APIPath}/api/v1/agent/new-cart`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -264,13 +282,26 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                             </div>
                             <div className="lead-passenger-name" style={{ width: "100%" }}>
                                 <label htmlFor="Lead-Passenger-Mobile">Mobile No.</label>
-                                <PhoneInput
+                                {/* <PhoneInput
                                     placeholder="Enter phone number"
                                     international
                                     country={'in'}
                                     value={mobile}
                                     onChange={setMobile}
-                                />
+                                /> */}
+                                <PhoneInput inputClass="ant-input phoneInput"
+                                    country={'in'} enableSearch value={mobile}
+                                    onChange={(value, country, e, formattedValue) => {
+                                        const { format, dialCode } = country;
+                                        if (format?.length === formattedValue?.length &&
+                                            (value.startsWith(dialCode) || dialCode.startsWith(value))) {
+                                            setPhoneValid(true);
+                                            setMobile(value);
+                                        }
+                                        else {
+                                            setPhoneValid(false)
+                                        }
+                                    }} />
                             </div>
                             <div className="lead-passenger-name">
                                 <label htmlFor="Lead-Passenger-Email">Email</label>
@@ -283,7 +314,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                         </div>
                         <div className="lead-passenger-parent-container">
                             <div className="adults-passenger">
-                                <p>Adults &gt; 12 years</p>
+                                <p style={{ fontSize: "16px" }}>Adults (Age 13 & above)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -303,7 +334,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                 </div>
                             </div>
                             <div className="adults-passenger">
-                                <p>Children &lt; 12 years</p>
+                                <p style={{ fontSize: "16px" }}>Children (Age 3 to 12)</p>
                                 <div className="passenger-count">
                                     <button id="count-minus"
                                         onClick={(e) => {
@@ -318,6 +349,26 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                         onClick={(e) => {
                                             e.preventDefault();
                                             setChildPassenger(childPassenger + 1)
+                                        }}
+                                    >+</button>
+                                </div>
+                            </div>
+                            <div className="adults-passenger">
+                                <p><span style={{ fontSize: "16px" }}>Infants (Age 0 to 3 )</span></p>
+                                <div className="passenger-count">
+                                    <button id="count-minus"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (infentPassenger > 0) {
+                                                setInfentPassenger(infentPassenger - 1)
+                                            }
+                                        }}
+                                    >-</button>
+                                    <button id="count">{infentPassenger}</button>
+                                    <button id="count-plus"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setInfentPassenger(infentPassenger + 1)
                                         }}
                                     >+</button>
                                 </div>
@@ -359,6 +410,21 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             />
                                         </div>
                                     </div>
+                                    <div style={{ width: '85%' }} id="remarks">
+                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/pickUp Location</h2>
+                                        <input style={{
+                                            outline: "none",
+                                            border: "1px solid skyblue",
+                                            width: "100%",
+                                            padding: "2px 15px",
+                                            borderRadius: "20px"
+                                        }}
+                                            onChange={(e) => {
+                                                setfromRemarks(e.target.value);
+                                            }}
+                                            type="textarea" placeholder="Enter your pickUp location" />
+                                    </div>
+
                                 </div>
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
@@ -397,7 +463,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
-                                            <div>
+                                            <div id="remarks">
                                                 <h2 style={{ marginBottom: "5px" }}>Remarks/drop-off Location</h2>
                                                 <input style={{
                                                     outline: "none",
@@ -451,6 +517,20 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             />
                                         </div>
                                     </div>
+                                    <div style={{ width: '85%' }} id="remarks">
+                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/pickUp Location</h2>
+                                        <input style={{
+                                            outline: "none",
+                                            border: "1px solid skyblue",
+                                            width: "100%",
+                                            padding: "2px 15px",
+                                            borderRadius: "20px"
+                                        }}
+                                            onChange={(e) => {
+                                                setfromRemarks(e.target.value);
+                                            }}
+                                            type="textarea" placeholder="Enter your pickUp location" />
+                                    </div>
                                 </div>
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
@@ -489,8 +569,8 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
-                                            <div>
-                                                <h2 style={{ marginBottom: "5px" }}>Remarks/pickup Location</h2>
+                                            <div id="remarks">
+                                                <h2 style={{ marginBottom: "5px" }}>Remarks/dropoff Location</h2>
                                                 <input style={{
                                                     outline: "none",
                                                     border: "1px solid skyblue",
@@ -499,7 +579,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     borderRadius: "20px"
                                                 }}
                                                     onChange={(e) => {
-                                                        setfromRemarks(e.target.value);
+                                                        settoRemarks(e.target.value);
                                                     }}
                                                     type="textarea" placeholder="Enter your drop off location" />
                                             </div>
@@ -543,6 +623,20 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             />
                                         </div>
                                     </div>
+                                    <div style={{ width: '85%' }} id="remarks">
+                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/pickUp Location</h2>
+                                        <input style={{
+                                            outline: "none",
+                                            border: "1px solid skyblue",
+                                            width: "100%",
+                                            padding: "2px 15px",
+                                            borderRadius: "20px"
+                                        }}
+                                            onChange={(e) => {
+                                                setfromRemarks(e.target.value);
+                                            }}
+                                            type="textarea" placeholder="Enter your pickUp location" />
+                                    </div>
                                 </div>
                                 <div className="booking-flight-departure-container">
                                     <div className="flight-departure-heading">
@@ -581,6 +675,20 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     />
                                                 </div>
                                             </div>
+                                            <div style={{ width: '85%' }} id="remarks">
+                                                <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/dropoff Location</h2>
+                                                <input style={{
+                                                    outline: "none",
+                                                    border: "1px solid skyblue",
+                                                    width: "100%",
+                                                    padding: "2px 15px",
+                                                    borderRadius: "20px"
+                                                }}
+                                                    onChange={(e) => {
+                                                        settoRemarks(e.target.value);
+                                                    }}
+                                                    type="textarea" placeholder="Enter your dropoff location" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -589,7 +697,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                         {transferDetails.type === 'HotelToHotel' &&
                             <div className="booking-flight-arrival-departure-container">
                                 <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                                    <div>
+                                    <div id="remarks">
                                         <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}>Arrival Remarks</h2>
                                         <input style={{
                                             outline: "none",
@@ -601,9 +709,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             onChange={(e) => {
                                                 setfromRemarks(e.target.value);
                                             }}
-                                            type="textarea" placeholder="Enter your drop off location" />
+                                            type="textarea" placeholder="Enter your pickUp off location" />
                                     </div>
-                                    <div>
+                                    <div id="remarks">
                                         <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}> Departure Remarks</h2>
                                         <input style={{
                                             outline: "none",

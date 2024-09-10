@@ -57,7 +57,7 @@ const Attractions = () => {
     return <>
         <div className='package-banner'>
             <div className="main-container">
-                <h2> Packages created for you </h2>
+                <h2> Attractions created for you </h2>
                 <div id="search-container">
                     <form className='search-form' onSubmit={(e) => { e.preventDefault(); handleSearch(); }}>
                         <input

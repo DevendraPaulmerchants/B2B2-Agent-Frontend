@@ -63,6 +63,10 @@
     width: 100%;
     margin-bottom: 1rem;
 }
+.react-tel-input .country-list .country {
+    padding: 7px 9px;
+    margin-bottom: 0;
+}
 .country input {
     width: 100%;
     padding: 6px 10px;
@@ -157,7 +161,8 @@
 }
 #transfer-card-type {
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 10px;
 }
 #transfer-type {
     text-transform: uppercase;
