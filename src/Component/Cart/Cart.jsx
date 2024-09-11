@@ -56,6 +56,7 @@ const Cart = ({ tokenH }) => {
   const [vehicle, setVehicle] = useState(null);
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const ftoken = tokenH || token;
   // console.log(tokenH ? `"home", ${ftoken}` : `"context",${ftoken}`);
@@ -123,7 +124,8 @@ const Cart = ({ tokenH }) => {
   let totalCost = packageprice + attractionprice + landcombosprice + transferprice + vat;
 
   const BookNow = () => {
-    console.log("booking clicked")
+    setLoading(true);
+    // console.log("booking clicked")
     fetch(`${APIPath}/api/v1/agent/booking/custom-booking`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -135,34 +137,73 @@ const Cart = ({ tokenH }) => {
     }).then((res) => res.json())
       .then((data) => {
         alert(data.message);
+        setLoading(false);
         LoadCartItem();
       })
       .catch((err) => {
         alert(err)
+        setLoading(false);
       })
   }
 
+  const [custom, setCustom] = useState(false);
+  const [customMsg, setCustomMsg] = useState("");
+  const [customAction, setCustomAction] = useState(false);
+  const CustomPopUp = ({ customMsg }) => {
+    document.body.style.overflow = "hidden";
+    return <div className="custom-popup-container">
+      <div className="custom-popup">
+        <h4>{customMsg}</h4>
+        <div className="custom-button">
+          <button onMouseEnter={() => {
+            setCustomAction(true);
+          }}
+            onClick={() => {
+              setCustomAction(true);
+              setCustom(false);
+              DeleteAll();
+            }}>Yes</button>
+          <button onClick={() => {
+            setCustomAction(false);
+            setCustom(false);
+            console.log(customAction)
+          }}>No</button>
+        </div>
+      </div>
+    </div>
+  }
+
   const DeleteAll = () => {
-    if (cartLength == 0) {
-      alert("Cart is already empty");
+    setLoading(true);
+    setCustom(true);
+    setCustomMsg("Are you sure you want to remove cart`s item from your cart?");
+    // const confirm=window.confirm("Are you sure you want to remove cart`s item from your cart?");
+    // if(confirm){
+    if (customAction === true) {
+      console.log("Custom Action", customAction);
+      fetch(`${APIPath}/api/v1/agent/new-cart`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        method: "DELETE",
+        mode: "cors",
+        body: JSON.stringify({ "cartId": cartId })
+      }).then((res) => res.json())
+        .then((data) => {
+          setLoading(false)
+          setCustom(false);
+          LoadCartItem();
+        })
+        .catch((err) => {
+          alert(err)
+          setLoading(false)
+        })
+    }
+    else {
+      setLoading(false);
       return;
     }
-    fetch(`${APIPath}/api/v1/agent/new-cart`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      method: "DELETE",
-      mode: "cors",
-      body: JSON.stringify({ "cartId": cartId })
-    }).then((res) => res.json())
-      .then((data) => {
-        alert(data.message);
-        LoadCartItem();
-      })
-      .catch((err) => {
-        alert(err)
-      })
   }
   const ItemDelete = {
     "cartId": cartId,
@@ -738,19 +779,24 @@ const Cart = ({ tokenH }) => {
               <h3>AED {totalCost}</h3>
             </div>
           </div>
-          <div className="cart-price-button">
-            <button onClick={BookNow} >Book Now</button>
-          </div>
+          {loading ? <div className="loader"></div> :
+            <div className="cart-price-button">
+              <button onClick={BookNow} >Book Now</button>
+            </div>
+          }
+          {/* {loading ? <div className="loader"></div>: */}
           <div className="cart-delete-button">
             <img src="/deleteicon1.svg" />
             <button onClick={DeleteAll}>Delete All</button>
           </div>
+          {/* } */}
         </div>
       </div> :
       <div className="cart-has-no-iteam">
         <h2>Oops! Your cart seems to be empty!</h2>
       </div>
     }
+    {custom && <CustomPopUp customMsg={customMsg} />}
     <Footer />
     {editAtt && <BookAttraction
       type={type}

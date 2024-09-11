@@ -111,6 +111,18 @@ const BookLandCombos = ({ onClose, type,
             alert("please Add at least 1 Adult")
             return
         }
+        if(adultPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
+            return;
+        }
+        if(childPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
+            return;
+        }
+        if(infentPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
+            return;
+        }
         if (fromDate.length < 2) {
             alert("please select from date: ")
             return;
@@ -119,8 +131,8 @@ const BookLandCombos = ({ onClose, type,
             alert("please select to date : ")
             return;
         }
-        if (fromDate > toDate) {
-            alert("From date should not be greater than To date");
+        if (toDate > maxDate) {
+            alert(`To date must not exceed ${maxDate}`);
             return;
         }
         else {

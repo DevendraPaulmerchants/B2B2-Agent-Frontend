@@ -102,6 +102,18 @@ const BookPackage = ({ onClose, packagedata }) => {
             alert("please Add at least 1 Adult...")
             return
         }
+        if(adultPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
+            return;
+        }
+        if(childPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
+            return;
+        }
+        if(infentPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
+            return;
+        }
         // if(infentPassenger > 2){
         //     alert("More than 2 infants are not allowed... ");
         //     return;
@@ -155,15 +167,7 @@ const BookPackage = ({ onClose, packagedata }) => {
             }
         }
     }
-    const customPopUp=(msg,action)=>{
-        return <div className="custom-popup">
-             <h4>This is Custom Pop Up</h4>
-             <div>
-                <button>Yes</button>
-                <button>No</button>
-             </div>
-        </div>
-    }
+    
     const addToCart = () => {
         if (name.length < 3) {
             alert("Please fill lead passenger details")
@@ -182,6 +186,18 @@ const BookPackage = ({ onClose, packagedata }) => {
         if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult...")
             return
+        }
+        if(adultPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
+            return;
+        }
+        if(childPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
+            return;
+        }
+        if(infentPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
+            return;
         }
         // if(infentPassenger > 2){
         //     alert("More than 2 infants are not allowed... ");
@@ -207,7 +223,7 @@ const BookPackage = ({ onClose, packagedata }) => {
                     const cartId=data.cartId;
                     const confirmPAX = window.confirm("Passengers count mismatch with previous added item! \n Do you want to continue?");
                     if (confirmPAX) {
-                        fetch(`${APIPath}/api/v1/agent/new-cart/confirmation`, {
+                        fetch(`${APIPath}/api/v1/agent/new-cart/pax-confirmation`, {
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                                 'Content-Type': 'application/json'

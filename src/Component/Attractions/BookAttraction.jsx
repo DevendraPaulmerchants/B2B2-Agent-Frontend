@@ -87,6 +87,18 @@ const BookAttraction = ({ onClose, packagedata }) => {
             alert("please Add at least 1 Adult")
             return
         }
+        if(adultPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
+            return;
+        }
+        if(childPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
+            return;
+        }
+        if(infentPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
+            return;
+        }
         // if(infentPassenger > 2){
         //     alert("More than 2 infants are not allowed... ");
         //     return;
@@ -160,6 +172,18 @@ const BookAttraction = ({ onClose, packagedata }) => {
         if (adultPassenger <= 0) {
             alert("please Add at least 1 Adult...")
             return
+        }
+        if(adultPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
+            return;
+        }
+        if(childPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
+            return;
+        }
+        if(infentPassenger > 50){
+            alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
+            return;
         }
         // if(infentPassenger > 2){
         //     alert("More than 2 infants are not allowed... ");
