@@ -67,6 +67,9 @@ hr {
     box-shadow: 0 0 15px #cccaca;
     cursor: pointer;
 }
+.package-card:hover {
+    transform: scale(1.02);
+}
 
 .package-card-image img {
     width: 100%;
@@ -198,7 +201,7 @@ hr {
     margin: 0;
     cursor: pointer;
 }
-.active h4 {
+.on h4 {
     color: #103083;
     border-bottom: 2px solid #103083;
 }

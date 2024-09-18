@@ -162,25 +162,25 @@ const AttractionDetails = () => {
                                 </div>
                             </div>
                             <div className="package-description">
-                                <div className={active === 1 ? "package-overview active" : "package-overview"}
+                                <div className={active === 1 ? "package-overview on" : "package-overview"}
                                     onClick={() => handleActiveClass(1)}
                                 >
                                     <h4>Overview</h4>
                                 </div>
-                                <div className={active === 2 ? "package-overview active" : "package-overview"}
+                                <div className={active === 2 ? "package-overview on" : "package-overview"}
                                     onClick={() => handleActiveClass(2)}
                                 >
                                     <h4>Inclusions/Exclusion</h4>
                                 </div>
                                 {val.expectations?.length > 0 && (
-                                    <div className={active === 3 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 3 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(3)}
                                     >
                                         <h4>Meeting Points</h4>
                                     </div>
                                 )}
                                 {val.cancellationRefundPolicy?.length > 0 && (
-                                    <div className={active === 5 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 5 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(5)}
                                     >
                                         <h4>Cancellation Policy</h4>

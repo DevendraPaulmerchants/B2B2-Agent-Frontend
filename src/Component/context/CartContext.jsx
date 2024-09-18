@@ -8,6 +8,7 @@ export const CartProvider = ({ children }) => {
   const [cartLength,setCartLength]=useState(0);
   const [cartLiveLength,setCartLiveLength]=useState(0);
   const [token,setToken]=useState('');
+  const [userId,setUserId]=useState('');
   const [cartLengthValue,setCartLengthValue]=useState(false);
   const [addNewHotel,setAddNewHotel]=useState(false);
   const [adult,setadult]=useState();
@@ -23,11 +24,25 @@ export const CartProvider = ({ children }) => {
   const [cartItem, setCartItem]=useState(null);
   
   return (
-    <CartContext.Provider value={{ dataSecret, setDataSecret, cartCost, setCartCost,cartLength,setCartLength,
-      token,setToken,cartLiveLength,setCartLiveLength,cartLengthValue,setCartLengthValue,addNewHotel,setAddNewHotel,
-      adult,setadult,child,setChild,bookTransfer,setBookTransfer,transferDetails,setTransferDetails,
-      descriptionPage, setDescriptionPage,agentName,setAgentName,filteredList, setFilteredList,
-      packageId,setPackageId,lancCombosId,setLandCombosId,attractionId,setAttractionId,cartItem, setCartItem
+    <CartContext.Provider value={{ dataSecret, setDataSecret, 
+      cartCost, setCartCost,
+      cartLength,setCartLength,
+      token,setToken,
+      cartLiveLength,setCartLiveLength,
+      cartLengthValue,setCartLengthValue,
+      addNewHotel,setAddNewHotel,
+      adult,setadult,
+      child,setChild,
+      bookTransfer,setBookTransfer,
+      transferDetails,setTransferDetails,
+      descriptionPage, setDescriptionPage,
+      agentName,setAgentName,
+      filteredList, setFilteredList,
+      packageId,setPackageId,
+      lancCombosId,setLandCombosId,
+      attractionId,setAttractionId,
+      cartItem, setCartItem,
+      userId,setUserId
       }}>
       {children}
     </CartContext.Provider>

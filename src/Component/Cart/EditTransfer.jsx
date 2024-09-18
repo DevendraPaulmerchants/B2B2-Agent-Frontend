@@ -6,7 +6,7 @@ import 'react-phone-input-2/lib/style.css';
 import { APIPath } from "../../Config";
 import { useNavigate } from "react-router-dom";
 
-const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,vehicle,from,to, adultsPassengers, childPassengers,infants, selectedDate,
+const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers, vehicle, from, to, adultsPassengers, childPassengers, infants, selectedDate,
     selectedDateTo, arrivalFlightCode, arrivalPickupTime1, departureFlightCode, departurePickupTime1,
     cartId, transferId, pkgId, Pname, Pmobile, Pemail, price, LoadCartItem }) => {
     document.body.style.overflow = 'hidden';
@@ -15,7 +15,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
     const [adultPassenger, setAdultPassenger] = useState(adultsPassengers);
     const [childPassenger, setChildPassenger] = useState(childPassengers);
     // const [infentPassenger, setInfentPassenger] = useState(infants);
-    const [infentPassenger, setInfentPassenger] = useState(infants);
+    const [infentPassenger, setInfentPassenger] = useState(infants || 0);
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [flightArrivalCode, setFlightArrivalCode] = useState(arrivalFlightCode);
@@ -24,6 +24,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
     const [flightDepartureTime, setFlightDepartureTime] = useState(selectedDateTo)
     const [arrivalPickupTime, setArrivalPickupTime] = useState(arrivalPickupTime1);
     const [departurePickupTime, setDeparturePickupTime] = useState(departurePickupTime1);
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
     const handleNameChange = (e) => {
@@ -56,7 +57,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                 // arrivalFlightCode: flightArrivalCode,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
-                numberOfInfants:infentPassenger,
+                numberOfInfants: infentPassenger,
                 // pickupTimeForDeparture: flightDepartureTime,
                 // departurePickupTime: departurePickupTime,
                 // departureFlightCode: flightDepartureCode,
@@ -65,12 +66,12 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                     {
                         transferId: transferId,
                         pickupTimeForArrival: flightArrivalTime,
-                        arrivalPickupTime:arrivalPickupTime,
+                        arrivalPickupTime: arrivalPickupTime,
                         arrivalFlightCode: flightArrivalCode,
                         from: from,
                         to: to,
                         cost: price,
-                        vehicle:vehicle,
+                        vehicle: vehicle,
                     },
                     (tripType === 'ROUND_TRIP' && {
                         transferId: transferId,
@@ -80,7 +81,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                         from: to,
                         to: from,
                         cost: price,
-                        vehicle:vehicle,
+                        vehicle: vehicle,
                     })
                 ]
             }
@@ -96,8 +97,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
     }
 
     const bookThisPackage = () => {
-        // console.log(addtransfertoCart)
-        if (name.length <= 0) {
+        if (name.length < 4) {
             alert("please fill lead passenger details")
             return
         }
@@ -109,28 +109,96 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
             alert(`This Vehicle can not allow more than ${maxPassengers} passengers`)
             return;
         }
-        else {
-            fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                method: 'PATCH',
-                mode: 'cors',
-                body: JSON.stringify(addtransfertoCart)
-            }).then((res) => res.json())
-                .then((data) => {
-                    alert(data.message);
-                    onClose();
-                    LoadCartItem();
-                })
-                .catch((err) => {
-                    alert(err)
-                    return;
-                })
+        if (tripType === "ROUND_TRIP") {
+            if (flightArrivalTime > flightDepartureTime) {
+                alert(`Arrival Date must not be exceed ${flightDepartureTime}`);
+                return;
+            }
         }
+        setLoading(true)
+        fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'PATCH',
+            mode: 'cors',
+            body: JSON.stringify(addtransfertoCart)
+        }).then((res) => res.json())
+            .then((data) => {
+                alert(data.message);
+                setLoading(false)
+                onClose();
+                LoadCartItem();
+            })
+            .catch((err) => {
+                alert(err);
+                setLoading(false)
+                return;
+            })
     }
 
+    // const validTypes = ["AirportToHotel", "AirportToAirport", "HotelToAirport"];
+    // const bookThisPackage = () => {
+    //     if (name.length < 3) {
+    //         alert("Please fill lead passenger details")
+    //         return
+    //     }
+    //     if (adultPassenger <= 0) {
+    //         alert("please Add at least 1 Adult...")
+    //         return
+    //     }
+    //     // if (infentPassenger > 2) {
+    //     //     alert("More than 2 infants are not allowed... ");
+    //     //     return;
+    //     // }
+    //     if ((adultPassenger + childPassenger) > maxPassengers) {
+    //         alert(`This Vehicle can not allow more then ${maxPassengers} passengers`)
+    //         return;
+    //     }
+    //     if (validTypes.includes(tripType) && flightArrivalCode.length < 4) {
+    //         alert("please fill arrival flight code...")
+    //         return
+    //     }
+    //     if (validTypes.includes(tripType) && arrivalPickupTime.length < 5) {
+    //         alert("please fill pickup time from airport...")
+    //         return
+    //     }
+    //     if (tripType === 'ROUND_TRIP') {
+    //         if(flightArrivalTime > flightDepartureTime){
+    //             alert(`Arrival Date must not be exceed ${flightDepartureTime}`);
+    //             return;
+    //         }
+    //         if (validTypes.includes(tripType) && flightDepartureCode.length < 4) {
+    //             alert("please fill departure flight Code...");
+    //             return
+    //         }
+    //         if (validTypes.includes(tripType) && departurePickupTime.length < 5) {
+    //             alert("please fill departure time to airport...");
+    //             return
+    //         }
+    //     }
+    //    else {
+    //         fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+    //             headers: {
+    //                 'Authorization': `Bearer ${token}`,
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             method: 'PATCH',
+    //             mode: 'cors',
+    //             body: JSON.stringify(addtransfertoCart)
+    //         }).then((res) => res.json())
+    //             .then((data) => {
+    //                 alert(data.message);
+    //                 onClose();
+    //                 LoadCartItem();
+    //             })
+    //             .catch((err) => {
+    //                 alert(err)
+    //                 return;
+    //             })
+    //     }
+    // }
     return <>
         <div className="booktransfer-container">
             <div className="book-transfer-details-page">
@@ -478,9 +546,11 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers,v
                                 <h4><b>Total Amount:</b></h4>
                                 <h4><b>&nbsp;AED {price}</b><sub>+Taxes</sub></h4>
                             </div>
+                            {loading ? <div className="loader"></div>:
                             <div className="booking-transfer-btn">
-                                <button onClick={() => { bookThisPackage() }}>Submit</button>
+                                <button onClick={bookThisPackage}>Submit</button>
                             </div>
+                            }
                         </div>
                     </form>
                 </div>

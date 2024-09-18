@@ -10,9 +10,9 @@ import './LogIn.css';
 import { useCart } from "../context/CartContext";
 import ForgotPassword from "../ForgotPassword/Forgot_password";
 
-const Login = ({ setLoggedIn }) => {
+const Login = ({ setLoggedIn,setCart }) => {
   document.body.style.overflow="auto";
-  const {setCartLength,setCartLengthValue,setToken,setAgentName} =useCart()
+  const {setCartLength,setCartLengthValue,setToken,setAgentName,setUserId} =useCart()
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -42,7 +42,10 @@ const handleLogin = () => {
             const token = data.data.tokens.access.token;
             setAgentName(agentName);
             setToken(token);
+            setUserId(data.data.account._id);
             setCartLength(data.data.account.cart);
+            setCart(data.data.account.cart);
+            localStorage.setItem('cart', data.data.account.cart)
             setCartLengthValue(true);
             setLoggedIn(true);
             document.cookie = `agentName=${agentName};path=/;max-age=${data.data.tokens.access.expiresIn}`;

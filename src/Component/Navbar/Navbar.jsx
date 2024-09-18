@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
 import { useCart } from '../context/CartContext';
 
-const Navbar = ({ isLoggedIn, onLogout, setLoggedIn }) => {
+const Navbar = ({ isLoggedIn, onLogout, setLoggedIn, setCart, cart }) => {
   const { cartLength, setToken, token, setAgentName } = useCart();
   const [userClick, setUserClick] = useState(false)
   const location = useLocation();
@@ -32,6 +32,8 @@ const Navbar = ({ isLoggedIn, onLogout, setLoggedIn }) => {
   };
 
   useEffect(() => {
+    setCart(localStorage.getItem('cart'));
+    console.log("Cart length", cart);
     const { token1, agentName } = getAgentInfoFromCookies();
     if (token1 && agentName) {
       setToken(token1);
@@ -48,6 +50,7 @@ const Navbar = ({ isLoggedIn, onLogout, setLoggedIn }) => {
   const handleLogout = () => {
     deleteCookie('token');
     deleteCookie('agentName');
+    localStorage.removeItem('cart')
   };
 
   return (
@@ -110,63 +113,60 @@ const Navbar = ({ isLoggedIn, onLogout, setLoggedIn }) => {
           </ul>
 
           <ul className="navbar-nav" id='navbarNav-mobile-tab'>
-            {(isLoggedIn) ? (
+            {(isLoggedIn) && 
               <>
                 <li className="nav-item">
                   <NavLink className="nav-link" to="/cart">
-                    {/* <img src='./shoppingcart.svg' alt='cart' /> */}
                     <img src='/shoppingcart.svg' alt='cart' />
                     <sub style={{
                       background: "#595959", borderRadius: "50%", padding: "2px 6px 3px 6px", color: "#fff",
-                      top: "-0.8rem", left: "-0.5rem"
+                      top: "-0.8rem", left: "-0.5rem",
                     }}>
-                      {cartLength}
+                      {cart}
                     </sub>
                   </NavLink>
                 </li>
-
                 <li className="nav-item">
-                  <NavLink className="nav-link user-login">
-                    <img src='/user1.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc' }}
+                  <NavLink className="nav-link">
+                    <img src='/userIcon.svg' alt='user' height={32} width={32} style={{ fontSize: '2rem', color: '#52ccfc', }}
                       onClick={() => {
                         setUserClick(!userClick)
                       }}
                     />
-                    {userClick && (
+                  </NavLink>
+                  {userClick && (
                       <>
                         <ul className='user-log-out'>
                           <li>
-                            <NavLink to="/user"><p style={{ textAlign: "center", textTransform: "capitalize", fontWeight: "300" }}
+                            <NavLink to="/userDetails"><p style={{ fontWeight: "500", color: '#0D8ACD', }}
                               onClick={() => {
                                 setUserClick(!userClick)
                               }}
-                            >
-                              Dashboard
+                            > <img src='/profile.svg' alt='Icon' />&nbsp;View Profile
+                            </p></NavLink>
+                          </li>
+                          <li>
+                            <NavLink to="/bookings"><p style={{ fontWeight: "500", color: '#0D8ACD' }}
+                              onClick={() => {
+                                setUserClick(!userClick)
+                              }}
+                            ><img src='/bookings.svg' alt='Icon' />&nbsp;My Bookings
                             </p></NavLink>
                           </li>
                           <li to="/" onClick={() => {
                             handleLogout();
                             onLogout();
                           }}>
-                            <NavLink className="nav-links-log-out" to="/">Log Out</NavLink>
+                            <NavLink to="/"><p style={{ fontWeight: "500", color: '#0D8ACD' }}>
+                              <img src='/logout.svg' alt='Icon' />&nbsp;Log Out
+                            </p></NavLink>
                           </li>
                         </ul>
                       </>
                     )}
-                  </NavLink>
                 </li>
               </>
-            ) : (
-              <li className="nav-item nav-link-btn">
-                <NavLink className="nav-link" to="/login"
-                  onClick={() => {
-                    setUserClick(false)
-                  }}
-                >
-                  Agent Login
-                </NavLink>
-              </li>
-            )}
+          }
           </ul>
         </div>
       </div>

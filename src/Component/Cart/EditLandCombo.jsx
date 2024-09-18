@@ -32,7 +32,8 @@ const BookLandCombos = ({ onClose, type,
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(lncStartDate);
     const [toDate, setToDate] = useState(lncEndDate);
-    const [maxDate, setMaxDate] = useState(null)
+    const [maxDate, setMaxDate] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const pkgPrice = price +
         (landCombosData?.price[0].adultPrice * (adultPassenger - adults) +
@@ -111,15 +112,15 @@ const BookLandCombos = ({ onClose, type,
             alert("please Add at least 1 Adult")
             return
         }
-        if(adultPassenger > 50){
+        if (adultPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
             return;
         }
-        if(childPassenger > 50){
+        if (childPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
             return;
         }
-        if(infentPassenger > 50){
+        if (infentPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
             return;
         }
@@ -131,11 +132,16 @@ const BookLandCombos = ({ onClose, type,
             alert("please select to date : ")
             return;
         }
+        if(fromDate > toDate){
+            alert(`The 'From' date cannot be later than the 'To' date (${toDate}). Please select an earlier date.`);
+            return;
+        }
         if (toDate > maxDate) {
-            alert(`To date must not exceed ${maxDate}`);
+            alert(`The "To date" cannot exceed the maximum allowed date: ${maxDate}.`);
             return;
         }
         else {
+            setLoading(true);
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -146,9 +152,118 @@ const BookLandCombos = ({ onClose, type,
                 body: JSON.stringify(addToCartLandcombo)
             }).then((res) => res.json())
                 .then((data) => {
-                    alert("LandCombos Edited successfully...")
-                    LoadCartItem();
-                    onClose();
+                    if (data.description === "PAX_CONFLICT") {
+                        const cartId = data.cartId;
+                        const confirmPAX = window.confirm("Passengers count mismatch with previous added item! \n Do you want to continue?");
+                        if (confirmPAX) {
+                            fetch(`${APIPath}/api/v1/agent/new-cart/pax-confirmation`, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                                body: JSON.stringify(
+                                    {
+                                        cartId: cartId,
+                                        paxConfirmation: "YES"
+                                    })
+                            })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    if (data.message === "success") {
+                                        fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+                                            headers: {
+                                                'Authorization': `Bearer ${token}`,
+                                                'Content-Type': 'application/json'
+                                            },
+                                            method: 'PATCH',
+                                            mode: 'cors',
+                                            body: JSON.stringify(addToCartLandcombo)
+                                        }).then((res) => res.json())
+                                            .then((data) => {
+                                                alert(data.message);
+                                                onClose();
+                                                LoadCartItem();
+                                                setLoading(false);
+                                                return;
+                                            })
+                                    }
+                                    else {
+                                        alert("We found some issues! will get back soon.")
+                                        setLoading(false);
+                                        return;
+                                    }
+                                })
+                                .catch((err) => {
+                                    alert(err);
+                                    setLoading(false);
+                                })
+                        }
+                        else {
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    else if (data.description === "DATE_CONFLICT") {
+                        const cartId = data.cartId;
+                        const confirmPAX = window.confirm("Date clash with previous added item! \n Do you want to continue?");
+                        if (confirmPAX) {
+                            fetch(`${APIPath}/api/v1/agent/new-cart/date-confirmation`, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                                body: JSON.stringify(
+                                    {
+                                        cartId: cartId,
+                                        dateConfirmation: "YES"
+                                    })
+                            })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    if (data.message === "success") {
+                                        fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+                                            headers: {
+                                                'Authorization': `Bearer ${token}`,
+                                                'Content-Type': 'application/json'
+                                            },
+                                            method: 'PATCH',
+                                            mode: 'cors',
+                                            body: JSON.stringify(addToCartLandcombo)
+                                        }).then((res) => res.json())
+                                            .then((data) => {
+                                                alert(data.message);
+                                                onClose();
+                                                LoadCartItem();
+                                                setLoading(false);
+                                                return;
+                                            })
+                                    }
+                                    else {
+                                        setLoading(false);
+                                        return;
+                                    }
+                                })
+                                .catch((err) => {
+                                    alert(err);
+                                    setLoading(false);
+                                })
+                        }
+                        else {
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    else {
+                        alert(data.message);
+                        onClose();
+                        LoadCartItem();
+                        setLoading(false);
+                        return;
+                    }
                 })
                 .catch((err) => {
                     alert(err)
@@ -293,11 +408,13 @@ const BookLandCombos = ({ onClose, type,
                                 </sub>
                             </p>
                         </div>
+                        {loading ? <div className="loader"></div>:
                         <div className="package-price-btn">
                             <button onClick={() => {
                                 bookThisPackage();
                             }}>Submit</button>
                         </div>
+                        }
                     </div>
                 </form>
             </div>

@@ -106,7 +106,7 @@ const PacKageDetails = () => {
         const imageWidth = pdfWidth;
         const imageHeight = 100;
 
-        let y = 10;
+        let y = 5;
         const x = 0;
         const maxWidth = pdfWidth - 20; // Maximum width for text
 
@@ -121,15 +121,30 @@ const PacKageDetails = () => {
         // Banner Image
         doc.addImage(packagedata[0].bannerImage, 'PNG', x, y, imageWidth, imageHeight);
         y += imageHeight + 10;
+        // Price of this Package
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
+        doc.text("Price Table", 10, y);
+        y += 4;
+        const tableBody = [
+            `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'adult')?.price}` || '',
+            `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'child')?.price}` || ''
+        ];
 
+        doc.autoTable({
+            startY: y,
+            head: [['Adults', 'Child']],
+            body: [tableBody],
+        });
+        y += 25
         // Title
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         doc.text(packagedata[0].title, 10, y);
         y += 7;
 
         // Package Overview ------------------------------------------------------
-        doc.setFontSize(12);
+        doc.setFontSize(10);
         doc.setTextColor(71, 92, 108);
         const overviewLines = doc.splitTextToSize(packagedata[0].packageOverview, maxWidth);
 
@@ -141,27 +156,27 @@ const PacKageDetails = () => {
         y += 10;
 
         // Package Routing ------------------------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         checkPageOverflow(7);
         doc.text('Routing', 10, y);
         y += 7;
 
         // Trip Duration --------------------------------------------------------
-        doc.setFontSize(12);
+        doc.setFontSize(10);
         doc.setTextColor(71, 92, 108);
         checkPageOverflow(10);
         doc.text(`Trip Duration: ${packagedata[0].duration}`, 10, y);
         y += 10;
 
         // Package Inclusion --------------------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         checkPageOverflow(7);
         doc.text("Inclusion", 10, y);
         y += 7;
 
-        doc.setFontSize(12);
+        doc.setFontSize(10);
         doc.setTextColor(71, 92, 108);
         packagedata[0].includedServices.forEach((service, index) => {
             const inclusionLines = doc.splitTextToSize(`${index + 1}. ${service}`, maxWidth);
@@ -174,13 +189,13 @@ const PacKageDetails = () => {
         });
         y += 10
         // Package Exclusion ---------------------------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         checkPageOverflow(7);
         doc.text("Exclusion", 10, y);
         y += 7;
 
-        doc.setFontSize(12);
+        doc.setFontSize(10);
         doc.setTextColor(71, 92, 108);
         packagedata[0].excludedServices.forEach((val, id) => {
             const exclusionLines = doc.splitTextToSize(`${id + 1}. ${val}`, maxWidth);
@@ -193,8 +208,8 @@ const PacKageDetails = () => {
         });
         y += 10;
         // Package Day Wise Itinerary ---------------------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         checkPageOverflow(7);
         doc.text("Day Wise Itinerary", 10, y);
         y += 7;
@@ -207,7 +222,7 @@ const PacKageDetails = () => {
 
             dayTitleLines.forEach(line => {
                 checkPageOverflow(5);
-                doc.setFontSize(14);
+                doc.setFontSize(12);
                 doc.setTextColor(53, 56, 57)
                 doc.text(line, 10, y);
                 y += 5;
@@ -215,7 +230,7 @@ const PacKageDetails = () => {
 
             dayDescLines.forEach(line => {
                 checkPageOverflow(8);
-                doc.setFontSize(12);
+                doc.setFontSize(10);
                 doc.setTextColor(71, 92, 108)
                 doc.text(line, 10, y);
                 y += 5;
@@ -224,12 +239,12 @@ const PacKageDetails = () => {
         });
         y += 10;
         // Package Booking procedure   -----------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         checkPageOverflow(7);
         doc.text("Booking Procedure", 10, y);
         y += 7;
-        doc.setFontSize(12);
+        doc.setFontSize(10);
         doc.setTextColor(71, 92, 108);
         packagedata[0].bookingProcedure.forEach((val, id) => {
             const bookingLines = doc.splitTextToSize(`${id + 1}. ${val}`, maxWidth);
@@ -240,8 +255,8 @@ const PacKageDetails = () => {
         })
         y += 10;
         // Package Must Carry   -------------------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(14);
+        doc.setTextColor(50, 59, 74);
         doc.text("Must Carry", 10, y);
         y += 7;
         packagedata[0].mustCarry.forEach((val, id) => {
@@ -250,23 +265,23 @@ const PacKageDetails = () => {
             doc.text(`${id + 1}. ${val}`, 10, y);
             y += 5;
         })
-        y += 10;
+        y += 30;
         // Package Price table  ------------------------------------------------
-        doc.setFontSize(16);
-        doc.setTextColor(0, 0, 0);
-        doc.text("Price Table", 10, y);
-        y += 7;
-        const tableBody = [
-            `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'adult')?.price}` || '',
-            `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'child')?.price}` || ''
-        ];
-    
-        doc.autoTable({
-            startY: y,
-            head: [['Adults', 'Child']],
-            body: [tableBody],
-        });
-    
+        // doc.setFontSize(16);
+        // doc.setTextColor(0, 0, 0);
+        // doc.text("Price Table", 10, y);
+        // y += 7;
+        // const tableBody = [
+        //     `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'adult')?.price}` || '',
+        //     `AED ${packagedata[0].price.find(priceObj => priceObj.travelerType === 'child')?.price}` || ''
+        // ];
+
+        // doc.autoTable({
+        //     startY: y,
+        //     head: [['Adults', 'Child']],
+        //     body: [tableBody],
+        // });
+
         // Save the PDF
         doc.save(`Booking_Details_of_${packagedata[0].title}.pdf`);
     };
@@ -312,32 +327,32 @@ const PacKageDetails = () => {
                                     </div>
                                 </div>
                                 <div className="package-description">
-                                    <div className={active === 1 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 1 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(1)}
                                     >
                                         <h4>Overview</h4>
                                     </div>
-                                    <div className={active === 2 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 2 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(2)}
                                     >
                                         <h4>Inclusions/Exclusion</h4>
                                     </div>
-                                    <div className={active === 3 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 3 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(3)}
                                     >
                                         <h4>Day Plan</h4>
                                     </div>
-                                    <div className={active === 4 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 4 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(4)}
                                     >
                                         <h4>Booking Procedure</h4>
                                     </div>
-                                    <div className={active === 5 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 5 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(5)}
                                     >
                                         <h4>Cancellation Policy</h4>
                                     </div>
-                                    <div className={active === 6 ? "package-overview active" : "package-overview"}
+                                    <div className={active === 6 ? "package-overview on" : "package-overview"}
                                         onClick={() => handleActiveClass(6)}
                                     >
                                         <h4>Must Carry</h4>

@@ -134,22 +134,22 @@ const LandCombosDetails = () => {
                                 </div>
                             </div>
                             <div className="package-description">
-                                <div className={active === 1 ? "package-overview active" : "package-overview"}
+                                <div className={active === 1 ? "package-overview on" : "package-overview"}
                                     onClick={() => handleActiveClass(1)}
                                 >
                                     <h4>Overview</h4>
                                 </div>
-                                <div className={active === 2 ? "package-overview active" : "package-overview"}
+                                <div className={active === 2 ? "package-overview on" : "package-overview"}
                                     onClick={() => handleActiveClass(2)}
                                 >
                                     <h4>Inclusions/Exclusion</h4>
                                 </div>
-                                <div className={active === 3 ? "package-overview active" : "package-overview"}
+                                <div className={active === 3 ? "package-overview on" : "package-overview"}
                                     onClick={() => handleActiveClass(3)}
                                 >
                                     <h4>Meeting Point</h4>
                                 </div>
-                                <div className={active === 4 ? "package-overview active" : "package-overview"}
+                                <div className={active === 4 ? "package-overview on" : "package-overview"}
                                     onClick={() => handleActiveClass(4)}
                                 >
                                     <h4>Cancellation Policy</h4>

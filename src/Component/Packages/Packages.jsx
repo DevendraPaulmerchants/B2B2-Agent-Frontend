@@ -11,7 +11,7 @@ import './Packages.css';
 
 const Packages = () => {
     document.body.style.overflow = 'auto';
-    const {token } = useCart();
+    const {token} = useCart();
     const [packages, setPackages] = useState(null);
     const [originalPackages, setOriginalPackages] = useState(null);
     const [loading, setLoading] = useState(true);

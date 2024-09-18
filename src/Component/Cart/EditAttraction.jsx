@@ -8,7 +8,7 @@ import { APIPath } from "../../Config";
 import { useCart } from "../context/CartContext";
 
 const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, Pmobile, Pemail,
-    adults, child,infants, type, cartId, attractionId, pkgId, attDate, LoadCartItem }) => {
+    adults, child, infants, type, cartId, attractionId, pkgId, attDate, LoadCartItem }) => {
 
     const { token } = useCart();
     document.body.style.overflow = 'hidden';
@@ -20,6 +20,7 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
     const [email, setEmail] = useState(Pemail);
     const [mobile, setMobile] = useState(Pmobile);
     const [fromDate, setFromDate] = useState(attDate);
+    const [loading, setLoading] = useState(false);
 
     // const priceperPerson = price / (adults + child);
     const priceDescription = packagedata.price.filter((val, id) => val._id === subAttractionId);
@@ -57,7 +58,7 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
                 subTitle: packagedata.subTitle,
                 numberOfAdults: adultPassenger,
                 numberOfChildrens: childPassenger,
-                numberOfInfants:infentPassenger,
+                numberOfInfants: infentPassenger,
                 price: pkgPrice,
                 startDate: fromDate,
                 // endDate: toDate
@@ -89,15 +90,15 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
             alert("please Add at least 1 Adult")
             return
         }
-        if(adultPassenger > 50){
+        if (adultPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
             return;
         }
-        if(childPassenger > 50){
+        if (childPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
             return;
         }
-        if(infentPassenger > 50){
+        if (infentPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
             return;
         }
@@ -106,6 +107,7 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
             return;
         }
         else {
+            setLoading(true);
             fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -116,11 +118,119 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
                 body: JSON.stringify(addToCartAttraction)
             }).then((res) => res.json())
                 .then((data) => {
-                    console.log(data)
-                    alert("Attraction Edited successfully...")
-                    onClose();
-                    LoadCartItem()
-                    // navigate('/cart')
+
+                    if (data.description === "PAX_CONFLICT") {
+                        const cartId = data.cartId;
+                        const confirmPAX = window.confirm("Passengers count mismatch with previous added item! \n Do you want to continue?");
+                        if (confirmPAX) {
+                            fetch(`${APIPath}/api/v1/agent/new-cart/pax-confirmation`, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                                body: JSON.stringify(
+                                    {
+                                        cartId: cartId,
+                                        paxConfirmation: "YES"
+                                    })
+                            })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    if (data.message === "success") {
+                                        fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+                                            headers: {
+                                                'Authorization': `Bearer ${token}`,
+                                                'Content-Type': 'application/json'
+                                            },
+                                            method: 'PATCH',
+                                            mode: 'cors',
+                                            body: JSON.stringify(addToCartAttraction)
+                                        }).then((res) => res.json())
+                                            .then((data) => {
+                                                alert(data.message);
+                                                onClose();
+                                                LoadCartItem();
+                                                setLoading(false);
+                                                return;
+                                            })
+                                    }
+                                    else {
+                                        alert("We found some issues! will get back soon.")
+                                        setLoading(false);
+                                        return;
+                                    }
+                                })
+                                .catch((err) => {
+                                    alert(err);
+                                    setLoading(false);
+                                })
+                        }
+                        else {
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    else if (data.description === "DATE_CONFLICT") {
+                        const cartId = data.cartId;
+                        const confirmPAX = window.confirm("Date clash with previous added item! \n Do you want to continue?");
+                        if (confirmPAX) {
+                            fetch(`${APIPath}/api/v1/agent/new-cart/date-confirmation`, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                                body: JSON.stringify(
+                                    {
+                                        cartId: cartId,
+                                        dateConfirmation: "YES"
+                                    })
+                            })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    if (data.message === "success") {
+                                        fetch(`${APIPath}/api/v1/agent/new-cart/item`, {
+                                            headers: {
+                                                'Authorization': `Bearer ${token}`,
+                                                'Content-Type': 'application/json'
+                                            },
+                                            method: 'PATCH',
+                                            mode: 'cors',
+                                            body: JSON.stringify(addToCartAttraction)
+                                        }).then((res) => res.json())
+                                            .then((data) => {
+                                                alert(data.message);
+                                                onClose();
+                                                LoadCartItem();
+                                                setLoading(false);
+                                                return;
+                                            })
+                                    }
+                                    else {
+                                        setLoading(false);
+                                        return;
+                                    }
+                                })
+                                .catch((err) => {
+                                    alert(err);
+                                    setLoading(false);
+                                })
+                        }
+                        else {
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    else {
+                        alert(data.message);
+                        onClose();
+                        LoadCartItem();
+                        setLoading(false);
+                        return;
+                    }
                 })
                 .catch((err) => {
                     alert(err)
@@ -249,11 +359,13 @@ const BookAttraction = ({ onClose, packagedata, subAttractionId, price, Pname, P
                     <div className="booking-price-text-value">
                         <p>Total Price: AED&nbsp;<b>{pkgPrice}</b>&nbsp;<sub>+VAT(5%)</sub></p>
                     </div>
-                    <div className="package-price-btn">
-                        <button onClick={() => {
-                            EditAttraction();
-                        }}>Submit</button>
-                    </div>
+                    {loading ? <div className="loader"></div> :
+                        <div className="package-price-btn">
+                            <button onClick={() => {
+                                EditAttraction();
+                            }}>Submit</button>
+                        </div>
+                    }
                 </div>
             </form>
         </div>

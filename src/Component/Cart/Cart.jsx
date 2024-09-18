@@ -8,7 +8,7 @@ import BookPackage from "./EditPackage";
 import BookLandCombos from "./EditLandCombo";
 import BookTransfer from "./EditTransfer";
 
-const Cart = ({ tokenH }) => {
+const Cart = ({ tokenH, setCart, cart }) => {
   const { cartLength, setCartLength, token } = useCart();
   document.body.style.overflow = 'auto';
   useEffect(() => {
@@ -77,12 +77,23 @@ const Cart = ({ tokenH }) => {
         setLandcombos(data.data[0]?.landCombos);
         setTransfer(data.data[0]?.transfers)
         setCustomer(data.data[0]?.customerDetails)
-        setCartLength(
+        // setCartLength(
+        //   (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0]?.attractions.length) +
+        //   (isNaN(data.data[0]?.landCombos?.length) ? 0 : data.data[0]?.landCombos.length) +
+        //   (isNaN(data.data[0]?.packages?.length) ? 0 : data.data[0]?.packages.length) +
+        //   (isNaN(data.data[0]?.transfers?.length) ? 0 : data.data[0]?.transfers.length)
+        // )
+        setCart(
           (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0]?.attractions.length) +
           (isNaN(data.data[0]?.landCombos?.length) ? 0 : data.data[0]?.landCombos.length) +
           (isNaN(data.data[0]?.packages?.length) ? 0 : data.data[0]?.packages.length) +
           (isNaN(data.data[0]?.transfers?.length) ? 0 : data.data[0]?.transfers.length)
         )
+        const newcart = (isNaN(data.data[0]?.attractions?.length) ? 0 : data.data[0]?.attractions.length) +
+          (isNaN(data.data[0]?.landCombos?.length) ? 0 : data.data[0]?.landCombos.length) +
+          (isNaN(data.data[0]?.packages?.length) ? 0 : data.data[0]?.packages.length) +
+          (isNaN(data.data[0]?.transfers?.length) ? 0 : data.data[0]?.transfers.length)
+        localStorage.setItem('cart', newcart);
       })
       .catch((err) => {
         alert(err)
@@ -123,64 +134,82 @@ const Cart = ({ tokenH }) => {
 
   let totalCost = packageprice + attractionprice + landcombosprice + transferprice + vat;
 
-  const BookNow = () => {
-    setLoading(true);
-    // console.log("booking clicked")
-    fetch(`${APIPath}/api/v1/agent/booking/custom-booking`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify({ "cartID": cartId })
-    }).then((res) => res.json())
-      .then((data) => {
-        alert(data.message);
-        setLoading(false);
-        LoadCartItem();
-      })
-      .catch((err) => {
-        alert(err)
-        setLoading(false);
-      })
-  }
-
   const [custom, setCustom] = useState(false);
   const [customMsg, setCustomMsg] = useState("");
   const [customAction, setCustomAction] = useState(false);
+  const [customT, setCustomT] = useState('')
+
   const CustomPopUp = ({ customMsg }) => {
     document.body.style.overflow = "hidden";
     return <div className="custom-popup-container">
       <div className="custom-popup">
         <h4>{customMsg}</h4>
-        <div className="custom-button">
-          <button onMouseEnter={() => {
-            setCustomAction(true);
-          }}
-            onClick={() => {
+        {loading ? <div className="loader"></div> :
+          <div className="custom-button">
+            <button onMouseEnter={() => {
               setCustomAction(true);
+            }}
+              onClick={() => {
+                setLoading(true);
+                setCustomAction(true);
+                setCustom(false);
+                if (customT === "Delete") {
+                  DeleteAll();
+                }
+                if (customT === "Book") {
+                  BookNow();
+                }
+              }}>Yes</button>
+            <button onClick={() => {
+              setCustomAction(false);
               setCustom(false);
-              DeleteAll();
-            }}>Yes</button>
-          <button onClick={() => {
-            setCustomAction(false);
-            setCustom(false);
-            console.log(customAction)
-          }}>No</button>
-        </div>
+            }}>No</button>
+          </div>
+        }
       </div>
     </div>
+  }
+
+  const BookNow = () => {
+    setLoading(true);
+    setCustom(true);
+    setCustomT("Book")
+    setCustomMsg("Are you sure you want to book this cart`s item?");
+    if (customAction === true) {
+      fetch(`${APIPath}/api/v1/agent/booking/custom-booking`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        mode: "cors",
+        body: JSON.stringify({ "cartID": cartId })
+      }).then((res) => res.json())
+        .then((data) => {
+          alert("Your booking request has been successfully submitted. Our admin team will review and respond shortly.");
+          setLoading(false);
+          setCustom(false);
+          LoadCartItem();
+        })
+        .catch((err) => {
+          alert(err)
+          setLoading(false);
+        })
+    }
+    else {
+      setLoading(false);
+      return;
+    }
   }
 
   const DeleteAll = () => {
     setLoading(true);
     setCustom(true);
+    setCustomT("Delete");
     setCustomMsg("Are you sure you want to remove cart`s item from your cart?");
     // const confirm=window.confirm("Are you sure you want to remove cart`s item from your cart?");
     // if(confirm){
     if (customAction === true) {
-      console.log("Custom Action", customAction);
       fetch(`${APIPath}/api/v1/agent/new-cart`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -232,9 +261,6 @@ const Cart = ({ tokenH }) => {
       })
   }
 
-  // const EditOneItem = () => {
-  //   console.log("Item should be edited");
-  // }
   const onClose = () => {
     setEditAtt(false);
     setEditPkg(false);
@@ -242,7 +268,7 @@ const Cart = ({ tokenH }) => {
     setEditTransfer(false);
   }
   return <>
-    {cartLength > 0 ?
+    {cart > 0 ?
       <div className="cart-container-main">
         <div className="cart-container">
           <div className="cart-logo">
@@ -708,6 +734,10 @@ const Cart = ({ tokenH }) => {
                       <div className="card1-item-passenger-name">
                         <h4>No. of children</h4>
                         <h2>{val.numberOfChildrens}</h2>
+                      </div>
+                      <div className="card1-item-passenger-name">
+                        <h4>No. of children</h4>
+                        <h2>{val.numberOfInfants}</h2>
                       </div>
                     </div>
                   </>

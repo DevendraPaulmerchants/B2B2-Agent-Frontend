@@ -9,10 +9,17 @@
     z-index: 99;
     list-style: none;
     position: absolute;
+    top: 80px;
     right: 20px;
     background: #fff;
     border-radius: 10px;
     padding: 1rem 2rem;
+    box-shadow: 0 0 10px 10px rgba(36,36,36,0.20);
+}
+.user-log-out li  {
+    border-bottom: 2px solid #dedede;
+    margin-bottom: 1rem;
+    padding-bottom: 5px;
 }
 .user-log-out li a {
     text-decoration: none;
@@ -20,6 +27,12 @@
 #navbarNav-mobile-tab {
     flex-direction: row;
     gap: 10px;
+}
+.active {
+    border-bottom: 2px solid black;
+}
+.nav-link .user-login li a .active {
+    border-bottom: unset !important;
 }
 .nav-link-btn {
  background-color: #52CCFC;

@@ -209,7 +209,7 @@ const BookAttraction = ({ onClose, packagedata }) => {
                         const cartId=data.cartId;
                         const confirmPAX = window.confirm("Passengers count mismatch with previous added item! \n Do you want to continue?");
                         if (confirmPAX) {
-                            fetch(`${APIPath}/api/v1/agent/new-cart/confirmation`, {
+                            fetch(`${APIPath}/api/v1/agent/new-cart/pax-confirmation`, {
                                 headers: {
                                     'Authorization': `Bearer ${token}`,
                                     'Content-Type': 'application/json'
@@ -257,18 +257,61 @@ const BookAttraction = ({ onClose, packagedata }) => {
                         }
                     }
                     else if (data.description === "DATE_CONFLICT") {
-                        // const confirmDate = window.confirm("Date is clashing with a previously added item!");
-                        // if (confirmDate) {
-                        //     setLoading(false);
-                        //     return
-                        // } else {
-                        //     setLoading(false);
-                        //     return;
-                        // }
-                        alert("Date is clashing with a previously added item!");
+                        const cartId=data.cartId;
+                        const confirmPAX = window.confirm("Date clash with previous added item! \n Do you want to continue?");
+                        if(confirmPAX){
+                            fetch(`${APIPath}/api/v1/agent/new-cart/date-confirmation`, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                                body: JSON.stringify(
+                                    {
+                                        cartId: cartId,
+                                        dateConfirmation: "YES"
+                                    })
+                            })
+                            .then((res)=>res.json())
+                            .then((data)=>{
+                                if(data.message === "success"){
+                                    fetch(`${APIPath}/api/v1/agent/new-cart`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        method: 'POST',
+                                        mode: 'cors',
+                                        body: JSON.stringify(addToCartAttraction)
+                                    }).then((res) => res.json())
+                                    .then((data)=>{
+                                        console.log(data);
+                                        setLoading(false);
+                                        navigate("/cart");
+                                        return;
+                                    })
+                                }
+                                else {
+                                    setLoading(false);
+                                    return;
+                                }
+                            })
+                            .catch((err)=>{
+                                alert(err);
+                                setLoading(false);
+                            })
+                        }
+                        else{
+                            setLoading(false);
+                            return;
+                        }
+                    } 
+                    else if (data.statusCode === 400){
+                        alert(data.message);
                         setLoading(false);
                         return;
-                    } 
+                    }
                     else {
                         setLoading(false);
                         navigate('/cart');

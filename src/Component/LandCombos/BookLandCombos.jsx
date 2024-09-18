@@ -108,15 +108,15 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
             alert("please Add at least 1 Adult...")
             return
         }
-        if(adultPassenger > 50){
+        if (adultPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
             return;
         }
-        if(childPassenger > 50){
+        if (childPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
             return;
         }
-        if(infentPassenger > 50){
+        if (infentPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
             return;
         }
@@ -130,6 +130,10 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
         }
         if (toDate.length < 2) {
             alert("please select to date...")
+            return;
+        }
+        if(fromDate > toDate){
+            alert(`The 'From' date cannot be later than the 'To' date (${toDate}). Please select an earlier date.`);
             return;
         }
         if (toDate > maxDate) {
@@ -183,17 +187,8 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
         }
     }
 
-    // const customPopUp = () => {
-    //     return <div className="custom-pop-up">
-    //         <h4>this Is custom pop-up</h4>
-    //         <div className="custom-pop-up-msg">
-    //             <button>Yes</button>
-    //             <button>No</button>
-    //         </div>
-    //     </div>
-    // }
     const addToCart = () => {
-        
+
         if (name.length < 3) {
             alert("Please fill lead passenger details")
             return
@@ -210,15 +205,15 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
             alert("Please add at least 1 Adult...");
             return;
         }
-        if(adultPassenger > 50){
+        if (adultPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 adult passengers are allowed.");
             return;
         }
-        if(childPassenger > 50){
+        if (childPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 child passengers are allowed.");
             return;
         }
-        if(infentPassenger > 50){
+        if (infentPassenger > 50) {
             alert("Maximum limit exceeded: Only 50 infant passengers are allowed.");
             return;
         }
@@ -232,6 +227,10 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
         }
         if (toDate > maxDate) {
             alert(`To date must not exceed ${maxDate}`);
+            return;
+        }
+        if(fromDate > toDate){
+            alert(`The 'From' date cannot be later than the 'To' date (${toDate}). Please select an earlier date.`);
             return;
         }
         setLoading(true);
@@ -248,10 +247,10 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.description === "PAX_CONFLICT") {
-                    const cartId=data.cartId;
+                    const cartId = data.cartId;
                     const confirmPAX = window.confirm("Passengers count mismatch with previous added item! \n Do you want to continue?");
                     if (confirmPAX) {
-                        fetch(`${APIPath}/api/v1/agent/new-cart/confirmation`, {
+                        fetch(`${APIPath}/api/v1/agent/new-cart/pax-confirmation`, {
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                                 'Content-Type': 'application/json'
@@ -264,34 +263,34 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
                                     paxConfirmation: "YES"
                                 })
                         })
-                        .then((res)=>res.json())
-                        .then((data)=>{
-                            if(data.message === "success"){
-                                fetch(`${APIPath}/api/v1/agent/new-cart`, {
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`,
-                                        'Content-Type': 'application/json'
-                                    },
-                                    method: 'POST',
-                                    mode: 'cors',
-                                    body: JSON.stringify(addToCartLandcombo)
-                                }).then((res) => res.json())
-                                .then((data)=>{
-                                    console.log(data);
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data.message === "success") {
+                                    fetch(`${APIPath}/api/v1/agent/new-cart`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        method: 'POST',
+                                        mode: 'cors',
+                                        body: JSON.stringify(addToCartLandcombo)
+                                    }).then((res) => res.json())
+                                        .then((data) => {
+                                            console.log(data);
+                                            setLoading(false);
+                                            navigate("/cart");
+                                            return;
+                                        })
+                                }
+                                else {
                                     setLoading(false);
-                                    navigate("/cart");
                                     return;
-                                })
-                            }
-                            else {
+                                }
+                            })
+                            .catch((err) => {
+                                alert(err);
                                 setLoading(false);
-                                return;
-                            }
-                        })
-                        .catch((err)=>{
-                            alert(err);
-                            setLoading(false);
-                        })
+                            })
                     }
                     else {
                         setLoading(false);
@@ -299,18 +298,61 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
                     }
                 }
                 else if (data.description === "DATE_CONFLICT") {
-                    // const confirmDate = window.confirm("Date is clashing with a previously added item! \n Do you want to continue?");
-                    // if (confirmDate) {
-                    //     setLoading(false);
-                    //     return
-                    // } else {
-                    //     setLoading(false);
-                    //     return;
-                    // }
-                    alert("Date is clashing with a previously added item!");
+                    const cartId = data.cartId;
+                    const confirmPAX = window.confirm("Date clash with previous added item! \n Do you want to continue?");
+                    if (confirmPAX) {
+                        fetch(`${APIPath}/api/v1/agent/new-cart/date-confirmation`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            method: 'POST',
+                            mode: 'cors',
+                            body: JSON.stringify(
+                                {
+                                    cartId: cartId,
+                                    dateConfirmation: "YES"
+                                })
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data.message === "success") {
+                                    fetch(`${APIPath}/api/v1/agent/new-cart`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        method: 'POST',
+                                        mode: 'cors',
+                                        body: JSON.stringify(addToCartLandcombo)
+                                    }).then((res) => res.json())
+                                        .then((data) => {
+                                            console.log(data);
+                                            setLoading(false);
+                                            navigate("/cart");
+                                            return;
+                                        })
+                                }
+                                else {
+                                    setLoading(false);
+                                    return;
+                                }
+                            })
+                            .catch((err) => {
+                                alert(err);
+                                setLoading(false);
+                            })
+                    }
+                    else {
                         setLoading(false);
                         return;
-                } 
+                    }
+                }
+                else if (data.statusCode === 400){
+                    alert(data.message);
+                    setLoading(false);
+                    return;
+                }
                 else {
                     setLoading(false);
                     navigate('/cart');

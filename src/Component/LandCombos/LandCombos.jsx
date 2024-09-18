@@ -7,8 +7,8 @@ import { IoSearchSharp } from "react-icons/io5";
 import { useCart } from "../context/CartContext";
 
 const LandCombos = () => {
-    const { token } = useCart();
     document.body.style.overflow = 'auto';
+    const { token } = useCart();
     const [landCombosData, setLandCombosData] = useState(null);
     const [originalLnC, setOriginalLnC] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');

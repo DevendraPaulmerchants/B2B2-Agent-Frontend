@@ -126,6 +126,11 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             return
         }
         if (tripType === 'ROUND_TRIP') {
+            if(flightArrivalTime > flightDepartureTime){
+                alert(`Arrival Date must not be exceed ${flightDepartureTime}`);
+                setLoading(false)
+                return;
+            }
             if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 4) {
                 alert("please fill departure flight Code...");
                 setLoading(false);
@@ -210,12 +215,12 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             alert("please Add at least 1 Adult...")
             return
         }
-        if (infentPassenger > 2) {
-            alert("More than 2 infants are not allowed... ");
-            return;
-        }
+        // if (infentPassenger > 2) {
+        //     alert("More than 2 infants are not allowed... ");
+        //     return;
+        // }
         if ((adultPassenger + childPassenger) > transferDetails.vehicle.maxPassenger) {
-            alert(`This Vehicle can not allow more then ${transferDetails.vehicle.maxPassenger} passengers`)
+            alert(`This Vehicle can not allow more than ${transferDetails.vehicle.maxPassenger} passengers`)
             return;
         }
         if (validTypes.includes(transferDetails.type) && flightArrivalCode.length < 4) {
@@ -227,6 +232,10 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
             return
         }
         if (tripType === 'ROUND_TRIP') {
+            if(flightArrivalTime > flightDepartureTime){
+                alert(`Arrival Date must not be exceed ${flightDepartureTime}`);
+                return;
+            }
             if (validTypes.includes(transferDetails.type) && flightDepartureCode.length < 4) {
                 alert("please fill departure flight Code...");
                 return
@@ -411,7 +420,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                         </div>
                                     </div>
                                     <div style={{ width: '85%' }} id="remarks">
-                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/pickUp Location</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Pickup Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",
@@ -444,7 +453,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     <div className="booking-flight-code" style={{ width: "50%" }}>
                                                         <label htmlFor="Flight-Code">ETD</label>
                                                         <input type="date" required
-                                                            min={getCurrentDateTime()}
+                                                            min={flightArrivalTime}
                                                             value={flightDepartureTime}
                                                             onChange={(e) => setFlightDepartureTime(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -464,7 +473,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                 </div>
                                             </div>
                                             <div id="remarks">
-                                                <h2 style={{ marginBottom: "5px" }}>Remarks/drop-off Location</h2>
+                                                <h2 style={{ marginBottom: "5px" }}>Dropoff Remarks</h2>
                                                 <input style={{
                                                     outline: "none",
                                                     border: "1px solid skyblue",
@@ -486,7 +495,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                             <div className="booking-flight-arrival-departure-container">
                                 <div className="booking-flight-arrival-container">
                                     <div className="flight-arrival-heading">
-                                        <h2>Arrival Info.</h2>
+                                        <h2>Departure Info.</h2>
                                         <div className="flight-arrival-code-time">
                                             <div className="booking-flight-code">
                                                 <label htmlFor="Flight-Code">Flight No.</label>
@@ -499,7 +508,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             <div className="booking-flight-code"
                                                 style={{ width: "50%" }}
                                             >
-                                                <label htmlFor="Flight-Code">ETA</label>
+                                                <label htmlFor="Flight-Code">ETD</label>
                                                 <input type="date" required
                                                     min={getCurrentDateTime()}
                                                     value={flightArrivalTime}
@@ -518,7 +527,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                         </div>
                                     </div>
                                     <div style={{ width: '85%' }} id="remarks">
-                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/pickUp Location</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Pickup Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",
@@ -536,7 +545,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                     <div className="flight-departure-heading">
                                         <div className="flight-departure-code-time">
                                             <div id={tripType === 'ROUND_TRIP' ? '' : 'opacity'}>
-                                                <h2>Departure Info.</h2>
+                                                <h2>Arrival Info.</h2>
                                                 <div className="booking-flight-arrival-input">
                                                     <div className="booking-flight-code">
                                                         <label htmlFor="Flight-Code">Flight No.</label>
@@ -548,9 +557,9 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                         />
                                                     </div>
                                                     <div className="booking-flight-code" style={{ width: "50%" }}>
-                                                        <label htmlFor="Flight-Code">ETD</label>
+                                                        <label htmlFor="Flight-Code">ETA</label>
                                                         <input type="date" required
-                                                            min={getCurrentDateTime()}
+                                                            min={flightArrivalTime}
                                                             value={flightDepartureTime}
                                                             onChange={(e) => setFlightDepartureTime(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -570,7 +579,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                 </div>
                                             </div>
                                             <div id="remarks">
-                                                <h2 style={{ marginBottom: "5px" }}>Remarks/dropoff Location</h2>
+                                                <h2 style={{ marginBottom: "5px" }}>Dropoff Remarks</h2>
                                                 <input style={{
                                                     outline: "none",
                                                     border: "1px solid skyblue",
@@ -624,7 +633,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                         </div>
                                     </div>
                                     <div style={{ width: '85%' }} id="remarks">
-                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/pickUp Location</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Pickup Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",
@@ -656,7 +665,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                     <div className="booking-flight-code" style={{ width: "50%" }}>
                                                         <label htmlFor="Flight-Code">ETD</label>
                                                         <input type="date" required
-                                                            min={getCurrentDateTime()}
+                                                            min={flightArrivalTime}
                                                             value={flightDepartureTime}
                                                             onChange={(e) => setFlightDepartureTime(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -676,7 +685,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                                 </div>
                                             </div>
                                             <div style={{ width: '85%' }} id="remarks">
-                                                <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Remarks/dropoff Location</h2>
+                                                <h2 style={{ marginBottom: "5px", fontSize: '18px', color: '#1D3071' }}>Dropoff Remarks</h2>
                                                 <input style={{
                                                     outline: "none",
                                                     border: "1px solid skyblue",
@@ -698,7 +707,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                             <div className="booking-flight-arrival-departure-container">
                                 <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                                     <div id="remarks">
-                                        <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}>Arrival Remarks</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}>Pickup Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",
@@ -712,7 +721,7 @@ const BookTransfer = ({ tripType, adultsPassengers, childPassengers, selectedDat
                                             type="textarea" placeholder="Enter your pickUp off location" />
                                     </div>
                                     <div id="remarks">
-                                        <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}> Departure Remarks</h2>
+                                        <h2 style={{ marginBottom: "5px", fontSize: "16px", color: "00081d" }}> Dropoff Remarks</h2>
                                         <input style={{
                                             outline: "none",
                                             border: "1px solid skyblue",

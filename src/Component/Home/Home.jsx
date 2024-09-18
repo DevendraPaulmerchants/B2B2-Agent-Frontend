@@ -125,24 +125,25 @@ const Home = () => {
 
     // --------------------------------LandCombos List--------------------------------------
     useEffect(() => {
-
-        fetch(`${APIPath}/api/v1/agent/landCombo`, {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'GET',
-            mode: 'cors',
-        }).then((res) => res.json())
-            .then((data) => {
-                setLandCombosData(data.data)
-                setOriginalLnC(data.data)
-                setLoading(false)
-            })
-            .catch((err) => {
-                alert(err)
-                setLoading(false)
-            })
+      if(token){
+          fetch(`${APIPath}/api/v1/agent/landCombo`, {
+              headers: {
+                  'Authorization': `Bearer ${token}`,
+                  'Content-Type': 'application/json'
+              },
+              method: 'GET',
+              mode: 'cors',
+          }).then((res) => res.json())
+              .then((data) => {
+                  setLandCombosData(data.data)
+                  setOriginalLnC(data.data)
+                  setLoading(false)
+              })
+              .catch((err) => {
+                  alert(err)
+                  setLoading(false)
+              })
+      }
     }, [token])
     const topThreeLandCombos = landCombosData?.slice(startIndexLnC, startIndexLnC + 3);
     const clickedLandCombos = (packageId) => {

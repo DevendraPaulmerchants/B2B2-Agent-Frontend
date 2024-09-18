@@ -9,7 +9,7 @@ import Transfers from './Component/Transfers/Transfers';
 import Cart from './Component/Cart/Cart';
 import ContactUs from './Component/ContactUs/ContactUs';
 import { CartProvider } from "./Component/context/CartContext";
-import User from './Component/User/User';
+import User from './Component/User/Bookings';
 import Packages from './Component/Packages/Packages';
 import PackageDetails from './Component/Packages/PackageDetails';
 import LandCombos from './Component/LandCombos/LandCombos';
@@ -20,10 +20,13 @@ import Privacy from './Component/Footer/Privacy';
 import Condition from './Component/Footer/Condition';
 import Aboutus from './Component/AboutUs/Aboutus';
 import PasswordReset from './Component/ForgotPassword/PasswordReset';
+import UserDetails from './Component/User/UserDetails';
+import Bookings from './Component/User/Bookings';
 
 function App() {
   document.body.style.overflow = "auto";
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [cart,setCart]=useState(0);
   const [agentName, setAgentName] = useState('');
   const [token, setToken] = useState('');
 
@@ -56,15 +59,16 @@ function App() {
       <CartProvider>
         <Router>
           {isLoggedIn && (
-            <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} setLoggedIn={setLoggedIn} />
+            <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} setLoggedIn={setLoggedIn} setCart={setCart} cart={cart} />
           )}
           <Routes>
-            <Route path="/" element={isLoggedIn ? <Home token={token} setLoggedIn={setLoggedIn} /> : <Login setLoggedIn={setLoggedIn} />} />
+            <Route path="/" element={isLoggedIn ? <Home token={token} setLoggedIn={setLoggedIn} /> : <Login setLoggedIn={setLoggedIn} setCart={setCart} />} />
             <Route path="/registration" element={<Registration />} />
             <Route path="/reset" element={<PasswordReset />} />
             {isLoggedIn && (
               <>
-                <Route path="/user" element={<User />} />
+                <Route path="/bookings" element={<Bookings />} />
+                <Route path='/userDetails' element={<UserDetails/>}/>
                 <Route path="/packages" element={<Packages />} />
                 <Route path="/packageDetails/:packageId" element={<PackageDetails />} />
                 <Route path="/landcombos" element={<LandCombos />} />
@@ -72,8 +76,7 @@ function App() {
                 <Route path="/attractions" element={<Attractions />} />
                 <Route path="/attractiondetails/:packageId" element={<AttractionDetails />} />
                 <Route path="/transfers" element={<Transfers tokenH={token} />} />
-                <Route path="/cart" element={<Cart tokenH={token} />} />
-                {/* <Route path="/reset" element={<PasswordReset />} /> */}
+                <Route path="/cart" element={<Cart tokenH={token} setCart={setCart} cart={cart}/>} />
                 <Route path="/contactus" element={<ContactUs />} />
                 <Route path="/privacy_policy" element={<Privacy />} />
                 <Route path="/term&condition" element={<Condition />} />
@@ -88,3 +91,5 @@ function App() {
 }
 
 export default App;
+
+

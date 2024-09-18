@@ -1,6 +1,32 @@
 .agent-booking-container {
     padding: 2rem;
 }
+.agent-booking-search-revenue {
+    display: flex;
+    justify-content: space-between;
+}
+.agent-search {
+   border: 1px solid skyblue;
+   padding: 3px 20px;
+   border-radius: 20px;
+}
+.agent-search input {
+    border: none;
+    outline: none;
+}
+.agent-booking-revenue {
+    display: flex;
+    gap: 4rem;
+    justify-content: space-between;
+}
+.agent-booking-revenue h2 {
+    font-size: 18px;
+}
+.agent-booking-revenue h2 span{
+    font-size: 20px;
+    font-weight: 700;
+    color: #094777;
+}
 .agent-booking-container table {
     width: 100%;
     margin: 2rem auto;
@@ -9,20 +35,43 @@
     border-radius: 20px;
     box-shadow: 0 0 40px #dedede;
 }
+
 .agent-booking-container thead {
     background: #8dc4e9;
     margin-bottom: 10px;
 }
-.agent-booking-container thead tr th{
+
+.agent-booking-container thead tr th {
     padding: 8px;
 }
+
 .agent-booking-container tbody tr td {
     padding: 10px;
     border-bottom: 1px solid rgb(166, 169, 177, 0.5);
     font-size: 14px;
 }
+
 .agent-booking-container tbody tr:last-child td {
     border-bottom: none;
+}
+.booking-search-and-status {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+/* .booking-status {
+    display: flex;
+} */
+#booking-status {
+    background: none;
+    border: 1px solid skyblue;
+    border-radius: 20px;
+    outline: none;
+    padding: 5px 10px;
+    /* font-weight: 500; */
+    cursor: pointer;
+    color: #212529;
+    font-size: 16px;
 }
 #pending {
     background: rgba(255, 230, 200, 1);
@@ -31,6 +80,7 @@
     padding: 2px 10px;
     border-radius: 20px;
 }
+
 #on-hold {
     background: rgba(212, 223, 255, 1);
     color: rgba(57, 106, 255, 1);
@@ -39,6 +89,7 @@
     border-radius: 20px;
     margin: auto;
 }
+
 #Awaiting_Payment {
     background: rgba(255, 245, 217, 1);
     color: rgba(255, 187, 56, 1);
@@ -47,6 +98,7 @@
     border-radius: 20px;
     margin: auto;
 }
+
 #confirm {
     background: rgba(188, 255, 224, 1);
     color: rgba(18, 183, 106, 1);
@@ -55,83 +107,138 @@
     border-radius: 20px;
     margin: auto;
 }
+
 #rejected {
     background: rgba(255, 0, 0, 0.5);
-    color: rgba(255, 0, 0,1);
+    color: rgba(255, 0, 0, 1);
     font-weight: 600;
     padding: 2px 10px;
     border-radius: 20px;
     margin: auto;
 }
+
 .agent-view-booking button {
     border: none;
     outline: none;
     background: none;
 }
+
 .pagination {
     display: flex;
     justify-content: center;
     gap: 10px;
 }
+
 .pagination button {
     border: none;
     background: none;
     cursor: pointer;
     border-radius: 50%;
 }
+
 .clicked {
     color: blue;
 }
+
 /* ---------------------------------------CSS for Booking Details-------- */
 .booking-main-container {
     padding: 1rem 2rem;
 }
+
 .booking-main-container h2 {
     font-size: 20px;
     font-weight: 500;
     color: #0c456b;
 }
+
 .agent-booking-passenger-details {
     display: flex;
     gap: 2rem;
     padding: 10px 0;
     justify-content: space-between;
 }
+
 .agent-booking-passenger-details h4 {
     font-size: 16px;
     font-weight: 500;
     color: #2e6991;
     margin-bottom: 0;
 }
+
 .agent-booking-passenger-details p {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 500;
     color: #3d5361;
 }
+
 .agent-booking-reason {
     padding: 1rem 2rem;
 }
+
 .agent-booking-reason h4 {
     font-size: 20px;
     font-weight: 500;
     color: #0c456b;
 }
+
 ::-webkit-scrollbar {
     display: none;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
 .download-voucher {
     display: flex;
     align-items: center;
     justify-content: end;
     padding: 2rem;
 }
+
 .download-voucher button {
-    background:none;
+    background: none;
     border: 1.5px solid skyblue;
     outline: none;
     padding: 5px 15px;
     border-radius: 20px;
     color: #2e6991;
 }
+
+/*--------------------- User Detials profile---------------------- */
+.user-details-container {
+    background: #f5f5f5;
+    margin: 2rem 4rem;
+    border-radius: 20px;
+}
+
+.user-details-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 4rem;
+}
+.user-details-header h2 {
+    color: #297CBB;
+}
+.user-details {
+    padding: 1rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+.second {
+    justify-content: unset;
+}
+.user-details h3 {
+    font-size: 18px;
+    color: #073c64;
+}
+.user-details p {
+    font-size: 16px;
+    color: #062842;
+}
+.user-details-container table {
+    width: 100%;
+}
+/* .user-details-container table tr {
+    padding: 1rem 4rem;
+} */
