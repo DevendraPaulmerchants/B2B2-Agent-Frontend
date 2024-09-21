@@ -233,6 +233,7 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
             alert(`The 'From' date cannot be later than the 'To' date (${toDate}). Please select an earlier date.`);
             return;
         }
+        
         setLoading(true);
         fetch(`${APIPath}/api/v1/agent/new-cart`, {
             headers: {
@@ -312,6 +313,58 @@ const BookLandCombos = ({ onClose, packagedata, adultPrice, childPrice }) => {
                                 {
                                     cartId: cartId,
                                     dateConfirmation: "YES"
+                                })
+                        })
+                            .then((res) => res.json())
+                            .then((data) => {
+                                if (data.message === "success") {
+                                    fetch(`${APIPath}/api/v1/agent/new-cart`, {
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        method: 'POST',
+                                        mode: 'cors',
+                                        body: JSON.stringify(addToCartLandcombo)
+                                    }).then((res) => res.json())
+                                        .then((data) => {
+                                            console.log(data);
+                                            setLoading(false);
+                                            navigate("/cart");
+                                            return;
+                                        })
+                                }
+                                else {
+                                    setLoading(false);
+                                    return;
+                                }
+                            })
+                            .catch((err) => {
+                                alert(err);
+                                setLoading(false);
+                            })
+                    }
+                    else {
+                        setLoading(false);
+                        return;
+                    }
+                }
+                else if (data.description === "DATE_PAX_CONFLICT") {
+                    const cartId = data.cartId;
+                    const confirmPAX = window.confirm("Date and Passengers are different with previous added item! \n Do you want to continue?");
+                    if (confirmPAX) {
+                        fetch(`${APIPath}/api/v1/agent/new-cart/date-pax-confirmation`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            method: 'POST',
+                            mode: 'cors',
+                            body: JSON.stringify(
+                                {
+                                    cartId: cartId,
+                                    dateConfirmation:"YES",
+                                    paxConfirmation:"YES"
                                 })
                         })
                             .then((res) => res.json())

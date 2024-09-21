@@ -7,7 +7,7 @@ const Condition=()=>{
     }, []);
     return <>
         <div className="pagebanner" >
-           <h2>Term And Condition</h2>
+           <h2>Terms And Conditions</h2>
         </div>
         <div className="policy">
             <h2>Welcome to Magical Vacation Travel and Tourism LLC!!</h2>

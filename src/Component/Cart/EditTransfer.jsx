@@ -42,59 +42,132 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers, 
         const day = String(now.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     }
-    const addtransfertoCart =
-    {
-        type: 1,
-        cartId: cartId,
-        transferId: pkgId,
-        transfers: [
-            {
-                selectedTripType: tripType,
-                selectedTransferType: selectedTransferType,
-                transferId: transferId,
-                // pickupTimeForArrival: flightArrivalTime,
-                // arrivalPickupTime: arrivalPickupTime,
-                // arrivalFlightCode: flightArrivalCode,
-                numberOfAdults: adultPassenger,
-                numberOfChildrens: childPassenger,
-                numberOfInfants: infentPassenger,
-                // pickupTimeForDeparture: flightDepartureTime,
-                // departurePickupTime: departurePickupTime,
-                // departureFlightCode: flightDepartureCode,
-                finalCost: price,
-                InOut: [
-                    {
-                        transferId: transferId,
-                        pickupTimeForArrival: flightArrivalTime,
-                        arrivalPickupTime: arrivalPickupTime,
-                        arrivalFlightCode: flightArrivalCode,
-                        from: from,
-                        to: to,
-                        cost: price,
-                        vehicle: vehicle,
-                    },
-                    (tripType === 'ROUND_TRIP' && {
-                        transferId: transferId,
-                        pickupTimeForDeparture: flightDepartureTime,
-                        departurePickupTime: departurePickupTime,
-                        departureFlightCode: flightDepartureCode,
-                        from: to,
-                        to: from,
-                        cost: price,
-                        vehicle: vehicle,
-                    })
-                ]
-            }
-        ],
-        customerDetails: {
-            name: name,
-            email: email,
-            phone: mobile,
-            // address: {
-            //     city: " ",
-            // }
+
+    // Prepare InOut array based on tripType
+let InOut = [];
+
+if (tripType === 'ROUND_TRIP') {
+    InOut = [
+        {
+            transferId: transferId,
+            pickupTimeForArrival: flightArrivalTime,
+            arrivalPickupTime: arrivalPickupTime,
+            arrivalFlightCode: flightArrivalCode,
+            from: from,
+            to: to,
+            cost: price,
+            vehicle: vehicle,
+        },
+        {
+            transferId: transferId,
+            pickupTimeForDeparture: flightDepartureTime,
+            departurePickupTime: departurePickupTime,
+            departureFlightCode: flightDepartureCode,
+            from: to,
+            to: from,
+            cost: price,
+            vehicle: vehicle,
         }
+    ];
+} else if (tripType === 'ONE_WAY') {
+    InOut = [
+        {
+            transferId: transferId,
+            pickupTimeForArrival: flightArrivalTime,
+            arrivalPickupTime: arrivalPickupTime,
+            arrivalFlightCode: flightArrivalCode,
+            from: from,
+            to: to,
+            cost: price,
+            vehicle: vehicle,
+        }
+    ];
+}
+
+// Now build the main object
+const addtransfertoCart = {
+    type: 1,
+    cartId: cartId,
+    transferId: pkgId,
+    transfers: [
+        {
+            selectedTripType: tripType,
+            selectedTransferType: selectedTransferType,
+            transferId: transferId,
+            numberOfAdults: adultPassenger,
+            numberOfChildrens: childPassenger,
+            numberOfInfants: infentPassenger,
+            finalCost: price,
+            InOut: InOut // Set the InOut array here
+        }
+    ],
+    customerDetails: {
+        name: name,
+        email: email,
+        phone: mobile,
+        // address: {
+        //     city: " ",
+        // }
     }
+};
+
+    // const addtransfertoCart =
+    // {
+    //     type: 1,
+    //     cartId: cartId,
+    //     transferId: pkgId,
+    //     transfers: [
+    //         {
+    //             selectedTripType: tripType,
+    //             selectedTransferType: selectedTransferType,
+    //             transferId: transferId,
+    //             numberOfAdults: adultPassenger,
+    //             numberOfChildrens: childPassenger,
+    //             numberOfInfants: infentPassenger,
+    //             finalCost: price,
+    //             (tripType === 'ROUND_TRIP' && {
+    //                 InOut:[
+    //                     {transferId: transferId,
+    //                         pickupTimeForArrival: flightArrivalTime,
+    //                         arrivalPickupTime: arrivalPickupTime,
+    //                         arrivalFlightCode: flightArrivalCode,
+    //                         from: from,
+    //                         to: to,
+    //                         cost: price,
+    //                         vehicle: vehicle,
+    //                     },
+    //                     { transferId: transferId,
+    //                         pickupTimeForDeparture: flightDepartureTime,
+    //                         departurePickupTime: departurePickupTime,
+    //                         departureFlightCode: flightDepartureCode,
+    //                         from: to,
+    //                         to: from,
+    //                         cost: price,
+    //                         vehicle: vehicle,
+    //                     }
+    //                 ]
+    //             })
+    //             (tripType === 'ONE_WAY' && {
+    //                 InOut:[
+    //                      {transferId: transferId,
+    //                             pickupTimeForArrival: flightArrivalTime,
+    //                             arrivalPickupTime: arrivalPickupTime,
+    //                             arrivalFlightCode: flightArrivalCode,
+    //                             from: from,
+    //                             to: to,
+    //                             cost: price,
+    //                             vehicle: vehicle,
+    //                         },
+    //                 ]
+    //             })
+    //         }
+    //     ],
+    //     customerDetails: {
+    //         name: name,
+    //         email: email,
+    //         phone: mobile,
+    //     }
+    // }
 
     const bookThisPackage = () => {
         if (name.length < 4) {
@@ -359,7 +432,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers, 
                                                     <div className="booking-flight-code" style={{ width: "50%" }}>
                                                         <label htmlFor="Flight-Code">ETD</label>
                                                         <input type="date" required
-                                                            min={getCurrentDateTime()}
+                                                            min={flightArrivalTime}
                                                             value={flightDepartureTime}
                                                             onChange={(e) => setFlightDepartureTime(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -438,7 +511,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers, 
                                                     <div className="booking-flight-code" style={{ width: "50%" }}>
                                                         <label htmlFor="Flight-Code">ETD</label>
                                                         <input type="date" required
-                                                            min={getCurrentDateTime()}
+                                                            min={flightArrivalTime}
                                                             value={flightDepartureTime}
                                                             onChange={(e) => setFlightDepartureTime(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}
@@ -516,7 +589,7 @@ const BookTransfer = ({ onClose, tripType, selectedTransferType, maxPassengers, 
                                                     <div className="booking-flight-code" style={{ width: "50%" }}>
                                                         <label htmlFor="Flight-Code">ETD</label>
                                                         <input type="date" required
-                                                            min={getCurrentDateTime()}
+                                                            min={flightArrivalTime}
                                                             value={flightDepartureTime}
                                                             onChange={(e) => setFlightDepartureTime(e.target.value)}
                                                             disabled={tripType === 'ROUND_TRIP' ? false : true}

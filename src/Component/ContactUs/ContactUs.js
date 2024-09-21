@@ -94,24 +94,29 @@ const ContactUs = () => {
 
   return <>
     <div id="contactus">
-      <div className="pagebanner" >
+      {/* <div className="pagebanner" >
         <h2>Contact Us</h2>
-      </div>
+      </div> */}
       <div className="address-container">
-        <div className="address">
-          <h2>Office Address</h2>
-          <p>
-            <b><i class="fa fa-home"></i>Office no: </b>
+        <div className="contactUs-address">
+          <h2>Contact Us</h2>
+          <div>
+            <img src="contactUs.svg" alt="Contact Us" height={300} />
+          </div>
+          <p className="contactUs-icon-text">
+            <img src="location.svg" alt="Loaction" />
             202 Rania Business Center Al Barsha first, Dubai, UAE
           </p>
-          <p style={{ margin: 0 }}>
-            <b><i class="fa fa-phone"></i></b>
-            +971 444 52101
-          </p>
-          <p style={{ margin: 0 }}>
-            <b><i class="fa fa-envelope-o"></i></b>
-            <a href="mailto:info@magicalvacation.com">info@magicalvacation.com</a>
-          </p>
+          <div className="contactUs-call-email">
+            <p className="contactUs-icon-text">
+              <img src="Call.svg" alt="Contact No." />
+              +971 444 52101
+            </p>
+            <p className="contactUs-icon-text">
+              <img src="email.svg" alt="Email" />
+              <a href="mailto:info@magicalvacation.com">info@magicalvacation.com</a>
+            </p>
+          </div>
         </div>
         <div className="container1">
           <h3>Send us a query</h3>
@@ -126,42 +131,37 @@ const ContactUs = () => {
               onChange={handleNameChange}
               required
             />
-
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              className="contact-input"
-              placeholder="Your email.."
-              name="email"
-              value={email}
-              maxLength={30}
-              onChange={handleEmailChange}
-              required
-            />
-
-            <label htmlFor="mobile">Mobile:</label>
-            {/* <PhoneInput className="mobile-number-validation"
-              country={'in'}
-              value={mobile}
-              onChange={(value) => handleMobileChange(value)}
-              inputProps={{
-                name: 'mobile',
-                required: true,
-              }}
-            /> */}
-            <PhoneInput inputClass="ant-input phoneInput" className="mobile-number-validation"
-              country={'in'} enableSearch value={mobile}
-              onChange={(value, country, e, formattedValue) => {
-                const { format, dialCode } = country;
-                if (format?.length === formattedValue?.length &&
-                  (value.startsWith(dialCode) || dialCode.startsWith(value))) {
-                  setPhoneValid(true);
-                  setMobile(value);
-                }
-                else {
-                  setPhoneValid(false)
-                }
-              }} />
+            <div className="contactUs-email-mobile">
+              <div className="contactUs-email">
+                <label htmlFor="email">Email:</label>
+                <input
+                  type="email"
+                  className="contact-input"
+                  placeholder="Your email.."
+                  name="email"
+                  value={email}
+                  maxLength={30}
+                  onChange={handleEmailChange}
+                  required
+                />
+              </div>
+              <div className="contactUs-mobile">
+                <label htmlFor="mobile">Mobile:</label>
+                <PhoneInput inputClass="ant-input phoneInput" className="mobile-number-validation"
+                  country={'in'} enableSearch value={mobile}
+                  onChange={(value, country, e, formattedValue) => {
+                    const { format, dialCode } = country;
+                    if (format?.length === formattedValue?.length &&
+                      (value.startsWith(dialCode) || dialCode.startsWith(value))) {
+                      setPhoneValid(true);
+                      setMobile(value);
+                    }
+                    else {
+                      setPhoneValid(false)
+                    }
+                  }} />
+              </div>
+            </div>
 
 
             <label htmlFor="message">Message:</label>

@@ -7,7 +7,7 @@ const Privacy = () => {
     }, []);
     return <>
         <div className="pagebanner" >
-            <h2>Privacy policy</h2>
+            <h2>Privacy Policy</h2>
         </div>
         <div className="policy">
             <h2>Privacy</h2>

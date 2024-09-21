@@ -180,11 +180,15 @@
 }
 .cart-has-no-iteam {
     text-align: center;
-    padding: 100px 0;
+    padding: 50px 0;
 }
 .cart-has-no-iteam h2 {
+    margin-top: 10px;
     font-size: 24px;
-    color: #297CBB;
+    color:#003245;
+}
+.cart-has-no-iteam img {
+    height: 300px;
 }
 .card1-item-title h4 {
     font-size: 14px;

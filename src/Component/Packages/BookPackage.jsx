@@ -11,7 +11,7 @@ import { APIPath } from "../../Config";
 const BookPackage = ({ onClose, packagedata }) => {
     const { token } = useCart()
     document.body.style.overflow = 'hidden';
-    const DayOrNight = parseInt(packagedata[0].duration.split("/")[1].split(" ")[1]);
+    const DayOrNight = parseInt(packagedata[0].duration.split("/")[1].split(" ")[1]) - 1;
     const pkgId = packagedata[0]._id;
     const [name, setName] = useState('');
     const [adultPassenger, setAdultPassenger] = useState(0);
@@ -285,6 +285,58 @@ const BookPackage = ({ onClose, packagedata }) => {
                                     {
                                         cartId: cartId,
                                         dateConfirmation: "YES"
+                                    })
+                            })
+                                .then((res) => res.json())
+                                .then((data) => {
+                                    if (data.message === "success") {
+                                        fetch(`${APIPath}/api/v1/agent/new-cart`, {
+                                            headers: {
+                                                'Authorization': `Bearer ${token}`,
+                                                'Content-Type': 'application/json'
+                                            },
+                                            method: 'POST',
+                                            mode: 'cors',
+                                            body: JSON.stringify(addToCartPackage)
+                                        }).then((res) => res.json())
+                                            .then((data) => {
+                                                console.log(data);
+                                                setLoading(false);
+                                                navigate("/cart");
+                                                return;
+                                            })
+                                    }
+                                    else {
+                                        setLoading(false);
+                                        return;
+                                    }
+                                })
+                                .catch((err) => {
+                                    alert(err);
+                                    setLoading(false);
+                                })
+                        }
+                        else {
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                    else if (data.description === "DATE_PAX_CONFLICT") {
+                        const cartId = data.cartId;
+                        const confirmPAX = window.confirm("Date and Passengers are different with previous added item! \n Do you want to continue?");
+                        if (confirmPAX) {
+                            fetch(`${APIPath}/api/v1/agent/new-cart/date-pax-confirmation`, {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                },
+                                method: 'POST',
+                                mode: 'cors',
+                                body: JSON.stringify(
+                                    {
+                                        cartId: cartId,
+                                        dateConfirmation:"YES",
+                                        paxConfirmation:"YES"
                                     })
                             })
                                 .then((res) => res.json())

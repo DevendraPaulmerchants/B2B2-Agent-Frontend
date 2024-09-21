@@ -48,12 +48,16 @@
     color: #25867d;
 }
 .price-table {
-    background-color: #eaeaea;
+    background-color: #fff;
     bottom: 3.2rem;
-    box-shadow: 0 0 10px #3d3939;
-    left: 20%;
+    box-shadow: 0 0 10px #242424;
+    border-radius: 10px;
     margin-top: 1rem;
     position: absolute;
+    width: 60%;
+}
+.attraction-details-price {
+    padding-bottom: 10px;
 }
 .more-price-btn {
     background: none;
@@ -63,10 +67,34 @@
     font-size: 24px;
 }
 .att-price-table {
-    padding: 5px 20px;
-    color:#1713e8;
-    border: 1.5px solid #26db26;
+    padding: 10px 20px;
+    color:#000000;
+    font-weight: 500;
+    border:2px solid #E6E6E6;
+    /* border: 1.5px solid #26db26; */
 }
 .none {
     display: none;
+}
+.attraction-details-price table {
+    border-spacing: 2px;
+    width: 100%;
+}
+.attraction-details-price table tbody tr td {
+    padding: 10px;
+    border: 2px solid #E6E6E6;
+}
+.attraction-details-price-header {
+    background: #F3F8FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 1rem 10px;
+    margin-bottom: 1.5rem;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.attraction-details-price-header h2 {
+    color: #0D8ACD;
+    font-size: 20px;
 }

@@ -7,6 +7,7 @@ import BookAttraction from "./EditAttraction";
 import BookPackage from "./EditPackage";
 import BookLandCombos from "./EditLandCombo";
 import BookTransfer from "./EditTransfer";
+import { Link } from "react-router-dom";
 
 const Cart = ({ tokenH, setCart, cart }) => {
   const { cartLength, setCartLength, token } = useCart();
@@ -736,7 +737,7 @@ const Cart = ({ tokenH, setCart, cart }) => {
                         <h2>{val.numberOfChildrens}</h2>
                       </div>
                       <div className="card1-item-passenger-name">
-                        <h4>No. of children</h4>
+                        <h4>No. of Infants</h4>
                         <h2>{val.numberOfInfants}</h2>
                       </div>
                     </div>
@@ -823,7 +824,12 @@ const Cart = ({ tokenH, setCart, cart }) => {
         </div>
       </div> :
       <div className="cart-has-no-iteam">
-        <h2>Oops! Your cart seems to be empty!</h2>
+        <img src="cartEmptyState.svg" alt="Cart Emty"/>
+        <h2>No Items Added</h2>
+        <p>Book&nbsp;&nbsp;<Link to='/packages'>Packages</Link>&nbsp;&nbsp;
+        <Link to='/attractions'>Attractions</Link>&nbsp;&nbsp;
+        <Link to='/landcombos'>Land Combos</Link>&nbsp;&nbsp;and&nbsp;&nbsp;
+        <Link to='/transfers'>Transfers</Link></p>
       </div>
     }
     {custom && <CustomPopUp customMsg={customMsg} />}

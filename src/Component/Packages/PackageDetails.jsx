@@ -140,6 +140,7 @@ const PacKageDetails = () => {
         // Title
         doc.setFontSize(14);
         doc.setTextColor(50, 59, 74);
+        doc.setFillColor(220, 245, 255);
         doc.text(packagedata[0].title, 10, y);
         y += 7;
 

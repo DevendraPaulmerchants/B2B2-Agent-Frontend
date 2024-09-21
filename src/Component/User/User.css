@@ -153,7 +153,7 @@
 
 .agent-booking-passenger-details {
     display: flex;
-    gap: 2rem;
+    gap: 3rem;
     padding: 10px 0;
     justify-content: space-between;
 }

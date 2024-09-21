@@ -4,6 +4,8 @@ import { TbSearch } from "react-icons/tb";
 import { useCart } from '../context/CartContext';
 import { APIPath } from "../../Config";
 import BookingDetails from "./BookingDetail";
+import { IoIosArrowBack,IoIosArrowForward } from "react-icons/io";
+
 import './User.css';
 
 const Bookings = () => {
@@ -71,27 +73,33 @@ const Bookings = () => {
         setBookingDetails(false);
     };
 
-    const filterdata = bookingData?.filter(item =>
-        item.bookingID?.toLowerCase().includes(bookingId.toLowerCase())
+    const filterdata =bookingData && bookingData?.filter(item =>
+        item.bookingID?.toLowerCase().includes(bookingId.toLowerCase()) ||
+        item.customerDetails.email?.toLowerCase().includes(bookingId.toLowerCase())
     );
 
-    // Apply pagination after filtering
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filterdata && filterdata?.slice(indexOfFirstItem, indexOfLastItem);
+// Pagination here-----------------------------
+    const totalPages = Math.ceil(bookingData?.length / itemsPerPage);
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
 
-    // const indexOfLastItem = currentPage * itemsPerPage;
-    // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    // const currentItems = bookingData && bookingData?.slice(indexOfFirstItem, indexOfLastItem);
+    const nextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
 
-    // const filterdata = currentItems?.filter(item =>
-    //     item.bookingID?.toLowerCase().includes(bookingId.toLowerCase())
-    // );
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
-
-    const paginate = pageNumber => setCurrentPage(pageNumber);
     const revenue = bookingData?.filter((val, id) => val.bookingStatus === "Confirmed");
-
     let revenueByAgent = 0;
     for (let i = 0; i < revenue?.length; i++) {
         revenueByAgent += revenue[i].totalCost;
@@ -103,7 +111,7 @@ const Bookings = () => {
                 <div className="agent-booking-search-revenue">
                     <div className="booking-search-and-status">
                         <div className="agent-search">
-                            <input type="text" value={bookingId} placeholder="Search by bookingId"
+                            <input type="text" value={bookingId} placeholder="Search..."
                                 onChange={(e) => {
                                     setBookingId(e.target.value)
                                 }}
@@ -147,21 +155,7 @@ const Bookings = () => {
                                             <th>Type</th>
                                             <th>Amount</th>
                                             <th>Date of Booking</th>
-                                            <th>Booking Status
-                                                {/* <select value={bookingStatus} id="booking-status"
-                                                    onChange={(e) => {
-                                                        setBookingStatus(e.target.value);
-                                                    }}
-                                                >
-                                                    <option value="" disabled>Booking Status</option>
-                                                    <option value="All">All</option>
-                                                    <option value="Pending">Pending</option>
-                                                    <option value="Awaiting Payment">Awaiting Payment</option>
-                                                    <option value="On Hold">On Hold</option>
-                                                    <option value="Rejected">Rejected</option>
-                                                    <option value="Confirmed">Confirmed</option>
-                                                </select> */}
-                                            </th>
+                                            <th>Booking Status</th>
                                             <th>Details</th>
                                         </tr>
                                     </thead>
@@ -194,16 +188,22 @@ const Bookings = () => {
                                     </tbody>
                                 </table>
                                 <div className="pagination">
+                                    <button onClick={prevPage} disabled={currentPage === 1}>
+                                        <IoIosArrowBack/>
+                                    </button>
                                     {[...Array(Math.ceil(bookingData.length / itemsPerPage)).keys()].map(number => (
                                         <button className={currentPage === number + 1 ? "clicked" : ""}
                                             key={number + 1} onClick={() => paginate(number + 1)}>
                                             {number + 1}
                                         </button>
                                     ))}
+                                    <button onClick={nextPage} disabled={currentPage === totalPages}>
+                                        <IoIosArrowForward/>
+                                    </button>
                                 </div>
                             </>
                         ) : (
-                            <div style={{paddingTop:'1rem'}}>
+                            <div style={{ paddingTop: '1rem' }}>
                                 <h2>No Data Found</h2>
                             </div>
                         )}

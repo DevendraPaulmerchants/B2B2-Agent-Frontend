@@ -19,7 +19,7 @@ const TransferDescription = ({ onClose, descriptionPageData }) => {
       <div className="transfer-description-container">
         <div className="transfer-description-top">
           <div className="generale-information-icon">
-            <div style={{ paddingTop: "8px" }}><SiPrivateinternetaccess style={{ fontSize: "24px" }} /></div>
+            <div style={{ paddingTop: "8px" }}><img src="transfericon.svg" alt="Vehicle Type" /></div>
             <div><h2>{descriptionPageData.transferType}</h2></div>
           </div>
           <p onClick={onClose} className="onclose-function"><IoMdClose /></p>

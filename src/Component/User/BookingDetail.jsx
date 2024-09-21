@@ -228,6 +228,10 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                                     <p>{val.numberOfChildrens}</p>
                                                 </div>
                                                 <div style={{ textAlign: "center" }}>
+                                                    <h4>Infants</h4>
+                                                    <p>{val.numberOfInfants}</p>
+                                                </div>
+                                                <div style={{ textAlign: "center" }}>
                                                     <h4>Start Date</h4>
                                                     <p>{val.startDate?.split("T")[0]}</p>
                                                 </div>
@@ -263,6 +267,10 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                                 <div style={{ textAlign: "center" }}>
                                                     <h4>Children</h4>
                                                     <p>{val.numberOfChildrens}</p>
+                                                </div>
+                                                <div style={{ textAlign: "center" }}>
+                                                    <h4>Infants</h4>
+                                                    <p>{val.numberOfInfants}</p>
                                                 </div>
                                                 <div style={{ textAlign: "center" }}>
                                                     <h4>Date</h4>
@@ -306,6 +314,10 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                                     <p>{val.numberOfChildrens}</p>
                                                 </div>
                                                 <div style={{ textAlign: "center" }}>
+                                                    <h4>Infants</h4>
+                                                    <p>{val.numberOfInfants}</p>
+                                                </div>
+                                                <div style={{ textAlign: "center" }}>
                                                     <h4>Start Date</h4>
                                                     <p>{val.startDate?.split("T")[0]}</p>
                                                 </div>
@@ -336,14 +348,14 @@ const BookingDetails = ({ onClose, bookingId }) => {
                                                 </div>
                                                 <div style={{ textAlign: "center" }}>
                                                     <h4>Total passengers </h4>
-                                                    <p>{(val.numberOfAdults) + (val.numberOfChildrens)}</p>
+                                                    <p>{(val.numberOfAdults) + (val.numberOfChildrens) + (val.numberOfInfants)}</p>
                                                 </div>
-                                                <div>
+                                                <div style={{maxWidth:'200px'}}>
                                                     <h4>Pickup</h4>
                                                     <p>{val.InOut?.[0].from}</p>
                                                     <p style={{fontSize:'14px',color:'blue'}}>({val.InOut?.[0].fromRemarks})</p>
                                                 </div>
-                                                <div>
+                                                <div style={{maxWidth:'200px'}}>
                                                     <h4>Drop Off</h4>
                                                     <p>{val.InOut?.[0].to}</p>
                                                     <p style={{fontSize:'14px',color:'blue'}}>({val.InOut?.[0].toRemarks})</p>
@@ -400,7 +412,7 @@ const BookingDetails = ({ onClose, bookingId }) => {
                             <button onClick={generatePDF}>Download voucher</button>
                         </div> */}
                         {/* )}  */}
-                        {bookingDetail[0].reason &&
+                        {(bookingDetail[0].reason && !(bookingDetail[0].bookingStatus === 'Confirmed')) &&
                             <div className="agent-booking-reason">
                                 <h4>Reason </h4>
                                 <p>{bookingDetail[0].reason}</p>

@@ -6,6 +6,7 @@ import { MdArrowOutward } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import { IoEyeOffSharp, IoEye } from "react-icons/io5";
 import { FaArrowDown } from "react-icons/fa6";
+import { IoMdClose } from "react-icons/io";
 import BookAttraction from "./BookAttraction";
 import './Attraction.css';
 import { useParams } from "react-router-dom";
@@ -112,24 +113,39 @@ const AttractionDetails = () => {
                 loading...
             </div>
         }
-        return <table style={{ textAlign: "center" }}>
-            <thead style={{ background: "#B8E2E3" }}>
-                <tr>
-                    <th className="att-price-table">Description</th>
-                    <th className="att-price-table">Adult Price</th>
-                    <th className="att-price-table">Child Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                {attractiondata[0]?.price?.map((val, id) => (
-                    <tr key={id} style={{ background: "#fff", borderBottom: "1.5px solid #26DB26" }}>
-                        <td style={{ color: "#00081d", borderRight: "1.5px solid #26DB26", padding: " 5px 0.5rem", maxWidth: "80%" }}>{val.description}</td>
-                        <td style={{ color: "#00081d", borderRight: "1.5px solid #26DB26", padding: " 5px 0.5rem" }}>AED <b style={{ color: "#5d626f" }}>{val.adultPrice}</b></td>
-                        <td style={{ color: "#00081d", padding: " 5px 0.5rem" }}>AED <b style={{ color: "#5d626f" }}>{val.childPrice}</b></td>
+        return <div className="attraction-details-price">
+            <div className="attraction-details-price-header">
+                <h2>{attractiondata?.[0].title}</h2>
+                <h2 style={{fontSize:'28px',cursor:'pointer'}} 
+                onClick={() => {
+                    setMorePrice(!morePrice)
+                }}><IoMdClose /></h2>
+            </div>
+            <table style={{ textAlign: "center" }}>
+                <thead style={{ background: "#CEEEFF"}}>
+                    <tr>
+                        <th className="att-price-table">Description</th>
+                        <th className="att-price-table">Adult Price</th>
+                        <th className="att-price-table">Child Price</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {attractiondata[0]?.price?.map((val, id) => (
+                        <tr key={id} style={{ background: "#fff" }}>
+                            <td 
+                            // style={{ color: "#00081d", borderRight: "1.5px solid #26DB26", padding: " 5px 0.5rem", maxWidth: "80%" }}
+                            >{val.description}</td>
+                            <td 
+                            // style={{ color: "#00081d", borderRight: "1.5px solid #26DB26", padding: " 5px 0.5rem" }}
+                            >AED <b style={{ color: "#5d626f" }}>{val.adultPrice}</b></td>
+                            <td 
+                            // style={{ color: "#00081d", padding: " 5px 0.5rem" }}
+                            >AED <b style={{ color: "#5d626f" }}>{val.childPrice}</b></td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     }
 
     return <>
@@ -249,7 +265,7 @@ const AttractionDetails = () => {
                                     </>
                                 })}
                             </div>)}
-                            <br/><br/>
+                            <br /><br />
                         </div>
                         <div className={isScrolled ? "footer-none" : "package-footer"}>
                             <div className="package-price-text-value">
